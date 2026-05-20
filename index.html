@@ -20,17 +20,6 @@
         max-width: 820px;
         margin: 0 auto;
         padding: 1.5rem 1rem 3rem;
-        animation: fadeUp 0.5s ease both;
-      }
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(18px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
       }
       .hero {
         background: linear-gradient(135deg, #4c3fce 0%, #6c3fc7 100%);
@@ -53,16 +42,6 @@
         background: rgba(255, 255, 255, 0.06);
         top: -60px;
         right: -40px;
-      }
-      .hero::after {
-        content: "";
-        position: absolute;
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.04);
-        bottom: -50px;
-        left: 30%;
       }
       .hero-left {
         display: flex;
@@ -255,7 +234,6 @@
         font-weight: 600;
         font-family: "Inter", sans-serif;
         width: 100%;
-        caret-color: #a99cf7;
       }
       .title-bar-input::placeholder {
         color: #2e2a50;
@@ -416,9 +394,6 @@
         cursor: pointer;
         transition: all 0.2s;
       }
-      .btn-apply-filter:hover {
-        transform: translateY(-1px);
-      }
       .btn-clear-filter {
         height: 34px;
         padding: 0 12px;
@@ -429,9 +404,6 @@
         font-size: 12px;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-      }
-      .btn-clear-filter:hover {
-        color: #f08080;
       }
       .filter-presets {
         display: flex;
@@ -469,7 +441,7 @@
       }
       .form-row {
         display: grid;
-        grid-template-columns: 1.4fr 1fr 0.95fr auto;
+        grid-template-columns: 1fr 1fr 0.8fr 0.7fr auto;
         gap: 10px;
         align-items: end;
       }
@@ -817,7 +789,7 @@
         background: #12101f;
       }
       .pt-table td {
-        padding: 12px 15px;
+        padding: 11px 15px;
         color: #c8c4e8;
         border-bottom: 1px solid #1e1c38;
         vertical-align: middle;
@@ -883,6 +855,19 @@
       .date-cell {
         font-size: 11.5px;
         color: #5a5680;
+      }
+      /* Remark tag */
+      .remark-tag {
+        display: inline-block;
+        background: rgba(183, 120, 20, 0.18);
+        color: #e0a84a;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 1px 7px;
+        border-radius: 99px;
+        border: 1px solid rgba(183, 120, 20, 0.3);
+        margin-left: 5px;
+        vertical-align: middle;
       }
       .action-btns {
         display: flex;
@@ -974,31 +959,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: overlayIn 0.2s ease both;
       }
       .modal-overlay.hidden {
         display: none;
-      }
-      @keyframes overlayIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
       }
       .modal {
         background: #1a1830;
         border: 1px solid #2e2a50;
         border-radius: 20px;
         padding: 1.75rem;
-        width: 460px;
+        width: 480px;
         max-width: 95vw;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       }
       .modal.wide {
-        width: 680px;
+        width: 700px;
         max-height: 90vh;
         overflow-y: auto;
       }
@@ -1082,9 +1058,6 @@
         font-family: "Inter", sans-serif;
         cursor: pointer;
         transition: all 0.2s;
-      }
-      .btn-save:hover {
-        transform: translateY(-1px);
       }
       .btn-delete-confirm {
         height: 40px;
@@ -1206,7 +1179,7 @@
         border-color: #6c3fc7;
       }
       .preview-wrap {
-        max-height: 280px;
+        max-height: 260px;
         overflow-y: auto;
         border-radius: 10px;
         border: 1px solid #2e2a50;
@@ -1224,8 +1197,6 @@
         color: #4a4670;
         font-size: 10px;
         font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
         border-bottom: 1px solid #22203a;
         position: sticky;
         top: 0;
@@ -1320,7 +1291,6 @@
         padding: 12px 14px;
         margin-bottom: 16px;
         display: flex;
-        align-items: flex-start;
         gap: 10px;
       }
       .delete-warning-icon {
@@ -1348,7 +1318,6 @@
         color: #5a5680;
         cursor: pointer;
         font-size: 16px;
-        padding: 2px;
       }
       .pw-error {
         font-size: 12px;
@@ -1377,7 +1346,6 @@
           transform: translateX(5px);
         }
       }
-
       /* Export modal */
       .export-option {
         display: flex;
@@ -1447,7 +1415,7 @@
         padding: 10px 14px;
         font-size: 12px;
         color: #7a74a8;
-        margin-bottom: 4px;
+        margin-bottom: 12px;
       }
       .export-preview-note strong {
         color: #a99cf7;
@@ -1471,32 +1439,132 @@
         color: #4ecba0;
         border-color: rgba(13, 168, 118, 0.3);
       }
-
-      /* Progress bar for export */
-      .export-progress {
-        display: none;
-        margin-bottom: 10px;
+      /* Split size selector */
+      .split-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+        flex-wrap: wrap;
       }
-      .export-progress.show {
+      .split-label {
+        font-size: 12px;
+        color: #7a74a8;
+      }
+      .split-btn {
+        height: 28px;
+        padding: 0 14px;
+        border-radius: 99px;
+        border: 1px solid #2e2a50;
+        background: none;
+        color: #5a5680;
+        font-size: 12px;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .split-btn:hover {
+        border-color: #6c3fc7;
+        color: #a99cf7;
+      }
+      .split-btn.active {
+        background: rgba(76, 63, 206, 0.2);
+        border-color: #6c3fc7;
+        color: #a99cf7;
+      }
+      /* Progress */
+      .progress-wrap {
+        background: #12101f;
+        border: 1px solid #2a2745;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .progress-wrap.show {
         display: block;
       }
-      .export-progress-bar-wrap {
-        height: 6px;
+      .progress-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .progress-spinner {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2.5px solid #2e2a50;
+        border-top-color: #6c3fc7;
+        animation: spin 0.7s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .progress-spinner.done {
+        animation: none;
+        border-color: #4ecba0;
+        border-top-color: #4ecba0;
+      }
+      .progress-main-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #d4cfff;
+        flex: 1;
+      }
+      .progress-track {
+        height: 8px;
         background: #2e2a50;
         border-radius: 99px;
         overflow: hidden;
-        margin-top: 6px;
       }
-      .export-progress-bar {
+      .progress-fill {
         height: 100%;
+        width: 0%;
         background: linear-gradient(90deg, #4c3fce, #0fa876);
         border-radius: 99px;
-        width: 0%;
-        transition: width 0.3s ease;
+        transition: width 0.35s ease;
       }
-      .export-progress-label {
+      .progress-sub {
         font-size: 11px;
-        color: #7a74a8;
+        color: #5a5680;
+        margin-top: 7px;
+        min-height: 14px;
+      }
+      .options-area {
+        transition: opacity 0.2s;
+      }
+      .options-area.locked {
+        opacity: 0.25;
+        pointer-events: none;
+        user-select: none;
+      }
+      .btn-dl {
+        height: 40px;
+        padding: 0 22px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #0d7a5c, #0fa876);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-dl:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .btn-dl:not(:disabled):hover {
+        transform: translateY(-1px);
+      }
+      .btn-cancel-exp:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
       }
     </style>
 
@@ -1517,7 +1585,6 @@
           <div class="hero-date" id="heroDate"></div>
         </div>
       </div>
-
       <div class="sheet-manager">
         <div class="sheet-manager-top">
           <div class="sheet-manager-title">📁 Saved Sheets</div>
@@ -1529,7 +1596,6 @@
           <div class="sheets-loading">⏳ Loading…</div>
         </div>
       </div>
-
       <div class="title-bar">
         <div class="title-bar-icon">📋</div>
         <div style="flex: 1">
@@ -1552,7 +1618,6 @@
           ☁️ Save
         </button>
       </div>
-
       <div class="stats">
         <div class="stat stat-purple">
           <div class="stat-label">Vendors</div>
@@ -1567,7 +1632,6 @@
           <div class="stat-val" id="statEntries">0</div>
         </div>
       </div>
-
       <div class="filter-bar">
         <div class="filter-bar-top">
           <div class="filter-bar-label">📅 Date Range</div>
@@ -1583,9 +1647,8 @@
             </div>
             <div class="filter-actions">
               <button class="btn-apply-filter" onclick="applyDateFilter()">
-                Apply
-              </button>
-              <button class="btn-clear-filter" onclick="clearDateFilter()">
+                Apply</button
+              ><button class="btn-clear-filter" onclick="clearDateFilter()">
                 Clear
               </button>
             </div>
@@ -1647,6 +1710,7 @@
         </div>
       </div>
 
+      <!-- form now has remark field -->
       <div class="form-card">
         <div class="form-row">
           <div class="field">
@@ -1663,6 +1727,20 @@
               id="acDropdown"
               style="display: none"
             ></div>
+          </div>
+          <div class="field">
+            <label for="remarkInput"
+              >Remark
+              <span style="color: #4a4670; font-weight: 400"
+                >(optional)</span
+              ></label
+            ><input
+              id="remarkInput"
+              type="text"
+              placeholder="e.g. Labour, Material…"
+              autocomplete="off"
+              disabled
+            />
           </div>
           <div class="field">
             <label for="amtInput">Amount (₹)</label
@@ -1706,7 +1784,7 @@
               class="search-box-input"
               id="searchInput"
               type="text"
-              placeholder="Search vendor, amount, date…"
+              placeholder="Search vendor, remark, amount…"
               autocomplete="off"
             />
             <button
@@ -1739,11 +1817,7 @@
           >
             📋 Copy
           </button>
-          <button
-            class="btn-action btn-export-xls"
-            id="exportBtn"
-            onclick="openExportModal()"
-          >
+          <button class="btn-action btn-export-xls" onclick="openExportModal()">
             📊 Export
             <span
               class="filter-badge"
@@ -1753,7 +1827,6 @@
           </button>
         </div>
       </div>
-
       <div class="table-card">
         <table class="pt-table">
           <thead id="tableHead"></thead>
@@ -1778,85 +1851,105 @@
           </div>
           Export to Excel
         </div>
-
-        <div
-          class="export-option selected"
-          id="opt1"
-          onclick="selectExportOpt(1)"
-        >
-          <div class="export-option-radio"></div>
-          <div class="export-option-icon">📄</div>
-          <div class="export-option-text">
-            <div class="export-option-title">Standard export</div>
-            <div class="export-option-desc">
-              2 sheets: All Entries + Summary by Vendor
+        <div class="options-area" id="exportOptionsArea">
+          <div
+            class="export-option selected"
+            id="opt1"
+            onclick="selectExportOpt(1)"
+          >
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">📄</div>
+            <div class="export-option-text">
+              <div class="export-option-title">Standard export</div>
+              <div class="export-option-desc">
+                2 sheets: All Entries + Summary by Vendor
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="export-option" id="opt2" onclick="selectExportOpt(2)">
-          <div class="export-option-radio"></div>
-          <div class="export-option-icon">📑</div>
-          <div class="export-option-text">
-            <div class="export-option-title">Per-vendor sheets</div>
-            <div class="export-option-desc">
-              All Entries + Summary + one sheet per vendor
+          <div class="export-option" id="opt2" onclick="selectExportOpt(2)">
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">📑</div>
+            <div class="export-option-text">
+              <div class="export-option-title">Per-vendor sheets</div>
+              <div class="export-option-desc">
+                All Entries + Summary + one sheet per vendor. Large datasets
+                split into multiple files automatically.
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="export-option" id="opt3" onclick="selectExportOpt(3)">
-          <div class="export-option-radio"></div>
-          <div class="export-option-icon">🗂️</div>
-          <div class="export-option-text">
-            <div class="export-option-title">Vendor sheets only</div>
-            <div class="export-option-desc">
-              One sheet per vendor, no combined sheet
+          <div class="export-option" id="opt3" onclick="selectExportOpt(3)">
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">🗂️</div>
+            <div class="export-option-text">
+              <div class="export-option-title">Vendor sheets only</div>
+              <div class="export-option-desc">
+                One sheet per vendor only. Split into multiple files if needed.
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="export-preview-note" id="exportPreview">
-          <strong>Will create:</strong> <span id="exportPreviewText"></span>
-          <div class="export-sheets-list" id="exportSheetsList"></div>
-        </div>
-
-        <!-- Progress indicator -->
-        <div class="export-progress" id="exportProgress">
-          <div class="export-progress-label" id="exportProgressLabel">
-            Building Excel…
+          <!-- Split size selector shown for opt2/opt3 -->
+          <div
+            id="splitSizeRow"
+            style="display: none"
+            class="export-preview-note"
+          >
+            <strong>Vendors per file:</strong>
+            <div class="split-row">
+              <span class="split-label">Split every</span>
+              <button
+                class="split-btn active"
+                id="split50"
+                onclick="setSplit(50)"
+              >
+                50
+              </button>
+              <button class="split-btn" id="split100" onclick="setSplit(100)">
+                100
+              </button>
+              <button class="split-btn" id="split200" onclick="setSplit(200)">
+                200
+              </button>
+              <button class="split-btn" id="splitAll" onclick="setSplit(9999)">
+                All in one
+              </button>
+              <span
+                class="split-label"
+                id="splitFilesNote"
+                style="color: #a99cf7"
+              ></span>
+            </div>
           </div>
-          <div class="export-progress-bar-wrap">
-            <div class="export-progress-bar" id="exportProgressBar"></div>
+          <div
+            class="export-preview-note"
+            id="exportPreviewNote"
+            style="margin-top: 8px"
+          >
+            <strong>Will create:</strong> <span id="exportPreviewText"></span>
+            <div class="export-sheets-list" id="exportSheetsList"></div>
           </div>
         </div>
-
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-top">
+            <div class="progress-spinner" id="progressSpinner"></div>
+            <div class="progress-main-label" id="progressMainLabel">
+              Preparing…
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-sub" id="progressSub"></div>
+        </div>
         <div class="modal-actions">
           <button
-            class="btn-cancel"
-            id="exportCancelBtn"
+            class="btn-cancel btn-cancel-exp"
+            id="cancelExportBtn"
             onclick="closeExportModal()"
           >
             Cancel
           </button>
-          <button
-            id="downloadBtn"
-            style="
-              height: 40px;
-              padding: 0 22px;
-              border-radius: 10px;
-              border: none;
-              background: linear-gradient(135deg, #0d7a5c, #0fa876);
-              color: #fff;
-              font-size: 13.5px;
-              font-weight: 600;
-              font-family: &quot;Inter&quot;, sans-serif;
-              cursor: pointer;
-              transition: all 0.2s;
-            "
-            onclick="doExport()"
-          >
-            ⬇ Download Excel
+          <button class="btn-dl" id="downloadBtn" onclick="doExport()">
+            ⬇ Download
           </button>
         </div>
       </div>
@@ -1885,7 +1978,6 @@
         </div>
       </div>
     </div>
-
     <!-- Delete -->
     <div class="modal-overlay hidden" id="deleteModal">
       <div class="modal">
@@ -1926,7 +2018,6 @@
         </div>
       </div>
     </div>
-
     <!-- Edit -->
     <div class="modal-overlay hidden" id="editModal">
       <div class="modal">
@@ -1937,6 +2028,19 @@
         <div class="modal-field">
           <label>Name / vendor</label
           ><input id="editName" type="text" autocomplete="off" />
+        </div>
+        <div class="modal-field">
+          <label
+            >Remark
+            <span style="color: #4a4670; font-weight: 400"
+              >(optional)</span
+            ></label
+          ><input
+            id="editRemark"
+            type="text"
+            placeholder="e.g. Labour, Material…"
+            autocomplete="off"
+          />
         </div>
         <div class="modal-field">
           <label>Amount (₹)</label
@@ -1951,7 +2055,6 @@
         </div>
       </div>
     </div>
-
     <!-- Import -->
     <div class="modal-overlay hidden" id="importModal">
       <div class="modal">
@@ -1961,15 +2064,14 @@
         </div>
         <p class="import-info">
           Upload a .xlsx from this tracker.<br />Columns:
-          <code>Name / Vendor</code>, <code>Amount (INR)</code>,
-          <code>Date Added</code>
+          <code>Name / Vendor</code>, <code>Remark</code>,
+          <code>Amount (INR)</code>, <code>Date Added</code>
         </p>
         <div
           class="import-zone"
           onclick="document.getElementById('fileInput').click()"
         >
-          <span class="import-zone-icon">📂</span>Click to choose an Excel
-          file<input
+          <span class="import-zone-icon">📂</span>Click to choose<input
             type="file"
             id="fileInput"
             accept=".xlsx,.xls,.csv"
@@ -1983,7 +2085,6 @@
         </div>
       </div>
     </div>
-
     <!-- Paytm -->
     <div class="modal-overlay hidden" id="paytmModal">
       <div class="modal wide">
@@ -1998,16 +2099,18 @@
         </div>
         <div id="paytmStep1">
           <p class="import-info">
-            Upload your Paytm transaction Excel/CSV.<br />Supports:
-            <code>Date</code> <code>Transaction Details</code>
-            <code>Amount</code> <code>Remarks</code>
+            Upload your Paytm Excel/CSV.<br />Supports: <code>Date</code>
+            <code>Transaction Details</code> <code>Amount</code>
+            <code>Remarks</code><br /><strong style="color: #4ecba0"
+              >✓ Remarks now stored as separate Remark column — no duplicate
+              names.</strong
+            >
           </p>
           <div
             class="import-zone paytm-zone"
             onclick="document.getElementById('paytmFile').click()"
           >
-            <span class="import-zone-icon">📂</span>Click to choose your Paytm
-            statement<input
+            <span class="import-zone-icon">📂</span>Click to choose<input
               type="file"
               id="paytmFile"
               accept=".xlsx,.xls,.csv"
@@ -2052,11 +2155,10 @@
                     />
                   </th>
                   <th>Date</th>
-                  <th>Description</th>
-                  <th>UPI/Acct</th>
+                  <th>Description (Name)</th>
                   <th>Amount</th>
                   <th>Type</th>
-                  <th>Remarks</th>
+                  <th style="color: #e0a84a">Remark</th>
                 </tr>
               </thead>
               <tbody id="previewBody"></tbody>
@@ -2098,15 +2200,17 @@
       var dateFrom = "",
         dateTo = "";
       var pendingDeleteId = null;
-      var exportOpt = 1;
+      var exportOpt = 1,
+        splitSize = 50;
+      var exportRunning = false;
       var RESERVED = ["grand total", "total", "subtotal", "summary"];
       function isReserved(n) {
         return RESERVED.indexOf(n.toLowerCase().trim()) !== -1;
       }
 
-      function sbFetch(path, opts) {
+      function sbFetch(p, o) {
         return fetch(
-          SUPABASE_URL + "/rest/v1/" + path,
+          SUPABASE_URL + "/rest/v1/" + p,
           Object.assign(
             {
               headers: {
@@ -2116,23 +2220,23 @@
                 Prefer: "return=representation",
               },
             },
-            opts || {},
+            o || {},
           ),
         );
       }
       function setSyncStatus(s) {
-        var dot = document.getElementById("syncDot"),
-          lbl = document.getElementById("syncLabel");
-        dot.className =
+        var d = document.getElementById("syncDot"),
+          l = document.getElementById("syncLabel");
+        d.className =
           "sync-dot" +
           (s === "syncing" ? " syncing" : s === "error" ? " error" : "");
-        lbl.textContent =
+        l.textContent =
           s === "ok" ? "Synced" : s === "syncing" ? "Saving…" : "Error";
       }
-      async function sha256(str) {
+      async function sha256(s) {
         var buf = await crypto.subtle.digest(
           "SHA-256",
-          new TextEncoder().encode(str),
+          new TextEncoder().encode(s),
         );
         return Array.from(new Uint8Array(buf))
           .map(function (b) {
@@ -2157,6 +2261,7 @@
         return src.filter(function (e) {
           return (
             e.name.toLowerCase().indexOf(q) !== -1 ||
+            (e.remark || "").toLowerCase().indexOf(q) !== -1 ||
             (e.amount + "").indexOf(q) !== -1 ||
             isoToDisplay(e.date).indexOf(q) !== -1
           );
@@ -2171,6 +2276,7 @@
           map[key].items.push({
             id: e.id,
             name: e.name,
+            remark: e.remark || "",
             amount: e.amount,
             date: e.date,
             idx: entries.indexOf(e),
@@ -2181,12 +2287,7 @@
         });
       }
 
-      /* ══════════════════════════════════════
-   EXPORT — chunked async approach
-   Builds workbook piece-by-piece yielding
-   to the browser between each vendor sheet
-   so it never freezes
-══════════════════════════════════════ */
+      /* ── Export: split workbooks ── */
       function sanitizeName(raw) {
         return (
           (raw + "")
@@ -2196,24 +2297,51 @@
             .slice(0, 31) || "Vendor"
         );
       }
-      function makeNameRegistry() {
-        var used = {};
-        return function (raw) {
-          var base = sanitizeName(raw);
-          if (!used[base]) {
-            used[base] = 1;
-            return base;
+      function makeNameReg() {
+        var u = {};
+        return function (r) {
+          var b = sanitizeName(r);
+          if (!u[b]) {
+            u[b] = 1;
+            return b;
           }
-          var n = ++used[base];
-          var suf = "_" + n;
-          return base.slice(0, 31 - suf.length) + suf;
+          var n = ++u[b];
+          var s = "_" + n;
+          return b.slice(0, 31 - s.length) + s;
         };
       }
+      function yieldToUI(ms) {
+        return new Promise(function (r) {
+          setTimeout(r, ms || 8);
+        });
+      }
 
-      function isoToDisplay(iso) {
-        if (!iso) return "—";
-        var p = iso.split("-");
-        return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
+      function setProgress(pct, main, sub) {
+        document.getElementById("progressFill").style.width = pct + "%";
+        document.getElementById("progressMainLabel").textContent = main;
+        document.getElementById("progressSub").textContent = sub || "";
+      }
+      function doneProgress(label) {
+        document.getElementById("progressFill").style.width = "100%";
+        document.getElementById("progressMainLabel").textContent =
+          label || "✅ Ready! Downloading…";
+        document.getElementById("progressSub").textContent = "";
+        document.getElementById("progressSpinner").classList.add("done");
+      }
+
+      function setSplit(n) {
+        splitSize = n;
+        ["split50", "split100", "split200", "splitAll"].forEach(function (id) {
+          document.getElementById(id).classList.remove("active");
+        });
+        var map = {
+          50: "split50",
+          100: "split100",
+          200: "split200",
+          9999: "splitAll",
+        };
+        if (map[n]) document.getElementById(map[n]).classList.add("active");
+        updateExportPreview();
       }
 
       function openExportModal() {
@@ -2222,17 +2350,21 @@
           showToast("No entries to export.");
           return;
         }
-        selectExportOpt(exportOpt);
-        document.getElementById("exportProgress").classList.remove("show");
-        document.getElementById("downloadBtn").textContent = "⬇ Download Excel";
+        exportRunning = false;
+        document.getElementById("progressWrap").classList.remove("show");
+        document.getElementById("exportOptionsArea").classList.remove("locked");
         document.getElementById("downloadBtn").disabled = false;
+        document.getElementById("cancelExportBtn").disabled = false;
+        document.getElementById("progressFill").style.width = "0%";
+        document.getElementById("progressSpinner").classList.remove("done");
+        document.getElementById("progressMainLabel").textContent = "Preparing…";
+        document.getElementById("progressSub").textContent = "";
+        selectExportOpt(exportOpt);
         document.getElementById("exportModal").classList.remove("hidden");
       }
       function closeExportModal() {
+        if (exportRunning) return;
         document.getElementById("exportModal").classList.add("hidden");
-        document.getElementById("exportProgress").classList.remove("show");
-        document.getElementById("downloadBtn").textContent = "⬇ Download Excel";
-        document.getElementById("downloadBtn").disabled = false;
       }
       document
         .getElementById("exportModal")
@@ -2241,84 +2373,98 @@
         });
 
       function selectExportOpt(n) {
+        if (exportRunning) return;
         exportOpt = n;
         [1, 2, 3].forEach(function (i) {
           document
             .getElementById("opt" + i)
             .classList.toggle("selected", i === n);
         });
+        document.getElementById("splitSizeRow").style.display =
+          n === 2 || n === 3 ? "block" : "none";
         updateExportPreview();
       }
-
       function updateExportPreview() {
-        var src = getVisibleEntries();
-        var groups = getGroups(src);
-        var vc = groups.length;
-        var preview = document.getElementById("exportPreviewText");
-        var list = document.getElementById("exportSheetsList");
-        var chips = "";
+        var src = getVisibleEntries(),
+          groups = getGroups(src),
+          vc = groups.length;
+        var pt = document.getElementById("exportPreviewText"),
+          pl = document.getElementById("exportSheetsList"),
+          chips = "";
         if (exportOpt === 1) {
-          preview.textContent = "2 sheets total";
+          pt.textContent = "2 sheets, 1 file";
           chips =
             '<span class="export-sheet-chip green">All Entries</span><span class="export-sheet-chip">Summary by Vendor</span>';
-        } else if (exportOpt === 2) {
-          preview.textContent = 2 + vc + " sheets total";
-          chips =
-            '<span class="export-sheet-chip green">All Entries</span><span class="export-sheet-chip">Summary by Vendor</span>';
-          groups.slice(0, 5).forEach(function (g) {
-            chips +=
-              '<span class="export-sheet-chip">' +
-              sanitizeName(g.name) +
-              "</span>";
-          });
-          if (vc > 5)
-            chips +=
-              '<span class="export-sheet-chip">+' + (vc - 5) + " more…</span>";
+          document.getElementById("splitFilesNote").textContent = "";
         } else {
-          preview.textContent = vc + " vendor sheets";
-          groups.slice(0, 8).forEach(function (g) {
+          var effectiveSplit = Math.min(splitSize, vc);
+          var numFiles = splitSize >= 9999 ? 1 : Math.ceil(vc / splitSize);
+          var baseSheets = exportOpt === 2 ? 2 : 0;
+          var sheetsPerFile =
+            splitSize >= 9999
+              ? baseSheets + vc
+              : baseSheets + Math.min(splitSize, vc);
+          pt.textContent =
+            vc +
+            " vendor sheet" +
+            (vc === 1 ? "" : "s") +
+            ", " +
+            numFiles +
+            " file" +
+            (numFiles === 1 ? "" : "s");
+          document.getElementById("splitFilesNote").textContent =
+            numFiles > 1
+              ? "→ " + numFiles + " Excel files will download"
+              : "→ 1 file";
+          if (exportOpt === 2) {
+            chips =
+              '<span class="export-sheet-chip green">All Entries</span><span class="export-sheet-chip">Summary</span>';
+          }
+          groups.slice(0, 4).forEach(function (g) {
             chips +=
               '<span class="export-sheet-chip">' +
               sanitizeName(g.name) +
               "</span>";
           });
-          if (vc > 8)
+          if (vc > 4)
             chips +=
-              '<span class="export-sheet-chip">+' + (vc - 8) + " more…</span>";
+              '<span class="export-sheet-chip">+' + (vc - 4) + " more…</span>";
+          if (numFiles > 1)
+            chips +=
+              '<span class="export-sheet-chip" style="background:rgba(183,120,20,0.15);color:#e0a84a;border-color:rgba(183,120,20,0.3);">📦 ' +
+              numFiles +
+              " files</span>";
         }
-        list.innerHTML = chips;
+        pl.innerHTML = chips;
       }
 
-      /* Yield control back to browser for ~1ms */
-      function yieldToUI() {
-        return new Promise(function (r) {
-          setTimeout(r, 1);
+      /* Download helper: saves workbook with a short delay between files */
+      async function saveWB(wb, fname) {
+        return new Promise(function (resolve) {
+          XLSX.writeFile(wb, fname);
+          setTimeout(resolve, 400);
         });
       }
 
-      function setProgress(pct, label) {
-        document.getElementById("exportProgressBar").style.width = pct + "%";
-        document.getElementById("exportProgressLabel").textContent = label;
-      }
-
       async function doExport() {
-        var btn = document.getElementById("downloadBtn");
-        if (btn.disabled) return;
-
+        if (exportRunning) return;
         var src = getVisibleEntries();
         if (!src.length) {
           showToast("No entries to export.");
           return;
         }
         if (typeof XLSX === "undefined") {
-          showToast("Excel library loading.");
+          showToast("Excel library not loaded.");
           return;
         }
 
-        btn.textContent = "⏳ Building…";
-        btn.disabled = true;
-        document.getElementById("exportProgress").classList.add("show");
-        setProgress(5, "Preparing data…");
+        exportRunning = true;
+        document.getElementById("downloadBtn").disabled = true;
+        document.getElementById("cancelExportBtn").disabled = true;
+        document.getElementById("exportOptionsArea").classList.add("locked");
+        document.getElementById("progressWrap").classList.add("show");
+        setProgress(0, "Starting…", "");
+        await yieldToUI(30);
 
         try {
           var title =
@@ -2335,10 +2481,8 @@
               ")";
 
           var groups = getGroups(src);
-          var wb = XLSX.utils.book_new();
-          var uniqueName = makeNameRegistry();
 
-          function makeAllEntriesSheet(data, t) {
+          function makeAllSheet(data, t) {
             var rows = [
               [t + suffix],
               [
@@ -2350,23 +2494,36 @@
                   }),
               ],
               [],
-              ["#", "Name / Vendor", "Amount (INR)", "Date Added"],
+              ["#", "Name / Vendor", "Remark", "Amount (INR)", "Date Added"],
             ];
             data.forEach(function (e, i) {
-              rows.push([i + 1, e.name, e.amount, isoToDisplay(e.date)]);
+              rows.push([
+                i + 1,
+                e.name,
+                e.remark || "",
+                e.amount,
+                isoToDisplay(e.date),
+              ]);
             });
             rows.push([]);
             rows.push([
               "",
               "Grand Total",
+              "",
               data.reduce(function (s, e) {
                 return s + e.amount;
               }, 0),
               "",
             ]);
             var ws = XLSX.utils.aoa_to_sheet(rows);
-            ws["!cols"] = [{ wch: 5 }, { wch: 36 }, { wch: 18 }, { wch: 14 }];
-            ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
+            ws["!cols"] = [
+              { wch: 5 },
+              { wch: 32 },
+              { wch: 16 },
+              { wch: 16 },
+              { wch: 14 },
+            ];
+            ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }];
             return ws;
           }
           function makeSummarySheet(data, t) {
@@ -2374,7 +2531,7 @@
             var rows = [
               [t + " — Summary" + suffix],
               [],
-              ["Vendor", "No. of Payments", "Total Amount (INR)"],
+              ["Vendor", "Payments", "Total Amount (INR)"],
             ];
             grps.forEach(function (g) {
               rows.push([g.name, g.items.length, g.total]);
@@ -2388,16 +2545,16 @@
               }, 0),
             ]);
             var ws = XLSX.utils.aoa_to_sheet(rows);
-            ws["!cols"] = [{ wch: 36 }, { wch: 16 }, { wch: 20 }];
+            ws["!cols"] = [{ wch: 32 }, { wch: 12 }, { wch: 20 }];
             ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }];
             return ws;
           }
-          function makeVendorSheet(vendorName, items) {
+          function makeVendorSheet(vname, items) {
             var total = items.reduce(function (s, e) {
               return s + e.amount;
             }, 0);
             var rows = [
-              [vendorName],
+              [vname],
               [
                 "Total: " +
                   items.length +
@@ -2405,127 +2562,180 @@
                   total.toLocaleString("en-IN"),
               ],
               [],
-              ["#", "Amount (INR)", "Date"],
+              ["#", "Remark", "Amount (INR)", "Date"],
             ];
             items.forEach(function (e, i) {
-              rows.push([i + 1, e.amount, isoToDisplay(e.date)]);
+              rows.push([
+                i + 1,
+                e.remark || "",
+                e.amount,
+                isoToDisplay(e.date),
+              ]);
             });
             rows.push([]);
-            rows.push(["Total", total, ""]);
+            rows.push(["Total", "", total, ""]);
             var ws = XLSX.utils.aoa_to_sheet(rows);
-            ws["!cols"] = [{ wch: 5 }, { wch: 18 }, { wch: 14 }];
+            ws["!cols"] = [{ wch: 5 }, { wch: 18 }, { wch: 16 }, { wch: 14 }];
             ws["!merges"] = [
-              { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
-              { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
+              { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } },
+              { s: { r: 1, c: 0 }, e: { r: 1, c: 3 } },
             ];
             return ws;
           }
 
-          await yieldToUI();
-          setProgress(15, "Building All Entries sheet…");
-
           if (exportOpt === 1) {
-            /* Standard — fast path, no yielding needed */
+            setProgress(20, "Building All Entries…", "");
+            await yieldToUI();
+            var wb = XLSX.utils.book_new();
+            var un = makeNameReg();
             XLSX.utils.book_append_sheet(
               wb,
-              makeAllEntriesSheet(src, title),
-              uniqueName("All Entries"),
+              makeAllSheet(src, title),
+              un("All Entries"),
             );
-            setProgress(60, "Building Summary sheet…");
+            setProgress(60, "Building Summary…", "");
             await yieldToUI();
             XLSX.utils.book_append_sheet(
               wb,
               makeSummarySheet(src, title),
-              uniqueName("Summary by Vendor"),
+              un("Summary by Vendor"),
             );
-            setProgress(90, "Writing file…");
-          } else if (exportOpt === 2) {
-            XLSX.utils.book_append_sheet(
-              wb,
-              makeAllEntriesSheet(src, title),
-              uniqueName("All Entries"),
-            );
-            setProgress(20, "Building Summary sheet…");
+            setProgress(90, "Writing file…", "");
             await yieldToUI();
-            XLSX.utils.book_append_sheet(
+            doneProgress("✅ Ready! Downloading…");
+            await yieldToUI(1200);
+            XLSX.writeFile(
               wb,
-              makeSummarySheet(src, title),
-              uniqueName("Summary by Vendor"),
+              title.replace(/\s+/g, "_") +
+                "_" +
+                new Date().toISOString().slice(0, 10) +
+                ".xlsx",
             );
-            /* Vendor sheets — yield every 10 sheets so browser stays responsive */
-            for (var i = 0; i < groups.length; i++) {
-              XLSX.utils.book_append_sheet(
-                wb,
-                makeVendorSheet(groups[i].name, groups[i].items),
-                uniqueName(groups[i].name),
-              );
-              if (i % 10 === 9) {
-                var pct = 20 + Math.round((i / groups.length) * 70);
-                setProgress(
-                  pct,
-                  "Building vendor sheet " +
-                    (i + 1) +
-                    " of " +
-                    groups.length +
-                    "…",
-                );
-                await yieldToUI();
-              }
-            }
-            setProgress(92, "Writing file…");
+            await yieldToUI(400);
           } else {
-            /* Vendor only — yield every 10 */
-            for (var j = 0; j < groups.length; j++) {
-              XLSX.utils.book_append_sheet(
-                wb,
-                makeVendorSheet(groups[j].name, groups[j].items),
-                uniqueName(groups[j].name),
-              );
-              if (j % 10 === 9) {
-                var pct2 = 10 + Math.round((j / groups.length) * 80);
+            /* Split into batches */
+            var effective = splitSize >= 9999 ? groups.length : splitSize;
+            var batches = [];
+            for (var b = 0; b < groups.length; b += effective)
+              batches.push(groups.slice(b, b + effective));
+            var totalBatches = batches.length;
+            var totalGroups = groups.length;
+            var doneGroups = 0;
+
+            for (var bi = 0; bi < totalBatches; bi++) {
+              var batch = batches[bi];
+              var wb2 = XLSX.utils.book_new();
+              var un2 = makeNameReg();
+              var fileLabel =
+                totalBatches > 1
+                  ? " (Part " + (bi + 1) + " of " + totalBatches + ")"
+                  : "";
+
+              if (exportOpt === 2) {
                 setProgress(
-                  pct2,
-                  "Building vendor sheet " +
-                    (j + 1) +
-                    " of " +
-                    groups.length +
-                    "…",
+                  Math.round((doneGroups / totalGroups) * 80),
+                  "File " +
+                    (bi + 1) +
+                    "/" +
+                    totalBatches +
+                    ": building All Entries…",
+                  "",
                 );
                 await yieldToUI();
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeAllSheet(src, title + fileLabel),
+                  un2("All Entries"),
+                );
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeSummarySheet(src, title + fileLabel),
+                  un2("Summary by Vendor"),
+                );
+              }
+
+              for (var gi = 0; gi < batch.length; gi++) {
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeVendorSheet(batch[gi].name, batch[gi].items),
+                  un2(batch[gi].name),
+                );
+                doneGroups++;
+                if ((gi + 1) % 5 === 0 || gi === batch.length - 1) {
+                  var pct = Math.round((doneGroups / totalGroups) * 85);
+                  setProgress(
+                    pct,
+                    "Building vendor sheets…",
+                    "File " +
+                      (bi + 1) +
+                      "/" +
+                      totalBatches +
+                      " — Sheet " +
+                      (gi + 1) +
+                      " of " +
+                      batch.length +
+                      " — " +
+                      batch[gi].name.slice(0, 28),
+                  );
+                  await yieldToUI();
+                }
+              }
+
+              setProgress(
+                85 + Math.round(((bi + 1) / totalBatches) * 10),
+                "Saving file " + (bi + 1) + "/" + totalBatches + "…",
+                "",
+              );
+              await yieldToUI();
+              var fnum = totalBatches > 1 ? "_part" + (bi + 1) : "";
+              var fname2 =
+                title.replace(/\s+/g, "_") +
+                fnum +
+                "_" +
+                new Date().toISOString().slice(0, 10) +
+                ".xlsx";
+              doneProgress(
+                totalBatches > 1
+                  ? "✅ Downloading file " +
+                      (bi + 1) +
+                      " of " +
+                      totalBatches +
+                      "…"
+                  : "✅ Ready! Downloading…",
+              );
+              await yieldToUI(totalBatches > 1 ? 1000 : 1200);
+              XLSX.writeFile(wb2, fname2);
+              await yieldToUI(600);
+              /* reset spinner for next file */
+              if (bi < totalBatches - 1) {
+                document
+                  .getElementById("progressSpinner")
+                  .classList.remove("done");
+                document.getElementById("progressMainLabel").textContent =
+                  "Preparing next file…";
               }
             }
-            setProgress(92, "Writing file…");
           }
 
-          await yieldToUI();
-          setProgress(96, "Saving to disk…");
-
-          var filename =
-            title.replace(/\s+/g, "_") +
-            (searchQuery ? "_search_" + searchQuery.replace(/\s+/g, "_") : "") +
-            "_" +
-            new Date().toISOString().slice(0, 10) +
-            ".xlsx";
-
-          XLSX.writeFile(wb, filename);
-          setProgress(100, "Done!");
-
-          setTimeout(function () {
-            closeExportModal();
-            flashBar();
-            showToast(
-              "📊 Exported " +
-                src.length +
-                " entries across " +
-                wb.SheetNames.length +
-                " sheet" +
-                (wb.SheetNames.length === 1 ? "" : "s"),
-            );
-          }, 400);
+          exportRunning = false;
+          document.getElementById("exportModal").classList.add("hidden");
+          flashBar();
+          showToast(
+            "📊 Exported " +
+              src.length +
+              " entries across " +
+              groups.length +
+              " vendor" +
+              (groups.length === 1 ? "" : "s"),
+          );
         } catch (err) {
-          document.getElementById("exportProgress").classList.remove("show");
-          btn.textContent = "⬇ Download Excel";
-          btn.disabled = false;
+          exportRunning = false;
+          document.getElementById("progressWrap").classList.remove("show");
+          document
+            .getElementById("exportOptionsArea")
+            .classList.remove("locked");
+          document.getElementById("downloadBtn").disabled = false;
+          document.getElementById("cancelExportBtn").disabled = false;
           document.getElementById("errMsg").textContent =
             "Export failed: " + err.message;
           document.getElementById("errMsg").style.display = "block";
@@ -2545,16 +2755,9 @@
           lines.push(
             'Search: "' + searchQuery + '" — ' + src.length + " results",
           );
-        else if (dateFrom || dateTo)
-          lines.push(
-            "Date range: " +
-              isoToDisplay(dateFrom || "All") +
-              " → " +
-              isoToDisplay(dateTo || "All"),
-          );
         lines.push("");
-        lines.push("#\tName / Vendor\tAmount\tDate");
-        lines.push("─".repeat(56));
+        lines.push("#\tVendor\tRemark\tAmount\tDate");
+        lines.push("─".repeat(64));
         src.forEach(function (e, i) {
           lines.push(
             i +
@@ -2562,16 +2765,18 @@
               "\t" +
               e.name +
               "\t" +
+              (e.remark || "") +
+              "\t" +
               fmt(e.amount) +
               "\t" +
               isoToDisplay(e.date),
           );
         });
-        lines.push("─".repeat(56));
+        lines.push("─".repeat(64));
         var total = src.reduce(function (s, e) {
           return s + e.amount;
         }, 0);
-        lines.push("\tTotal (" + src.length + " entries)\t" + fmt(total));
+        lines.push("\tTotal\t\t" + fmt(total));
         navigator.clipboard
           .writeText(lines.join("\n"))
           .then(function () {
@@ -2616,8 +2821,6 @@
           badge.style.display = "none";
         }
       }
-
-      /* Paged fetch */
       function fetchAllEntries(sheetId) {
         return new Promise(function (resolve, reject) {
           var allRows = [],
@@ -2626,7 +2829,7 @@
             var url =
               "entries?sheet_id=eq." +
               sheetId +
-              "&select=id,name,amount,date&order=created_at.asc&limit=" +
+              "&select=id,name,remark,amount,date&order=created_at.asc&limit=" +
               PAGE_SIZE +
               "&offset=" +
               offset;
@@ -2652,7 +2855,7 @@
                 var tb = document.getElementById("tableBody");
                 if (tb)
                   tb.innerHTML =
-                    '<tr><td colspan="5"><div class="table-loading">⏳ Loading…<div class="loading-progress">' +
+                    '<tr><td colspan="6"><div class="table-loading">⏳ Loading…<div class="loading-progress">' +
                     allRows.length +
                     " loaded…</div></div></td></tr>";
                 var total = null;
@@ -2671,7 +2874,6 @@
           fetchPage();
         });
       }
-
       (function () {
         var d = new Date();
         document.getElementById("dateInput").value = d
@@ -2687,7 +2889,6 @@
           .replace(",", "<br>");
         loadSheets();
       })();
-
       function applyDateFilter() {
         dateFrom = document.getElementById("filterFrom").value;
         dateTo = document.getElementById("filterTo").value;
@@ -2752,7 +2953,6 @@
         updateStats();
         updateToolbarState();
       }
-
       function loadSheets() {
         sbFetch("sheets?select=id,title,updated_at&order=updated_at.desc")
           .then(function (r) {
@@ -2766,7 +2966,7 @@
           .catch(function () {
             setSyncStatus("error");
             document.getElementById("sheetsList").innerHTML =
-              '<div style="color:#f08080;font-size:13px;">⚠ Could not connect to Supabase</div>';
+              '<div style="color:#f08080;font-size:13px;">⚠ Could not connect</div>';
           });
       }
       function renderSheetsList() {
@@ -2832,9 +3032,11 @@
         document.getElementById("sheetTitle").value = title;
         document.getElementById("sheetTitle").removeAttribute("readonly");
         document.getElementById("titleSaveBtn").disabled = false;
-        ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
-          document.getElementById(x).disabled = false;
-        });
+        ["nameInput", "remarkInput", "amtInput", "dateInput"].forEach(
+          function (x) {
+            document.getElementById(x).disabled = false;
+          },
+        );
         document.getElementById("nameInput").placeholder = "e.g. AWS, FedEx…";
         document.getElementById("addBtn").disabled = false;
         renderSheetsList();
@@ -2919,9 +3121,11 @@
                 .getElementById("sheetTitle")
                 .setAttribute("readonly", "");
               document.getElementById("titleSaveBtn").disabled = true;
-              ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
-                document.getElementById(x).disabled = true;
-              });
+              ["nameInput", "remarkInput", "amtInput", "dateInput"].forEach(
+                function (x) {
+                  document.getElementById(x).disabled = true;
+                },
+              );
               document.getElementById("addBtn").disabled = true;
             }
             renderSheetsList();
@@ -2943,10 +3147,9 @@
         .addEventListener("keydown", function (e) {
           if (e.key === "Enter") confirmDelete();
         });
-
       function loadEntries(id) {
         document.getElementById("tableBody").innerHTML =
-          '<tr><td colspan="5"><div class="table-loading">⏳ Loading…<div class="loading-progress">Fetching…</div></div></td></tr>';
+          '<tr><td colspan="6"><div class="table-loading">⏳ Loading…<div class="loading-progress">Fetching…</div></div></td></tr>';
         setSyncStatus("syncing");
         fetchAllEntries(id)
           .then(function (all) {
@@ -2963,9 +3166,11 @@
       function addEntry() {
         if (!currentSheetId) return;
         var ni = document.getElementById("nameInput"),
+          ri = document.getElementById("remarkInput"),
           ai = document.getElementById("amtInput"),
           di = document.getElementById("dateInput");
         var name = ni.value.trim(),
+          remark = ri.value.trim(),
           amount = parseFloat(ai.value),
           date = di.value;
         if (!name || isReserved(name)) {
@@ -2983,6 +3188,7 @@
           body: JSON.stringify({
             sheet_id: currentSheetId,
             name: name,
+            remark: remark || null,
             amount: amount,
             date: date,
           }),
@@ -2994,6 +3200,7 @@
             var e = Array.isArray(d) ? d[0] : d;
             entries.push(e);
             ni.value = "";
+            ri.value = "";
             ai.value = "";
             di.value = new Date().toISOString().slice(0, 10);
             ni.focus();
@@ -3050,6 +3257,7 @@
         editIdx = idx;
         editEntryId = entries[idx].id;
         document.getElementById("editName").value = entries[idx].name;
+        document.getElementById("editRemark").value = entries[idx].remark || "";
         document.getElementById("editAmt").value = entries[idx].amount;
         document.getElementById("editDate").value = entries[idx].date || "";
         document.getElementById("editModal").classList.remove("hidden");
@@ -3065,17 +3273,24 @@
       function saveEdit() {
         if (editIdx < 0 || !editEntryId) return;
         var name = document.getElementById("editName").value.trim();
+        var remark = document.getElementById("editRemark").value.trim();
         var amount = parseFloat(document.getElementById("editAmt").value);
         var date = document.getElementById("editDate").value;
         if (!name || isNaN(amount) || amount <= 0 || isReserved(name)) return;
         setSyncStatus("syncing");
         sbFetch("entries?id=eq." + editEntryId, {
           method: "PATCH",
-          body: JSON.stringify({ name: name, amount: amount, date: date }),
+          body: JSON.stringify({
+            name: name,
+            remark: remark || null,
+            amount: amount,
+            date: date,
+          }),
         })
           .then(function () {
             entries[editIdx] = Object.assign(entries[editIdx], {
               name: name,
+              remark: remark || "",
               amount: amount,
               date: date,
             });
@@ -3098,6 +3313,11 @@
       document
         .getElementById("editName")
         .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") document.getElementById("editRemark").focus();
+        });
+      document
+        .getElementById("editRemark")
+        .addEventListener("keydown", function (e) {
           if (e.key === "Enter") document.getElementById("editAmt").focus();
         });
       document
@@ -3115,7 +3335,6 @@
         .addEventListener("keydown", function (e) {
           if (e.key === "Enter") createSheet();
         });
-
       function fmt(n) {
         return (
           "₹" +
@@ -3124,6 +3343,11 @@
             maximumFractionDigits: 2,
           })
         );
+      }
+      function isoToDisplay(iso) {
+        if (!iso) return "—";
+        var p = iso.split("-");
+        return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
       }
       function flashBar() {
         var b = document.getElementById("toastBar");
@@ -3186,7 +3410,6 @@
           ? "Visible / All"
           : "Entries";
       }
-
       function hideDropdown() {
         document.getElementById("acDropdown").style.display = "none";
         acIndex = -1;
@@ -3225,8 +3448,7 @@
         var last = getLastAmt(name);
         if (last) document.getElementById("amtInput").value = last;
         hideDropdown();
-        document.getElementById("amtInput").focus();
-        document.getElementById("amtInput").select();
+        document.getElementById("remarkInput").focus();
       }
       function highlightAcItem() {
         document.querySelectorAll(".ac-item").forEach(function (el, i) {
@@ -3275,7 +3497,7 @@
             return;
           }
         }
-        if (e.key === "Enter") document.getElementById("amtInput").focus();
+        if (e.key === "Enter") document.getElementById("remarkInput").focus();
       });
       nameInput.addEventListener("blur", function () {
         setTimeout(hideDropdown, 150);
@@ -3285,7 +3507,6 @@
         .addEventListener("keydown", function (e) {
           if (e.key === "Enter") addEntry();
         });
-
       function setView(v) {
         view = v;
         document
@@ -3327,19 +3548,19 @@
         if (!currentSheetId) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Create or select a sheet</div></div></td></tr>';
+            '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Create or select a sheet</div></div></td></tr>';
           return;
         }
         if (!entries.length) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet</div></div></td></tr>';
+            '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet</div></div></td></tr>';
           return;
         }
         if (!src.length) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">' +
+            '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">' +
             (searchQuery ? "🔍" : "📅") +
             '</div><div class="empty-txt">' +
             (searchQuery
@@ -3350,15 +3571,23 @@
         }
         if (searchQuery || view === "all") {
           head.innerHTML =
-            '<tr><th style="width:36px">#</th><th style="width:28%">Vendor</th><th>Amount</th><th>Date</th><th style="width:68px"></th></tr>';
+            '<tr><th style="width:36px">#</th><th>Vendor</th><th style="width:100px">Remark</th><th style="width:110px">Amount</th><th style="width:90px">Date</th><th style="width:68px"></th></tr>';
           tb.innerHTML = src
             .map(function (e, ri) {
               var i = entries.indexOf(e);
+              var rmk = e.remark
+                ? '<span class="remark-tag">' +
+                  highlight(e.remark, searchQuery) +
+                  "</span>"
+                : "";
               return (
                 '<tr class="data-row row-new"><td><span class="badge">' +
                 (ri + 1) +
                 '</span></td><td style="font-weight:600;color:#d4cfff;">' +
                 highlight(e.name, searchQuery) +
+                rmk +
+                '</td><td style="color:#7a74a8;font-size:12px;">' +
+                (e.remark ? highlight(e.remark, searchQuery) : "") +
                 '</td><td class="amt-cell">' +
                 fmt(e.amount) +
                 '</td><td class="date-cell">' +
@@ -3377,7 +3606,7 @@
         }
         var groups = getGroups(src);
         head.innerHTML =
-          '<tr><th style="width:34px"></th><th style="width:30%">Vendor</th><th>Total</th><th>Payments</th><th style="width:34px"></th></tr>';
+          '<tr><th style="width:34px"></th><th>Vendor</th><th>Total</th><th style="width:80px">Payments</th><th style="width:34px"></th></tr>';
         var html = "";
         groups.forEach(function (g) {
           var key = g.name.toLowerCase().trim();
@@ -3406,9 +3635,13 @@
             "</td><td></td></tr>";
           if (isOpen) {
             g.items.forEach(function (item) {
+              var rmkTag = item.remark
+                ? '<span class="remark-tag">' + item.remark + "</span>"
+                : "";
               html +=
-                '<tr class="data-row sub-row row-new"><td></td><td style="color:#4a4670;">↳ ' +
+                '<tr class="data-row sub-row row-new"><td></td><td style="color:#c8c4e8;">↳ ' +
                 isoToDisplay(item.date) +
+                rmkTag +
                 '</td><td class="sub-amt">' +
                 fmt(item.amount) +
                 '</td><td></td><td><div class="action-btns"><button class="mod-btn" onclick="event.stopPropagation();openEdit(' +
@@ -3426,7 +3659,7 @@
 
       function openImport() {
         if (!currentSheetId) {
-          alert("Please select a sheet first.");
+          alert("Select a sheet first.");
           return;
         }
         document.getElementById("importResult").textContent = "";
@@ -3455,10 +3688,12 @@
             var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
             var hRow = -1,
               nameCol = -1,
+              remarkCol = -1,
               amtCol = -1,
               dateCol = -1;
             for (var r = 0; r < Math.min(8, rows.length); r++) {
               nameCol = -1;
+              remarkCol = -1;
               amtCol = -1;
               dateCol = -1;
               for (var c = 0; c < rows[r].length; c++) {
@@ -3468,6 +3703,7 @@
                   cell.indexOf("vendor") !== -1
                 )
                   nameCol = c;
+                if (cell === "remark" || cell === "remarks") remarkCol = c;
                 if (cell.indexOf("amount") !== -1) amtCol = c;
                 if (cell.indexOf("date") !== -1) dateCol = c;
               }
@@ -3487,6 +3723,7 @@
               var n = (row[nameCol] + "").trim();
               var a = parseFloat(row[amtCol]);
               if (!n || isNaN(a) || a <= 0 || isReserved(n)) continue;
+              var remark = remarkCol !== -1 ? (row[remarkCol] + "").trim() : "";
               var d = "";
               if (dateCol !== -1 && row[dateCol]) {
                 var raw = (row[dateCol] + "").trim();
@@ -3509,6 +3746,7 @@
               toInsert.push({
                 sheet_id: currentSheetId,
                 name: n,
+                remark: remark || null,
                 amount: a,
                 date: d,
               });
@@ -3562,7 +3800,7 @@
 
       function openPaytm() {
         if (!currentSheetId) {
-          alert("Please select a sheet first.");
+          alert("Select a sheet first.");
           return;
         }
         resetPaytmStep();
@@ -3692,7 +3930,6 @@
             }
             var hdrs = rows[hRow] || [];
             var cDate = findColIdx(hdrs, ["date"]),
-              cTime = findColIdx(hdrs, ["time"]),
               cDesc = findColIdx(hdrs, [
                 "transaction details",
                 "description",
@@ -3706,14 +3943,14 @@
               "account no",
             ]);
             var cAmt = findColIdx(hdrs, ["amount", "debit", "credit", "amt"]);
-            var cUpi = findColIdx(hdrs, [
-              "upi ref",
-              "ref no",
-              "rrn",
-              "transaction id",
+            var cRemark = findColIdx(hdrs, [
+              "remarks",
+              "remark",
+              "note",
+              "tags",
+              "tag",
+              "comment",
             ]);
-            var cRemark = findColIdx(hdrs, ["remarks", "remark", "note"]);
-            var cTags = findColIdx(hdrs, ["tags", "tag", "category"]);
             if (cAmt === -1) {
               res.className = "import-result err";
               res.textContent = "⚠ Could not find Amount column.";
@@ -3728,19 +3965,18 @@
               var desc =
                 cDesc !== -1 ? (row[cDesc] + "").trim() : "Transaction " + i;
               if (!desc) desc = "Transaction " + i;
+              /* Remark is kept SEPARATE — not appended to name */
+              var remark = cRemark !== -1 ? (row[cRemark] + "").trim() : "";
               paytmRows.push({
                 date:
                   cDate !== -1
                     ? parsePaytmDate(row[cDate])
                     : new Date().toISOString().slice(0, 10),
-                time: cTime !== -1 ? (row[cTime] + "").trim() : "",
                 desc: desc,
                 other: cOther !== -1 ? (row[cOther] + "").trim() : "",
                 amount: parsed.value,
                 debit: parsed.debit,
-                upiRef: cUpi !== -1 ? (row[cUpi] + "").trim() : "",
-                remarks: cRemark !== -1 ? (row[cRemark] + "").trim() : "",
-                tags: cTags !== -1 ? (row[cTags] + "").trim() : "",
+                remark: remark,
                 selected: true,
               });
             }
@@ -3790,12 +4026,13 @@
         tb.innerHTML = vis
           .map(function (r) {
             var oi = paytmRows.indexOf(r);
-            var desc = r.desc.length > 32 ? r.desc.slice(0, 32) + "…" : r.desc;
-            var other =
-              r.other.length > 18 ? r.other.slice(0, 18) + "…" : r.other;
+            var desc = r.desc.length > 36 ? r.desc.slice(0, 36) + "…" : r.desc;
             var tt = r.debit
               ? '<span style="color:#f08080;font-size:11px;font-weight:600;">↑ Debit</span>'
               : '<span style="color:#4ecba0;font-size:11px;font-weight:600;">↓ Credit</span>';
+            var rmk = r.remark
+              ? '<span class="remark-tag">' + r.remark.slice(0, 18) + "</span>"
+              : '<span style="color:#3a3760;">—</span>';
             return (
               '<tr><td class="check-col"><input type="checkbox" ' +
               (r.selected ? "checked" : "") +
@@ -3807,10 +4044,6 @@
               r.desc +
               '">' +
               desc +
-              '</td><td title="' +
-              r.other +
-              '">' +
-              other +
               '</td><td style="font-weight:600;' +
               (r.debit ? "color:#f08080" : "color:#4ecba0") +
               ';">' +
@@ -3818,7 +4051,7 @@
               "</td><td>" +
               tt +
               "</td><td>" +
-              r.remarks.slice(0, 18) +
+              rmk +
               "</td></tr>"
             );
           })
@@ -3880,13 +4113,12 @@
           alert("Select at least one.");
           return;
         }
+        /* NAME = transaction description only; REMARK = remark field separately */
         var toInsert = toImport.map(function (r) {
-          var name = r.desc;
-          if (r.remarks && r.remarks !== r.desc && r.remarks.length > 0)
-            name = r.desc + " · " + r.remarks;
           return {
             sheet_id: currentSheetId,
-            name: name.slice(0, 120),
+            name: r.desc.slice(0, 120),
+            remark: r.remark || null,
             amount: r.amount,
             date: r.date,
           };
