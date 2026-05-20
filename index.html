@@ -193,7 +193,7 @@
         align-items: center;
         gap: 8px;
         transition: all 0.2s;
-        max-width: 200px;
+        max-width: 220px;
       }
       .sheet-chip:hover {
         border-color: #4c3fce;
@@ -211,11 +211,12 @@
       }
       .sheet-chip-del {
         color: #4a4670;
-        font-size: 12px;
+        font-size: 13px;
         line-height: 1;
-        padding: 2px;
+        padding: 2px 4px;
         border-radius: 3px;
         flex-shrink: 0;
+        transition: all 0.15s;
       }
       .sheet-chip-del:hover {
         color: #f08080;
@@ -345,15 +346,12 @@
       .stat-amber .stat-val {
         color: #f5cc7a;
       }
-
-      /* ── Date Range Filter Bar ── */
       .filter-bar {
         background: #1a1830;
         border: 1px solid #2e2a50;
         border-radius: 14px;
         padding: 1rem 1.4rem;
         margin-bottom: 1.25rem;
-        animation: fadeUp 0.3s ease both;
       }
       .filter-bar-top {
         display: flex;
@@ -368,9 +366,6 @@
         text-transform: uppercase;
         color: #7a74a8;
         white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 6px;
       }
       .filter-inputs {
         display: flex;
@@ -398,9 +393,7 @@
         color: #e8e6f0;
         font-size: 13px;
         font-family: "Inter", sans-serif;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
+        transition: border-color 0.2s;
       }
       .filter-date:focus {
         outline: none;
@@ -414,11 +407,9 @@
       .filter-sep {
         color: #3d3860;
         font-size: 18px;
-        font-weight: 300;
       }
       .filter-actions {
         display: flex;
-        align-items: center;
         gap: 6px;
         margin-left: auto;
       }
@@ -433,9 +424,6 @@
         font-weight: 600;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
         transition: all 0.2s;
         white-space: nowrap;
       }
@@ -454,7 +442,6 @@
         font-family: "Inter", sans-serif;
         cursor: pointer;
         transition: all 0.2s;
-        white-space: nowrap;
       }
       .btn-clear-filter:hover {
         color: #f08080;
@@ -489,28 +476,6 @@
         border-color: #6c3fc7;
         color: #a99cf7;
       }
-      .filter-active-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        background: rgba(76, 63, 206, 0.2);
-        border: 1px solid #4c3fce;
-        color: #a99cf7;
-        font-size: 11px;
-        font-weight: 500;
-        padding: 3px 10px;
-        border-radius: 99px;
-        margin-left: 8px;
-      }
-      .filter-active-badge .x {
-        cursor: pointer;
-        opacity: 0.7;
-        font-size: 13px;
-      }
-      .filter-active-badge .x:hover {
-        opacity: 1;
-      }
-
       .form-card {
         background: #1a1830;
         border: 1px solid #2e2a50;
@@ -637,12 +602,18 @@
       .btn-add:active {
         transform: scale(0.97);
       }
-      .controls-row {
+
+      /* ── TOOLBAR ── */
+      .toolbar {
+        margin-bottom: 1rem;
+      }
+
+      /* Row 1: view toggle + search bar always visible */
+      .toolbar-row1 {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 1rem;
+        gap: 12px;
+        margin-bottom: 10px;
         flex-wrap: wrap;
       }
       .view-toggle {
@@ -651,15 +622,16 @@
         border-radius: 12px;
         padding: 4px;
         border: 1px solid #2e2a50;
+        flex-shrink: 0;
       }
       .tog-btn {
-        height: 32px;
-        padding: 0 14px;
+        height: 34px;
+        padding: 0 18px;
         border-radius: 8px;
         border: none;
         background: none;
         color: #7a74a8;
-        font-size: 12px;
+        font-size: 12.5px;
         font-weight: 500;
         font-family: "Inter", sans-serif;
         cursor: pointer;
@@ -677,18 +649,30 @@
       .tog-btn:not(.active):hover {
         color: #c8c4e8;
       }
-      .search-wrap {
+
+      /* Always-visible search bar */
+      .search-box {
         position: relative;
         flex: 1;
-        max-width: 240px;
+        min-width: 180px;
+        max-width: 320px;
       }
-      .search-input {
+      .search-box-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #4a4670;
+        pointer-events: none;
+      }
+      .search-box-input {
         width: 100%;
-        height: 36px;
-        padding: 0 32px 0 36px;
+        height: 34px;
+        padding: 0 34px 0 36px;
         border-radius: 10px;
         border: 1px solid #2e2a50;
-        background: #1a1830;
+        background: #12101f;
         color: #e8e6f0;
         font-size: 13px;
         font-family: "Inter", sans-serif;
@@ -696,38 +680,100 @@
           border-color 0.2s,
           box-shadow 0.2s;
       }
-      .search-input::placeholder {
+      .search-box-input::placeholder {
         color: #3d3860;
       }
-      .search-input:focus {
+      .search-box-input:focus {
         outline: none;
         border-color: #6c3fc7;
         box-shadow: 0 0 0 3px rgba(108, 63, 199, 0.2);
       }
-      .search-icon {
-        position: absolute;
-        left: 11px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 14px;
-        color: #4a4670;
-        pointer-events: none;
-      }
-      .search-clear {
+      .search-box-clear {
         position: absolute;
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: #4a4670;
+        color: #5a5680;
         cursor: pointer;
         font-size: 13px;
+        line-height: 1;
         display: none;
+        padding: 2px;
       }
-      .search-clear.visible {
+      .search-box-clear.visible {
         display: block;
       }
+      .search-box-clear:hover {
+        color: #a99cf7;
+      }
+
+      /* Row 2: action buttons with generous spacing */
+      .toolbar-row2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn-action {
+        height: 38px;
+        padding: 0 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .btn-action:active {
+        transform: scale(0.97);
+      }
+      .btn-clear-entries {
+        border: 1px solid #2e2a50;
+        background: none;
+        color: #5a5680;
+      }
+      .btn-clear-entries:hover {
+        background: rgba(220, 60, 60, 0.1);
+        color: #f08080;
+        border-color: rgba(220, 60, 60, 0.3);
+      }
+      .btn-import-xls {
+        border: 1px solid #4c3fce;
+        background: rgba(76, 63, 206, 0.1);
+        color: #a99cf7;
+      }
+      .btn-import-xls:hover {
+        background: rgba(76, 63, 206, 0.22);
+        color: #d4cfff;
+        transform: translateY(-1px);
+      }
+      .btn-import-paytm {
+        border: 1px solid #00b9f2;
+        background: rgba(0, 185, 242, 0.08);
+        color: #5dd6f8;
+      }
+      .btn-import-paytm:hover {
+        background: rgba(0, 185, 242, 0.18);
+        color: #a8ecff;
+        transform: translateY(-1px);
+      }
+      .btn-export-xls {
+        border: none;
+        background: linear-gradient(135deg, #0d7a5c, #0fa876);
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(13, 168, 118, 0.3);
+      }
+      .btn-export-xls:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 16px rgba(13, 168, 118, 0.45);
+      }
+
       .table-card {
         background: #1a1830;
         border: 1px solid #2e2a50;
@@ -891,100 +937,10 @@
         color: #4a4670;
         font-size: 13px;
       }
-      .footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .footer-left {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .btn-export {
-        height: 42px;
-        padding: 0 20px;
-        border-radius: 10px;
-        border: none;
-        background: linear-gradient(135deg, #0d7a5c, #0fa876);
-        color: #fff;
-        font-size: 13.5px;
-        font-weight: 600;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 14px rgba(13, 168, 118, 0.35);
-        transition: all 0.2s;
-      }
-      .btn-export:hover {
-        transform: translateY(-1px);
-      }
-      .btn-import {
-        height: 42px;
-        padding: 0 18px;
-        border-radius: 10px;
-        border: 1px solid #4c3fce;
-        background: rgba(76, 63, 206, 0.1);
-        color: #a99cf7;
-        font-size: 13.5px;
-        font-weight: 600;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-      }
-      .btn-import:hover {
-        background: rgba(76, 63, 206, 0.2);
-        color: #d4cfff;
-        transform: translateY(-1px);
-      }
-      .btn-paytm {
-        height: 42px;
-        padding: 0 18px;
-        border-radius: 10px;
-        border: 1px solid #00b9f2;
-        background: rgba(0, 185, 242, 0.08);
-        color: #5dd6f8;
-        font-size: 13.5px;
-        font-weight: 600;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-      }
-      .btn-paytm:hover {
-        background: rgba(0, 185, 242, 0.15);
-        color: #a8ecff;
-        transform: translateY(-1px);
-      }
-      .btn-clear {
-        height: 42px;
-        padding: 0 16px;
-        border-radius: 10px;
-        border: 1px solid #2e2a50;
-        background: none;
-        color: #5a5680;
-        font-size: 13px;
-        font-weight: 500;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
-      }
-      .btn-clear:hover {
-        background: rgba(220, 60, 60, 0.1);
-        color: #f08080;
-        border-color: rgba(220, 60, 60, 0.3);
+      .loading-progress {
+        font-size: 11px;
+        color: #534ab7;
+        margin-top: 4px;
       }
       .toast-bar {
         position: absolute;
@@ -1128,6 +1084,22 @@
         transition: all 0.2s;
       }
       .btn-save:hover {
+        transform: translateY(-1px);
+      }
+      .btn-delete-confirm {
+        height: 40px;
+        padding: 0 22px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #8b1a1a, #c0392b);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-delete-confirm:hover {
         transform: translateY(-1px);
       }
       .btn-save-paytm {
@@ -1358,6 +1330,75 @@
         font-weight: 600;
         margin-left: 6px;
       }
+      .delete-warning {
+        background: rgba(180, 30, 30, 0.12);
+        border: 1px solid rgba(192, 57, 43, 0.35);
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .delete-warning-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .delete-warning-text {
+        font-size: 12.5px;
+        color: #e8a0a0;
+        line-height: 1.6;
+      }
+      .delete-warning-text strong {
+        color: #f08080;
+      }
+      .pw-field {
+        position: relative;
+      }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #5a5680;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 2px;
+        line-height: 1;
+      }
+      .pw-toggle:hover {
+        color: #a99cf7;
+      }
+      .pw-error {
+        font-size: 12px;
+        color: #f08080;
+        margin-top: 6px;
+        display: none;
+      }
+      .shake {
+        animation: shake 0.4s ease both;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-8px);
+        }
+        40% {
+          transform: translateX(8px);
+        }
+        60% {
+          transform: translateX(-5px);
+        }
+        80% {
+          transform: translateX(5px);
+        }
+      }
     </style>
 
     <div class="wrap">
@@ -1413,7 +1454,6 @@
         </button>
       </div>
 
-      <!-- Stats — show filtered totals when filter active -->
       <div class="stats">
         <div class="stat stat-purple">
           <div class="stat-label">Vendors</div>
@@ -1429,19 +1469,18 @@
         </div>
       </div>
 
-      <!-- Date Range Filter Bar -->
-      <div class="filter-bar" id="filterBar">
+      <div class="filter-bar">
         <div class="filter-bar-top">
           <div class="filter-bar-label">📅 Date Range</div>
           <div class="filter-inputs">
             <div class="filter-date-wrap">
-              <span class="filter-date-lbl">From</span>
-              <input type="date" class="filter-date" id="filterFrom" />
+              <span class="filter-date-lbl">From</span
+              ><input type="date" class="filter-date" id="filterFrom" />
             </div>
             <span class="filter-sep">→</span>
             <div class="filter-date-wrap">
-              <span class="filter-date-lbl">To</span>
-              <input type="date" class="filter-date" id="filterTo" />
+              <span class="filter-date-lbl">To</span
+              ><input type="date" class="filter-date" id="filterTo" />
             </div>
             <div class="filter-actions">
               <button class="btn-apply-filter" onclick="applyDateFilter()">
@@ -1549,33 +1588,54 @@
         </div>
       </div>
 
-      <div class="controls-row">
-        <div class="view-toggle">
-          <button
-            class="tog-btn active"
-            id="btnGrouped"
-            onclick="setView('grouped')"
-          >
-            ⊞ Grouped
-          </button>
-          <button class="tog-btn" id="btnAll" onclick="setView('all')">
-            ≡ All entries
-          </button>
-          <button class="tog-btn" id="btnSearch" onclick="setView('search')">
-            🔍 Search
-          </button>
+      <!-- ── TOOLBAR: 2 rows — clean & breathable ── -->
+      <div class="toolbar">
+        <!-- Row 1: view toggle + always-visible search -->
+        <div class="toolbar-row1">
+          <div class="view-toggle">
+            <button
+              class="tog-btn active"
+              id="btnGrouped"
+              onclick="setView('grouped')"
+            >
+              ⊞ Grouped
+            </button>
+            <button class="tog-btn" id="btnAll" onclick="setView('all')">
+              ≡ All entries
+            </button>
+          </div>
+          <!-- Search bar — always present, no click-to-reveal -->
+          <div class="search-box">
+            <span class="search-box-icon">🔍</span>
+            <input
+              class="search-box-input"
+              id="searchInput"
+              type="text"
+              placeholder="Search vendor, amount, date…"
+              autocomplete="off"
+            />
+            <button
+              class="search-box-clear"
+              id="searchClear"
+              onclick="clearSearch()"
+            >
+              ✕
+            </button>
+          </div>
         </div>
-        <div class="search-wrap" id="searchWrap" style="display: none">
-          <span class="search-icon">🔍</span>
-          <input
-            class="search-input"
-            id="searchInput"
-            type="text"
-            placeholder="Search…"
-            autocomplete="off"
-          />
-          <button class="search-clear" id="searchClear" onclick="clearSearch()">
-            ✕
+        <!-- Row 2: action buttons with breathing room -->
+        <div class="toolbar-row2">
+          <button class="btn-action btn-clear-entries" onclick="clearAll()">
+            🗑 Clear entries
+          </button>
+          <button class="btn-action btn-import-xls" onclick="openImport()">
+            📥 Import from Excel
+          </button>
+          <button class="btn-action btn-import-paytm" onclick="openPaytm()">
+            🔵 Import Paytm
+          </button>
+          <button class="btn-action btn-export-xls" onclick="exportExcel()">
+            📊 Export to Excel
           </button>
         </div>
       </div>
@@ -1586,23 +1646,6 @@
           <tbody id="tableBody"></tbody>
         </table>
         <div class="toast-bar" id="toastBar"></div>
-      </div>
-
-      <div class="footer">
-        <div class="footer-left">
-          <button class="btn-clear" onclick="clearAll()">
-            🗑 Clear entries
-          </button>
-          <button class="btn-import" onclick="openImport()">
-            📥 Import from Excel
-          </button>
-          <button class="btn-paytm" onclick="openPaytm()">
-            🔵 Import Paytm Excel
-          </button>
-        </div>
-        <button class="btn-export" onclick="exportExcel()">
-          📊 Export to Excel
-        </button>
       </div>
       <p class="err-msg" id="errMsg"></p>
     </div>
@@ -1627,6 +1670,52 @@
         <div class="modal-actions">
           <button class="btn-cancel" onclick="closeNewSheet()">Cancel</button
           ><button class="btn-save" onclick="createSheet()">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔐 Delete Modal -->
+    <div class="modal-overlay hidden" id="deleteModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div
+            class="modal-title-icon"
+            style="background: rgba(180, 30, 30, 0.2)"
+          >
+            🔐
+          </div>
+          Admin password required
+        </div>
+        <div class="delete-warning">
+          <div class="delete-warning-icon">⚠️</div>
+          <div class="delete-warning-text">
+            You are about to delete
+            <strong id="deleteSheetName">"Sheet"</strong> and all its entries.
+            This is <strong>permanent and cannot be undone</strong>.
+          </div>
+        </div>
+        <div class="modal-field">
+          <label>Enter admin password</label>
+          <div class="pw-field">
+            <input
+              id="deletePassword"
+              type="password"
+              placeholder="Enter password…"
+              autocomplete="off"
+            />
+            <button class="pw-toggle" onclick="togglePwVisibility()">👁</button>
+          </div>
+          <div class="pw-error" id="pwError">
+            ❌ Incorrect password. Try again.
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeDeleteModal()">
+            Cancel
+          </button>
+          <button class="btn-delete-confirm" onclick="confirmDelete()">
+            🗑 Delete Sheet
+          </button>
         </div>
       </div>
     </div>
@@ -1656,7 +1745,7 @@
       </div>
     </div>
 
-    <!-- Standard Import Modal -->
+    <!-- Standard Import -->
     <div class="modal-overlay hidden" id="importModal">
       <div class="modal">
         <div class="modal-title">
@@ -1664,7 +1753,7 @@
           Import from Excel
         </div>
         <p class="import-info">
-          Upload a .xlsx file exported from this tracker.<br />Columns needed:
+          Upload a .xlsx file exported from this tracker.<br />Columns:
           <code>Name / Vendor</code>, <code>Amount (INR)</code>,
           <code>Date Added</code>
         </p>
@@ -1688,7 +1777,7 @@
       </div>
     </div>
 
-    <!-- Paytm Import Modal -->
+    <!-- Paytm Import -->
     <div class="modal-overlay hidden" id="paytmModal">
       <div class="modal wide">
         <div class="modal-title">
@@ -1702,12 +1791,10 @@
         </div>
         <div id="paytmStep1">
           <p class="import-info">
-            Upload your Paytm transaction Excel/CSV statement.<br />
-            Supports: <code>Date</code> <code>Time</code>
-            <code>Transaction Details</code>
+            Upload your Paytm transaction Excel/CSV.<br />Supports:
+            <code>Date</code> <code>Time</code> <code>Transaction Details</code>
             <code>Other Transaction Details</code> <code>Amount</code>
             <code>UPI Ref No.</code> <code>Remarks</code> <code>Tags</code>
-            <code>Comment</code>
           </p>
           <div
             class="import-zone paytm-zone"
@@ -1794,6 +1881,9 @@
       var SUPABASE_URL = "https://nswekmxsotaehmjspfjr.supabase.co";
       var SUPABASE_KEY =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zd2VrbXhzb3RhZWhtanNwZmpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NjU2NTgsImV4cCI6MjA5NDQ0MTY1OH0.R1YOyTWiYEPc_LkqCaKwdpqAb5xjt6PUggnvFbx0jso";
+      var PAGE_SIZE = 1000;
+      var ADMIN_HASH =
+        "6179443c3781d86666106ea5847fc4e06b4a98a336d28635eaee64ed031d4fc5";
 
       var entries = [],
         sheets = [],
@@ -1807,8 +1897,8 @@
       var paytmRows = [],
         paytmFilter = "all";
       var dateFrom = "",
-        dateTo = "",
-        activePreset = "";
+        dateTo = "";
+      var pendingDeleteId = null;
       var RESERVED = ["grand total", "total", "subtotal", "summary"];
       function isReserved(n) {
         return RESERVED.indexOf(n.toLowerCase().trim()) !== -1;
@@ -1840,6 +1930,151 @@
           s === "ok" ? "Synced" : s === "syncing" ? "Saving…" : "Error";
       }
 
+      async function sha256(str) {
+        var buf = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(str),
+        );
+        return Array.from(new Uint8Array(buf))
+          .map(function (b) {
+            return b.toString(16).padStart(2, "0");
+          })
+          .join("");
+      }
+
+      function deleteSheet(id) {
+        var sheet = sheets.find(function (s) {
+          return s.id === id;
+        });
+        pendingDeleteId = id;
+        document.getElementById("deleteSheetName").textContent =
+          '"' + (sheet ? sheet.title : "this sheet") + '"';
+        document.getElementById("deletePassword").value = "";
+        document.getElementById("pwError").style.display = "none";
+        document.getElementById("deleteModal").classList.remove("hidden");
+        setTimeout(function () {
+          document.getElementById("deletePassword").focus();
+        }, 120);
+      }
+      function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.add("hidden");
+        document.getElementById("deletePassword").value = "";
+        document.getElementById("pwError").style.display = "none";
+        pendingDeleteId = null;
+      }
+      function togglePwVisibility() {
+        var inp = document.getElementById("deletePassword");
+        inp.type = inp.type === "password" ? "text" : "password";
+      }
+      async function confirmDelete() {
+        var pw = document.getElementById("deletePassword").value;
+        var hash = await sha256(pw);
+        if (hash !== ADMIN_HASH) {
+          var inp = document.getElementById("deletePassword");
+          inp.classList.add("shake");
+          setTimeout(function () {
+            inp.classList.remove("shake");
+          }, 400);
+          document.getElementById("pwError").style.display = "block";
+          inp.value = "";
+          inp.focus();
+          return;
+        }
+        var id = pendingDeleteId;
+        closeDeleteModal();
+        setSyncStatus("syncing");
+        sbFetch("sheets?id=eq." + id, { method: "DELETE" })
+          .then(function () {
+            sheets = sheets.filter(function (s) {
+              return s.id !== id;
+            });
+            if (currentSheetId === id) {
+              currentSheetId = null;
+              entries = [];
+              document.getElementById("sheetTitle").value = "";
+              document
+                .getElementById("sheetTitle")
+                .setAttribute("readonly", "");
+              document.getElementById("titleSaveBtn").disabled = true;
+              ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
+                document.getElementById(x).disabled = true;
+              });
+              document.getElementById("addBtn").disabled = true;
+            }
+            renderSheetsList();
+            updateStats();
+            renderTable();
+            setSyncStatus("ok");
+          })
+          .catch(function () {
+            setSyncStatus("error");
+          });
+      }
+      document
+        .getElementById("deleteModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeDeleteModal();
+        });
+      document
+        .getElementById("deletePassword")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") confirmDelete();
+        });
+
+      function fetchAllEntries(sheetId) {
+        return new Promise(function (resolve, reject) {
+          var allRows = [],
+            offset = 0;
+          function fetchPage() {
+            var url =
+              "entries?sheet_id=eq." +
+              sheetId +
+              "&select=id,name,amount,date&order=created_at.asc&limit=" +
+              PAGE_SIZE +
+              "&offset=" +
+              offset;
+            fetch(SUPABASE_URL + "/rest/v1/" + url, {
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: "Bearer " + SUPABASE_KEY,
+                "Content-Type": "application/json",
+                Range: offset + "-" + (offset + PAGE_SIZE - 1),
+                "Range-Unit": "items",
+                Prefer: "count=exact",
+              },
+            })
+              .then(function (r) {
+                var cr = r.headers.get("Content-Range") || "";
+                return r.json().then(function (d) {
+                  return { data: d, cr: cr };
+                });
+              })
+              .then(function (res) {
+                var page = Array.isArray(res.data) ? res.data : [];
+                allRows = allRows.concat(page);
+                var tb = document.getElementById("tableBody");
+                if (tb)
+                  tb.innerHTML =
+                    '<tr><td colspan="5"><div class="table-loading">⏳ Loading…<div class="loading-progress">' +
+                    allRows.length +
+                    " loaded…</div></div></td></tr>";
+                var total = null;
+                var m = res.cr.match(/\/(\d+)$/);
+                if (m) total = parseInt(m[1]);
+                if (
+                  page.length === PAGE_SIZE &&
+                  (total === null ? true : allRows.length < total)
+                ) {
+                  offset += PAGE_SIZE;
+                  fetchPage();
+                } else resolve(allRows);
+              })
+              .catch(reject);
+          }
+          fetchPage();
+        });
+      }
+
       (function () {
         var d = new Date();
         document.getElementById("dateInput").value = d
@@ -1856,33 +2091,27 @@
         loadSheets();
       })();
 
-      /* ── Date filter helpers ── */
       function getFilteredEntries() {
         if (!dateFrom && !dateTo) return entries;
         return entries.filter(function (e) {
           var d = e.date || "";
-          if (!d) return true;
           if (dateFrom && d < dateFrom) return false;
           if (dateTo && d > dateTo) return false;
           return true;
         });
       }
-
       function applyDateFilter() {
         dateFrom = document.getElementById("filterFrom").value;
         dateTo = document.getElementById("filterTo").value;
-        activePreset = "";
         document.querySelectorAll(".preset-btn").forEach(function (b) {
           b.classList.remove("active");
         });
         renderTable();
         updateStats();
       }
-
       function clearDateFilter() {
         dateFrom = "";
         dateTo = "";
-        activePreset = "";
         document.getElementById("filterFrom").value = "";
         document.getElementById("filterTo").value = "";
         document.querySelectorAll(".preset-btn").forEach(function (b) {
@@ -1891,19 +2120,16 @@
         renderTable();
         updateStats();
       }
-
       function applyPreset(p) {
-        var now = new Date();
-        var from,
-          to = now.toISOString().slice(0, 10);
+        var now = new Date(),
+          to = now.toISOString().slice(0, 10),
+          from;
         if (p === "today") {
           from = to;
         } else if (p === "week") {
-          var day = now.getDay();
-          var diff = now.getDate() - day + (day === 0 ? -6 : 1);
-          from = new Date(now.setDate(diff)).toISOString().slice(0, 10);
-          now = new Date();
-          to = now.toISOString().slice(0, 10);
+          var day = now.getDay(),
+            diff = now.getDate() - day + (day === 0 ? -6 : 1);
+          from = new Date(new Date().setDate(diff)).toISOString().slice(0, 10);
         } else if (p === "month") {
           from =
             now.getFullYear() +
@@ -1915,9 +2141,9 @@
           d30.setDate(d30.getDate() - 30);
           from = d30.toISOString().slice(0, 10);
         } else if (p === "last3m") {
-          var d3m = new Date();
-          d3m.setMonth(d3m.getMonth() - 3);
-          from = d3m.toISOString().slice(0, 10);
+          var d3 = new Date();
+          d3.setMonth(d3.getMonth() - 3);
+          from = d3.toISOString().slice(0, 10);
         } else if (p === "year") {
           from = now.getFullYear() + "-01-01";
         }
@@ -1925,7 +2151,6 @@
         dateTo = to;
         document.getElementById("filterFrom").value = from;
         document.getElementById("filterTo").value = to;
-        activePreset = p;
         document.querySelectorAll(".preset-btn").forEach(function (b) {
           b.classList.remove("active");
         });
@@ -1937,7 +2162,6 @@
         updateStats();
       }
 
-      /* ── Sheets ── */
       function loadSheets() {
         sbFetch("sheets?select=id,title,updated_at&order=updated_at.desc")
           .then(function (r) {
@@ -1976,7 +2200,7 @@
               s.title +
               '</span><span class="sheet-chip-del" onclick="event.stopPropagation();deleteSheet(\'' +
               s.id +
-              "')\">✕</span></div>"
+              '\')" title="Delete (admin only)">🔐</span></div>'
             );
           })
           .join("");
@@ -2051,49 +2275,13 @@
             setSyncStatus("error");
           });
       }
-      function deleteSheet(id) {
-        if (!confirm("Delete this sheet and all entries?")) return;
-        setSyncStatus("syncing");
-        sbFetch("sheets?id=eq." + id, { method: "DELETE" })
-          .then(function () {
-            sheets = sheets.filter(function (s) {
-              return s.id !== id;
-            });
-            if (currentSheetId === id) {
-              currentSheetId = null;
-              entries = [];
-              document.getElementById("sheetTitle").value = "";
-              document
-                .getElementById("sheetTitle")
-                .setAttribute("readonly", "");
-              document.getElementById("titleSaveBtn").disabled = true;
-              ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
-                document.getElementById(x).disabled = true;
-              });
-              document.getElementById("addBtn").disabled = true;
-            }
-            renderSheetsList();
-            updateStats();
-            renderTable();
-            setSyncStatus("ok");
-          })
-          .catch(function () {
-            setSyncStatus("error");
-          });
-      }
       function loadEntries(id) {
         document.getElementById("tableBody").innerHTML =
-          '<tr><td colspan="5"><div class="table-loading">⏳ Loading…</div></td></tr>';
-        sbFetch(
-          "entries?sheet_id=eq." +
-            id +
-            "&select=id,name,amount,date&order=created_at.asc",
-        )
-          .then(function (r) {
-            return r.json();
-          })
-          .then(function (d) {
-            entries = Array.isArray(d) ? d : [];
+          '<tr><td colspan="5"><div class="table-loading">⏳ Loading…<div class="loading-progress">Fetching…</div></div></td></tr>';
+        setSyncStatus("syncing");
+        fetchAllEntries(id)
+          .then(function (all) {
+            entries = all;
             renderTable();
             updateStats();
             setSyncStatus("ok");
@@ -2258,7 +2446,6 @@
           if (e.key === "Enter") createSheet();
         });
 
-      /* ── Helpers ── */
       function fmt(n) {
         return (
           "₹" +
@@ -2306,10 +2493,9 @@
         });
         return names;
       }
-
       function getGroups(src) {
         var map = {};
-        (src || entries).forEach(function (e, i) {
+        (src || entries).forEach(function (e) {
           var key = e.name.toLowerCase().trim();
           if (!map[key]) map[key] = { name: e.name, total: 0, items: [] };
           map[key].total += e.amount;
@@ -2333,29 +2519,27 @@
         }
         return null;
       }
-
       function updateStats() {
         var filtered = getFilteredEntries();
         var tot = filtered.reduce(function (s, e) {
           return s + e.amount;
         }, 0);
-        var isFiltered = dateFrom || dateTo;
+        var isF = dateFrom || dateTo;
         document.getElementById("statCount").textContent =
           getGroups(filtered).length;
         document.getElementById("statTotal").textContent = filtered.length
           ? fmt(tot)
           : "₹0";
         document.getElementById("statEntries").textContent =
-          filtered.length + (isFiltered ? " / " + entries.length : "");
-        document.getElementById("totalLabel").textContent = isFiltered
+          filtered.length + (isF ? " / " + entries.length : "");
+        document.getElementById("totalLabel").textContent = isF
           ? "Filtered Total"
           : "Total";
-        document.getElementById("entriesLabel").textContent = isFiltered
+        document.getElementById("entriesLabel").textContent = isF
           ? "Filtered / All"
           : "Entries";
       }
 
-      /* ── Autocomplete ── */
       function hideDropdown() {
         document.getElementById("acDropdown").style.display = "none";
         acIndex = -1;
@@ -2455,36 +2639,23 @@
           if (e.key === "Enter") addEntry();
         });
 
-      /* ── View / Search ── */
+      /* ── View: only Grouped + All now. Search is always-on via input ── */
       function setView(v) {
         view = v;
-        ["btnGrouped", "btnAll", "btnSearch"].forEach(function (id) {
-          document.getElementById(id).classList.remove("active");
-        });
         document
-          .getElementById(
-            v === "grouped"
-              ? "btnGrouped"
-              : v === "all"
-                ? "btnAll"
-                : "btnSearch",
-          )
-          .classList.add("active");
-        var sw = document.getElementById("searchWrap");
-        if (v === "search") {
-          sw.style.display = "flex";
-          document.getElementById("searchInput").focus();
-        } else {
-          sw.style.display = "none";
-          searchQuery = "";
-          document.getElementById("searchInput").value = "";
-        }
+          .getElementById("btnGrouped")
+          .classList.toggle("active", v === "grouped");
+        document
+          .getElementById("btnAll")
+          .classList.toggle("active", v === "all");
         renderTable();
       }
       function toggleGroup(key) {
         openGroups[key] = !openGroups[key];
         renderTable();
       }
+
+      /* Search: live filter on input, no view mode needed */
       var searchInput = document.getElementById("searchInput");
       searchInput.addEventListener("input", function () {
         searchQuery = this.value.trim();
@@ -2501,12 +2672,11 @@
         searchInput.focus();
       }
 
-      /* ── Render — uses filtered entries ── */
       function renderTable() {
         var head = document.getElementById("tableHead"),
           tb = document.getElementById("tableBody");
         var src = getFilteredEntries();
-        var isFiltered = dateFrom || dateTo;
+        var isF = dateFrom || dateTo;
 
         if (!currentSheetId) {
           head.innerHTML = "";
@@ -2520,37 +2690,37 @@
             '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet — add your first payment above</div></div></td></tr>';
           return;
         }
-        if (src.length === 0 && isFiltered) {
+        if (src.length === 0 && isF) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-txt">No entries in the selected date range.<br><span style="font-size:12px;color:#3d3860;">Try widening the range or clearing the filter.</span></div></div></td></tr>';
+            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-txt">No entries in this date range.</div></div></td></tr>';
           return;
         }
 
-        if (view === "search") {
+        /* If search query active — filter and show flat list */
+        if (searchQuery) {
           head.innerHTML =
             '<tr><th style="width:36px">#</th><th style="width:28%">Vendor</th><th>Amount</th><th>Date</th><th style="width:68px"></th></tr>';
           var q = searchQuery.toLowerCase();
-          var filtered2 = src
+          var f2 = src
             .map(function (e) {
               return { e: e, i: entries.indexOf(e) };
             })
             .filter(function (obj) {
-              if (!q) return true;
               return (
                 obj.e.name.toLowerCase().indexOf(q) !== -1 ||
                 (obj.e.amount + "").indexOf(q) !== -1 ||
                 isoToDisplay(obj.e.date).indexOf(q) !== -1
               );
             });
-          if (!filtered2.length) {
+          if (!f2.length) {
             tb.innerHTML =
               '<tr><td colspan="5"><div class="no-match">🔍 No results for "<strong style="color:#a99cf7">' +
               searchQuery +
               '</strong>"</div></td></tr>';
             return;
           }
-          tb.innerHTML = filtered2
+          tb.innerHTML = f2
             .map(function (obj, ri) {
               var e = obj.e,
                 i = obj.i;
@@ -2575,6 +2745,7 @@
             .join("");
           return;
         }
+
         if (view === "all") {
           head.innerHTML =
             '<tr><th style="width:36px">#</th><th style="width:28%">Vendor</th><th>Amount</th><th>Date</th><th style="width:68px"></th></tr>';
@@ -2602,6 +2773,7 @@
             .join("");
           return;
         }
+
         var groups = getGroups(src);
         head.innerHTML =
           '<tr><th style="width:34px"></th><th style="width:30%">Vendor</th><th>Total</th><th>Payments</th><th style="width:34px"></th></tr>';
@@ -2651,7 +2823,6 @@
         tb.innerHTML = html;
       }
 
-      /* ── Standard Import ── */
       function openImport() {
         if (!currentSheetId) {
           alert("Please select a sheet first.");
@@ -2746,30 +2917,40 @@
               res.textContent = "No valid rows found.";
               return;
             }
-            res.textContent = "Saving " + toInsert.length + " entries…";
-            setSyncStatus("syncing");
-            sbFetch("entries", {
-              method: "POST",
-              body: JSON.stringify(toInsert),
-            })
-              .then(function (r) {
-                return r.json();
-              })
-              .then(function (d) {
-                var ins = Array.isArray(d) ? d : [];
-                entries = entries.concat(ins);
+            var BATCH = 500,
+              batches = [],
+              allIns = [];
+            for (var b = 0; b < toInsert.length; b += BATCH)
+              batches.push(toInsert.slice(b, b + BATCH));
+            function nb(idx) {
+              if (idx >= batches.length) {
+                entries = entries.concat(allIns);
                 renderTable();
                 updateStats();
                 flashBar();
                 setSyncStatus("ok");
                 updateSheetTs();
-                res.textContent = "✓ Imported " + ins.length + " entries.";
+                res.textContent = "✓ Imported " + allIns.length + " entries.";
+                return;
+              }
+              sbFetch("entries", {
+                method: "POST",
+                body: JSON.stringify(batches[idx]),
               })
-              .catch(function () {
-                res.className = "import-result err";
-                res.textContent = "Server error.";
-                setSyncStatus("error");
-              });
+                .then(function (r) {
+                  return r.json();
+                })
+                .then(function (d) {
+                  allIns = allIns.concat(Array.isArray(d) ? d : []);
+                  nb(idx + 1);
+                })
+                .catch(function () {
+                  res.className = "import-result err";
+                  res.textContent = "Server error.";
+                  setSyncStatus("error");
+                });
+            }
+            nb(0);
           } catch (err) {
             res.className = "import-result err";
             res.textContent = "Error: " + err.message;
@@ -2778,7 +2959,6 @@
         reader.readAsArrayBuffer(file);
       }
 
-      /* ── Paytm Import ── */
       function openPaytm() {
         if (!currentSheetId) {
           alert("Please select a sheet first.");
@@ -2809,7 +2989,6 @@
         });
         document.getElementById("fbAll").classList.add("on");
       }
-
       function parsePaytmAmount(raw) {
         if (typeof raw === "number") {
           return { value: Math.abs(raw), debit: raw < 0 };
@@ -2853,22 +3032,21 @@
         if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
         return new Date().toISOString().slice(0, 10);
       }
-      function findColIdx(headers, keywords) {
-        for (var i = 0; i < headers.length; i++) {
-          var h = (headers[i] + "").toLowerCase().trim();
-          for (var j = 0; j < keywords.length; j++) {
-            if (h.indexOf(keywords[j]) !== -1) return i;
+      function findColIdx(hdrs, kws) {
+        for (var i = 0; i < hdrs.length; i++) {
+          var h = (hdrs[i] + "").toLowerCase().trim();
+          for (var j = 0; j < kws.length; j++) {
+            if (h.indexOf(kws[j]) !== -1) return i;
           }
         }
         return -1;
       }
-
       function handlePaytmUpload(input) {
         var file = input.files[0];
         if (!file) return;
         var res = document.getElementById("paytmUploadResult");
         res.className = "import-result";
-        res.textContent = "Reading file…";
+        res.textContent = "Reading…";
         var reader = new FileReader();
         reader.onload = function (ev) {
           try {
@@ -2885,31 +3063,28 @@
             });
             var hRow = -1;
             for (var r = 0; r < Math.min(20, rows.length); r++) {
-              var joined = (rows[r] || []).join("|").toLowerCase();
+              var j = (rows[r] || []).join("|").toLowerCase();
               if (
-                (joined.indexOf("transaction details") !== -1 ||
-                  joined.indexOf("description") !== -1) &&
-                joined.indexOf("amount") !== -1
+                (j.indexOf("transaction details") !== -1 ||
+                  j.indexOf("description") !== -1) &&
+                j.indexOf("amount") !== -1
               ) {
                 hRow = r;
                 break;
               }
-              if (
-                joined.indexOf("amount") !== -1 &&
-                joined.indexOf("date") !== -1
-              ) {
+              if (j.indexOf("amount") !== -1 && j.indexOf("date") !== -1) {
                 hRow = r;
                 break;
               }
             }
             if (hRow === -1) {
-              var maxC = 0;
+              var mx = 0;
               for (var r2 = 0; r2 < Math.min(15, rows.length); r2++) {
-                var cnt = rows[r2].filter(function (x) {
+                var ct = rows[r2].filter(function (x) {
                   return (x + "").trim() !== "";
                 }).length;
-                if (cnt > maxC) {
-                  maxC = cnt;
+                if (ct > mx) {
+                  mx = ct;
                   hRow = r2;
                 }
               }
@@ -2928,13 +3103,11 @@
               "upi id",
               "a/c no",
               "account no",
-              "beneficiary",
             ]);
             var cAmt = findColIdx(hdrs, ["amount", "debit", "credit", "amt"]);
             var cUpi = findColIdx(hdrs, [
               "upi ref",
               "ref no",
-              "reference no",
               "rrn",
               "transaction id",
             ]);
@@ -2942,9 +3115,7 @@
             var cTags = findColIdx(hdrs, ["tags", "tag", "category"]);
             if (cAmt === -1) {
               res.className = "import-result err";
-              res.textContent =
-                "⚠ Could not find Amount column. Columns: " +
-                hdrs.slice(0, 8).join(", ");
+              res.textContent = "⚠ Could not find Amount column.";
               return;
             }
             paytmRows = [];
@@ -2974,16 +3145,10 @@
             }
             if (!paytmRows.length) {
               res.className = "import-result err";
-              res.textContent =
-                "⚠ No valid transactions found. Amount col: " +
-                cAmt +
-                '. Sample: "' +
-                ((rows[hRow + 1] || [])[cAmt] || "N/A") +
-                '"';
+              res.textContent = "⚠ No valid transactions found.";
               return;
             }
-            res.textContent =
-              "✓ Found " + paytmRows.length + " transactions — review below.";
+            res.textContent = "✓ Found " + paytmRows.length + " transactions.";
             document.getElementById("paytmStep1").style.display = "none";
             document.getElementById("paytmStep2").style.display = "block";
             renderPaytmPreview();
@@ -2994,7 +3159,6 @@
         };
         reader.readAsArrayBuffer(file);
       }
-
       function filterPaytm(f) {
         paytmFilter = f;
         ["fbAll", "fbDebit", "fbCredit"].forEach(function (id) {
@@ -3008,39 +3172,34 @@
         renderPaytmPreview();
       }
       function renderPaytmPreview() {
-        var tbody = document.getElementById("previewBody");
-        var visible = paytmRows.filter(function (r) {
+        var tb = document.getElementById("previewBody");
+        var vis = paytmRows.filter(function (r) {
           return (
             paytmFilter === "all" ||
             (paytmFilter === "debit" && r.debit) ||
             (paytmFilter === "credit" && !r.debit)
           );
         });
-        var selected = paytmRows.filter(function (r) {
-          return r.selected;
-        }).length;
         document.getElementById("selCount").textContent =
-          selected + " selected";
+          paytmRows.filter(function (r) {
+            return r.selected;
+          }).length + " selected";
         document.getElementById("previewInfo").textContent =
-          "Showing " +
-          visible.length +
-          " of " +
-          paytmRows.length +
-          " transactions";
-        tbody.innerHTML = visible
+          "Showing " + vis.length + " of " + paytmRows.length;
+        tb.innerHTML = vis
           .map(function (r) {
-            var origIdx = paytmRows.indexOf(r);
+            var oi = paytmRows.indexOf(r);
             var desc = r.desc.length > 32 ? r.desc.slice(0, 32) + "…" : r.desc;
             var other =
               r.other.length > 18 ? r.other.slice(0, 18) + "…" : r.other;
-            var typeTag = r.debit
+            var tt = r.debit
               ? '<span style="color:#f08080;font-size:11px;font-weight:600;">↑ Debit</span>'
               : '<span style="color:#4ecba0;font-size:11px;font-weight:600;">↓ Credit</span>';
             return (
               '<tr><td class="check-col"><input type="checkbox" ' +
               (r.selected ? "checked" : "") +
               ' onchange="paytmRows[' +
-              origIdx +
+              oi +
               '].selected=this.checked;updateSelCount()" /></td><td>' +
               isoToDisplay(r.date) +
               '</td><td title="' +
@@ -3056,60 +3215,58 @@
               ';">' +
               fmt(r.amount) +
               "</td><td>" +
-              typeTag +
-              '</td><td title="' +
-              r.remarks +
-              '">' +
+              tt +
+              "</td><td>" +
               r.remarks.slice(0, 18) +
               "</td></tr>"
             );
           })
           .join("");
         var allSel =
-          visible.length > 0 &&
-          visible.every(function (r) {
+          vis.length > 0 &&
+          vis.every(function (r) {
             return r.selected;
           });
         document.getElementById("selectAll").checked = allSel;
         document.getElementById("selectAll").indeterminate =
           !allSel &&
-          visible.some(function (r) {
+          vis.some(function (r) {
             return r.selected;
           });
       }
       function updateSelCount() {
-        var sel = paytmRows.filter(function (r) {
-          return r.selected;
-        }).length;
-        document.getElementById("selCount").textContent = sel + " selected";
-        var visible = paytmRows.filter(function (r) {
+        document.getElementById("selCount").textContent =
+          paytmRows.filter(function (r) {
+            return r.selected;
+          }).length + " selected";
+        var vis = paytmRows.filter(function (r) {
           return (
             paytmFilter === "all" ||
             (paytmFilter === "debit" && r.debit) ||
             (paytmFilter === "credit" && !r.debit)
           );
         });
-        var allSel =
-          visible.length > 0 &&
-          visible.every(function (r) {
+        var as =
+          vis.length > 0 &&
+          vis.every(function (r) {
             return r.selected;
           });
-        document.getElementById("selectAll").checked = allSel;
+        document.getElementById("selectAll").checked = as;
         document.getElementById("selectAll").indeterminate =
-          !allSel &&
-          visible.some(function (r) {
+          !as &&
+          vis.some(function (r) {
             return r.selected;
           });
       }
       function toggleSelectAll(cb) {
-        var visible = paytmRows.filter(function (r) {
+        var vis = paytmRows.filter(function (r) {
           return (
             paytmFilter === "all" ||
             (paytmFilter === "debit" && r.debit) ||
             (paytmFilter === "credit" && !r.debit)
           );
         });
-        visible.forEach(function (r) {
+        vis.forEach(function (r) {
           r.selected = cb.checked;
         });
         renderPaytmPreview();
@@ -3119,7 +3276,7 @@
           return r.selected;
         });
         if (!toImport.length) {
-          alert("Please select at least one transaction.");
+          alert("Select at least one transaction.");
           return;
         }
         var toInsert = toImport.map(function (r) {
@@ -3137,46 +3294,56 @@
         document.getElementById("paytmStep2").style.display = "none";
         document.getElementById("paytmStep1").style.display = "block";
         res.className = "import-result";
-        res.textContent = "Saving " + toInsert.length + " transactions…";
+        res.textContent = "Saving…";
         setSyncStatus("syncing");
-        sbFetch("entries", { method: "POST", body: JSON.stringify(toInsert) })
-          .then(function (r) {
-            return r.json();
-          })
-          .then(function (d) {
-            var ins = Array.isArray(d) ? d : [];
-            entries = entries.concat(ins);
+        var BATCH = 500,
+          batches = [],
+          allIns = [];
+        for (var b = 0; b < toInsert.length; b += BATCH)
+          batches.push(toInsert.slice(b, b + BATCH));
+        function nb(idx) {
+          if (idx >= batches.length) {
+            entries = entries.concat(allIns);
             renderTable();
             updateStats();
             flashBar();
             setSyncStatus("ok");
             updateSheetTs();
-            res.textContent =
-              "✓ Imported " + ins.length + " Paytm transactions!";
+            res.textContent = "✓ Imported " + allIns.length + " transactions!";
             paytmRows = [];
+            return;
+          }
+          sbFetch("entries", {
+            method: "POST",
+            body: JSON.stringify(batches[idx]),
           })
-          .catch(function () {
-            res.className = "import-result err";
-            res.textContent = "Server error.";
-            setSyncStatus("error");
-          });
+            .then(function (r) {
+              return r.json();
+            })
+            .then(function (d) {
+              allIns = allIns.concat(Array.isArray(d) ? d : []);
+              nb(idx + 1);
+            })
+            .catch(function () {
+              res.className = "import-result err";
+              res.textContent = "Server error.";
+              setSyncStatus("error");
+            });
+        }
+        nb(0);
       }
 
-      /* ── Export — respects active filter ── */
       function exportExcel() {
         var errEl = document.getElementById("errMsg");
         errEl.style.display = "none";
         var src = getFilteredEntries();
         if (!src.length) {
-          errEl.textContent =
-            "No entries to export" +
-            (dateFrom || dateTo ? " in the selected date range" : "") +
-            ".";
+          errEl.textContent = "No entries to export.";
           errEl.style.display = "block";
           return;
         }
         if (typeof XLSX === "undefined") {
-          errEl.textContent = "Excel library loading — try again.";
+          errEl.textContent = "Excel library loading.";
           errEl.style.display = "block";
           return;
         }
@@ -3184,8 +3351,8 @@
           var title =
             document.getElementById("sheetTitle").value.trim() ||
             "Payment Tracker";
-          var isFiltered = dateFrom || dateTo;
-          var rangeNote = isFiltered
+          var isF = dateFrom || dateTo;
+          var rn = isF
             ? " (" +
               isoToDisplay(dateFrom || "All") +
               " to " +
@@ -3198,7 +3365,7 @@
           }, 0);
           var wb = XLSX.utils.book_new();
           var allRows = [
-            [title + rangeNote],
+            [title + rn],
             [
               "Generated: " +
                 new Date().toLocaleDateString("en-IN", {
@@ -3220,7 +3387,7 @@
           ws1["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
           XLSX.utils.book_append_sheet(wb, ws1, "All Entries");
           var grpRows = [
-            [title + " — Summary" + rangeNote],
+            [title + " — Summary" + rn],
             [],
             ["Vendor", "No. of Payments", "Total Amount (INR)"],
           ];
