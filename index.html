@@ -216,7 +216,6 @@
         padding: 2px 4px;
         border-radius: 3px;
         flex-shrink: 0;
-        transition: all 0.15s;
       }
       .sheet-chip-del:hover {
         color: #f08080;
@@ -540,17 +539,6 @@
         z-index: 99;
         overflow: hidden;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        animation: dropIn 0.15s ease both;
-      }
-      @keyframes dropIn {
-        from {
-          opacity: 0;
-          transform: translateY(-6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
       }
       .ac-item {
         padding: 10px 14px;
@@ -602,13 +590,9 @@
       .btn-add:active {
         transform: scale(0.97);
       }
-
-      /* ── TOOLBAR ── */
       .toolbar {
         margin-bottom: 1rem;
       }
-
-      /* Row 1: view toggle + search bar always visible */
       .toolbar-row1 {
         display: flex;
         align-items: center;
@@ -649,8 +633,6 @@
       .tog-btn:not(.active):hover {
         color: #c8c4e8;
       }
-
-      /* Always-visible search bar */
       .search-box {
         position: relative;
         flex: 1;
@@ -705,11 +687,27 @@
       .search-box-clear.visible {
         display: block;
       }
-      .search-box-clear:hover {
+      .search-hint {
+        font-size: 11px;
+        color: #7a74a8;
+        display: none;
+        align-items: center;
+        gap: 6px;
+      }
+      .search-hint.visible {
+        display: flex;
+      }
+      .search-hint strong {
         color: #a99cf7;
       }
-
-      /* Row 2: action buttons with generous spacing */
+      .hint-tag {
+        background: rgba(76, 63, 206, 0.18);
+        color: #a99cf7;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 99px;
+      }
       .toolbar-row2 {
         display: flex;
         align-items: center;
@@ -729,22 +727,23 @@
         gap: 7px;
         transition: all 0.2s;
         white-space: nowrap;
+        border: none;
       }
       .btn-action:active {
         transform: scale(0.97);
       }
       .btn-clear-entries {
-        border: 1px solid #2e2a50;
+        border: 1px solid #2e2a50 !important;
         background: none;
         color: #5a5680;
       }
       .btn-clear-entries:hover {
         background: rgba(220, 60, 60, 0.1);
         color: #f08080;
-        border-color: rgba(220, 60, 60, 0.3);
+        border-color: rgba(220, 60, 60, 0.3) !important;
       }
       .btn-import-xls {
-        border: 1px solid #4c3fce;
+        border: 1px solid #4c3fce !important;
         background: rgba(76, 63, 206, 0.1);
         color: #a99cf7;
       }
@@ -754,7 +753,7 @@
         transform: translateY(-1px);
       }
       .btn-import-paytm {
-        border: 1px solid #00b9f2;
+        border: 1px solid #00b9f2 !important;
         background: rgba(0, 185, 242, 0.08);
         color: #5dd6f8;
       }
@@ -763,17 +762,62 @@
         color: #a8ecff;
         transform: translateY(-1px);
       }
+      .btn-copy {
+        border: 1px solid #7a4fcf !important;
+        background: rgba(122, 79, 207, 0.1);
+        color: #c8a8f8;
+      }
+      .btn-copy:hover {
+        background: rgba(122, 79, 207, 0.22);
+        color: #e4d0ff;
+        transform: translateY(-1px);
+      }
+      .btn-copy.copied {
+        background: rgba(78, 203, 160, 0.15) !important;
+        border-color: #4ecba0 !important;
+        color: #4ecba0 !important;
+      }
       .btn-export-xls {
-        border: none;
         background: linear-gradient(135deg, #0d7a5c, #0fa876);
         color: #fff;
         box-shadow: 0 3px 10px rgba(13, 168, 118, 0.3);
       }
       .btn-export-xls:hover {
         transform: translateY(-1px);
-        box-shadow: 0 5px 16px rgba(13, 168, 118, 0.45);
       }
-
+      .filter-badge {
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        font-size: 10px;
+        padding: 1px 6px;
+        border-radius: 99px;
+        margin-left: 2px;
+      }
+      .toast-notify {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: #1e1c38;
+        border: 1px solid #4c3fce;
+        color: #d4cfff;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 10px 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        transition:
+          opacity 0.25s,
+          transform 0.25s;
+        z-index: 999;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      .toast-notify.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
       .table-card {
         background: #1a1830;
         border: 1px solid #2e2a50;
@@ -989,7 +1033,7 @@
         border: 1px solid #2e2a50;
         border-radius: 20px;
         padding: 1.75rem;
-        width: 420px;
+        width: 460px;
         max-width: 95vw;
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         animation: modalIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -1399,6 +1443,123 @@
           transform: translateX(5px);
         }
       }
+      /* Export modal */
+      .export-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid #2e2a50;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 10px;
+      }
+      .export-option:hover {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.07);
+      }
+      .export-option.selected {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.15);
+      }
+      .export-option-radio {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #4a4670;
+        flex-shrink: 0;
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .export-option.selected .export-option-radio {
+        border-color: #6c3fc7;
+        background: #6c3fc7;
+      }
+      .export-option.selected .export-option-radio::after {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+        display: block;
+      }
+      .export-option-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .export-option-text {
+        flex: 1;
+      }
+      .export-option-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #d4cfff;
+        margin-bottom: 3px;
+      }
+      .export-option-desc {
+        font-size: 12px;
+        color: #5a5680;
+        line-height: 1.5;
+      }
+      .export-option.selected .export-option-desc {
+        color: #7a74a8;
+      }
+      .export-preview-note {
+        background: #12101f;
+        border: 1px solid #2e2a50;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 12px;
+        color: #7a74a8;
+        line-height: 1.6;
+        margin-bottom: 4px;
+      }
+      .export-preview-note strong {
+        color: #a99cf7;
+      }
+      .export-sheets-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .export-sheet-chip {
+        background: rgba(76, 63, 206, 0.15);
+        color: #a99cf7;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 99px;
+        border: 1px solid rgba(76, 63, 206, 0.3);
+      }
+      .export-sheet-chip.green {
+        background: rgba(13, 168, 118, 0.15);
+        color: #4ecba0;
+        border-color: rgba(13, 168, 118, 0.3);
+      }
+      /* Warning for large exports */
+      .export-warning {
+        background: rgba(183, 120, 20, 0.12);
+        border: 1px solid rgba(183, 120, 20, 0.35);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 12px;
+        color: #e0a84a;
+        line-height: 1.6;
+        margin-bottom: 10px;
+        display: none;
+      }
+      .export-warning.show {
+        display: block;
+      }
+      /* Spinner on download btn */
+      .btn-downloading {
+        opacity: 0.7;
+        cursor: not-allowed !important;
+      }
     </style>
 
     <div class="wrap">
@@ -1588,9 +1749,7 @@
         </div>
       </div>
 
-      <!-- ── TOOLBAR: 2 rows — clean & breathable ── -->
       <div class="toolbar">
-        <!-- Row 1: view toggle + always-visible search -->
         <div class="toolbar-row1">
           <div class="view-toggle">
             <button
@@ -1604,7 +1763,6 @@
               ≡ All entries
             </button>
           </div>
-          <!-- Search bar — always present, no click-to-reveal -->
           <div class="search-box">
             <span class="search-box-icon">🔍</span>
             <input
@@ -1622,20 +1780,39 @@
               ✕
             </button>
           </div>
+          <div class="search-hint" id="searchHint">
+            Showing <span id="searchHintCount" class="hint-tag">0</span> results
+            for <strong id="searchHintTerm"></strong>
+          </div>
         </div>
-        <!-- Row 2: action buttons with breathing room -->
         <div class="toolbar-row2">
           <button class="btn-action btn-clear-entries" onclick="clearAll()">
             🗑 Clear entries
           </button>
           <button class="btn-action btn-import-xls" onclick="openImport()">
-            📥 Import from Excel
+            📥 Import Excel
           </button>
           <button class="btn-action btn-import-paytm" onclick="openPaytm()">
             🔵 Import Paytm
           </button>
-          <button class="btn-action btn-export-xls" onclick="exportExcel()">
-            📊 Export to Excel
+          <button
+            class="btn-action btn-copy"
+            id="copyBtn"
+            onclick="copyVisible()"
+          >
+            📋 Copy
+          </button>
+          <button
+            class="btn-action btn-export-xls"
+            id="exportBtn"
+            onclick="openExportModal()"
+          >
+            📊 Export
+            <span
+              class="filter-badge"
+              id="exportBadge"
+              style="display: none"
+            ></span>
           </button>
         </div>
       </div>
@@ -1648,6 +1825,92 @@
         <div class="toast-bar" id="toastBar"></div>
       </div>
       <p class="err-msg" id="errMsg"></p>
+    </div>
+
+    <div class="toast-notify" id="toastNotify"></div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay hidden" id="exportModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div
+            class="modal-title-icon"
+            style="background: rgba(13, 168, 118, 0.2)"
+          >
+            📊
+          </div>
+          Export to Excel
+        </div>
+
+        <div
+          class="export-option selected"
+          id="opt1"
+          onclick="selectExportOpt(1)"
+        >
+          <div class="export-option-radio"></div>
+          <div class="export-option-icon">📄</div>
+          <div class="export-option-text">
+            <div class="export-option-title">Standard export</div>
+            <div class="export-option-desc">
+              2 sheets: <em>All Entries</em> + <em>Summary by Vendor</em>
+            </div>
+          </div>
+        </div>
+
+        <div class="export-option" id="opt2" onclick="selectExportOpt(2)">
+          <div class="export-option-radio"></div>
+          <div class="export-option-icon">📑</div>
+          <div class="export-option-text">
+            <div class="export-option-title">Per-vendor sheets</div>
+            <div class="export-option-desc">
+              All Entries + Summary + one sheet per vendor with full history
+            </div>
+          </div>
+        </div>
+
+        <div class="export-option" id="opt3" onclick="selectExportOpt(3)">
+          <div class="export-option-radio"></div>
+          <div class="export-option-icon">🗂️</div>
+          <div class="export-option-text">
+            <div class="export-option-title">Vendor sheets only</div>
+            <div class="export-option-desc">
+              One sheet per vendor only — no combined sheet
+            </div>
+          </div>
+        </div>
+
+        <div class="export-warning" id="exportWarning"></div>
+
+        <div class="export-preview-note" id="exportPreview">
+          <strong>Will create:</strong> <span id="exportPreviewText"></span>
+          <div class="export-sheets-list" id="exportSheetsList"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeExportModal()">
+            Cancel
+          </button>
+          <button
+            id="downloadBtn"
+            style="
+              height: 40px;
+              padding: 0 22px;
+              border-radius: 10px;
+              border: none;
+              background: linear-gradient(135deg, #0d7a5c, #0fa876);
+              color: #fff;
+              font-size: 13.5px;
+              font-weight: 600;
+              font-family: &quot;Inter&quot;, sans-serif;
+              cursor: pointer;
+              transition: all 0.2s;
+            "
+            onclick="doExport()"
+          >
+            ⬇ Download Excel
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- New Sheet Modal -->
@@ -1674,7 +1937,7 @@
       </div>
     </div>
 
-    <!-- 🔐 Delete Modal -->
+    <!-- Delete Modal -->
     <div class="modal-overlay hidden" id="deleteModal">
       <div class="modal">
         <div class="modal-title">
@@ -1689,32 +1952,27 @@
         <div class="delete-warning">
           <div class="delete-warning-icon">⚠️</div>
           <div class="delete-warning-text">
-            You are about to delete
-            <strong id="deleteSheetName">"Sheet"</strong> and all its entries.
-            This is <strong>permanent and cannot be undone</strong>.
+            Delete <strong id="deleteSheetName">"Sheet"</strong> permanently.
           </div>
         </div>
         <div class="modal-field">
-          <label>Enter admin password</label>
+          <label>Admin password</label>
           <div class="pw-field">
             <input
               id="deletePassword"
               type="password"
               placeholder="Enter password…"
               autocomplete="off"
-            />
-            <button class="pw-toggle" onclick="togglePwVisibility()">👁</button>
+            /><button class="pw-toggle" onclick="togglePwVisibility()">
+              👁
+            </button>
           </div>
-          <div class="pw-error" id="pwError">
-            ❌ Incorrect password. Try again.
-          </div>
+          <div class="pw-error" id="pwError">❌ Incorrect password.</div>
         </div>
         <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeDeleteModal()">
-            Cancel
-          </button>
-          <button class="btn-delete-confirm" onclick="confirmDelete()">
-            🗑 Delete Sheet
+          <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button
+          ><button class="btn-delete-confirm" onclick="confirmDelete()">
+            🗑 Delete
           </button>
         </div>
       </div>
@@ -1745,7 +2003,7 @@
       </div>
     </div>
 
-    <!-- Standard Import -->
+    <!-- Import -->
     <div class="modal-overlay hidden" id="importModal">
       <div class="modal">
         <div class="modal-title">
@@ -1753,7 +2011,7 @@
           Import from Excel
         </div>
         <p class="import-info">
-          Upload a .xlsx file exported from this tracker.<br />Columns:
+          Upload a .xlsx exported from this tracker.<br />Columns:
           <code>Name / Vendor</code>, <code>Amount (INR)</code>,
           <code>Date Added</code>
         </p>
@@ -1761,8 +2019,8 @@
           class="import-zone"
           onclick="document.getElementById('fileInput').click()"
         >
-          <span class="import-zone-icon">📂</span>Click to choose an Excel file
-          <input
+          <span class="import-zone-icon">📂</span>Click to choose an Excel
+          file<input
             type="file"
             id="fileInput"
             accept=".xlsx,.xls,.csv"
@@ -1777,7 +2035,7 @@
       </div>
     </div>
 
-    <!-- Paytm Import -->
+    <!-- Paytm -->
     <div class="modal-overlay hidden" id="paytmModal">
       <div class="modal wide">
         <div class="modal-title">
@@ -1787,22 +2045,20 @@
           >
             🔵
           </div>
-          Import Paytm Excel <span class="paytm-tag">Paytm Format</span>
+          Import Paytm Excel<span class="paytm-tag">Paytm Format</span>
         </div>
         <div id="paytmStep1">
           <p class="import-info">
             Upload your Paytm transaction Excel/CSV.<br />Supports:
-            <code>Date</code> <code>Time</code> <code>Transaction Details</code>
-            <code>Other Transaction Details</code> <code>Amount</code>
-            <code>UPI Ref No.</code> <code>Remarks</code> <code>Tags</code>
+            <code>Date</code> <code>Transaction Details</code>
+            <code>Amount</code> <code>UPI Ref No.</code> <code>Remarks</code>
           </p>
           <div
             class="import-zone paytm-zone"
             onclick="document.getElementById('paytmFile').click()"
           >
             <span class="import-zone-icon">📂</span>Click to choose your Paytm
-            statement file
-            <input
+            statement<input
               type="file"
               id="paytmFile"
               accept=".xlsx,.xls,.csv"
@@ -1814,29 +2070,26 @@
         </div>
         <div id="paytmStep2" style="display: none">
           <div class="filter-row">
-            <span class="filter-label">Show:</span>
-            <button
+            <span class="filter-label">Show:</span
+            ><button
               class="filter-btn on"
               id="fbAll"
               onclick="filterPaytm('all')"
             >
-              All
-            </button>
-            <button
+              All</button
+            ><button
               class="filter-btn debit"
               id="fbDebit"
               onclick="filterPaytm('debit')"
             >
-              💸 Debit only
-            </button>
-            <button
+              💸 Debit</button
+            ><button
               class="filter-btn credit"
               id="fbCredit"
               onclick="filterPaytm('credit')"
             >
-              💰 Credit only
-            </button>
-            <span class="sel-count" id="selCount">0 selected</span>
+              💰 Credit</button
+            ><span class="sel-count" id="selCount">0 selected</span>
           </div>
           <div class="preview-wrap">
             <table class="preview-table">
@@ -1851,7 +2104,7 @@
                   </th>
                   <th>Date</th>
                   <th>Description</th>
-                  <th>UPI / Account</th>
+                  <th>UPI/Acct</th>
                   <th>Amount</th>
                   <th>Type</th>
                   <th>Remarks</th>
@@ -1862,10 +2115,8 @@
           </div>
           <p class="preview-info" id="previewInfo"></p>
           <div class="modal-actions">
-            <button class="btn-cancel" onclick="resetPaytmStep()">
-              ← Back
-            </button>
-            <button class="btn-save-paytm" onclick="importSelectedPaytm()">
+            <button class="btn-cancel" onclick="resetPaytmStep()">← Back</button
+            ><button class="btn-save-paytm" onclick="importSelectedPaytm()">
               Import Selected →
             </button>
           </div>
@@ -1884,7 +2135,6 @@
       var PAGE_SIZE = 1000;
       var ADMIN_HASH =
         "6179443c3781d86666106ea5847fc4e06b4a98a336d28635eaee64ed031d4fc5";
-
       var entries = [],
         sheets = [],
         currentSheetId = null,
@@ -1899,6 +2149,7 @@
       var dateFrom = "",
         dateTo = "";
       var pendingDeleteId = null;
+      var exportOpt = 1;
       var RESERVED = ["grand total", "total", "subtotal", "summary"];
       function isReserved(n) {
         return RESERVED.indexOf(n.toLowerCase().trim()) !== -1;
@@ -1929,7 +2180,6 @@
         lbl.textContent =
           s === "ok" ? "Synced" : s === "syncing" ? "Saving…" : "Error";
       }
-
       async function sha256(str) {
         var buf = await crypto.subtle.digest(
           "SHA-256",
@@ -1942,85 +2192,451 @@
           .join("");
       }
 
-      function deleteSheet(id) {
-        var sheet = sheets.find(function (s) {
-          return s.id === id;
+      function getFilteredEntries() {
+        if (!dateFrom && !dateTo) return entries;
+        return entries.filter(function (e) {
+          var d = e.date || "";
+          if (dateFrom && d < dateFrom) return false;
+          if (dateTo && d > dateTo) return false;
+          return true;
         });
-        pendingDeleteId = id;
-        document.getElementById("deleteSheetName").textContent =
-          '"' + (sheet ? sheet.title : "this sheet") + '"';
-        document.getElementById("deletePassword").value = "";
-        document.getElementById("pwError").style.display = "none";
-        document.getElementById("deleteModal").classList.remove("hidden");
-        setTimeout(function () {
-          document.getElementById("deletePassword").focus();
-        }, 120);
       }
-      function closeDeleteModal() {
-        document.getElementById("deleteModal").classList.add("hidden");
-        document.getElementById("deletePassword").value = "";
-        document.getElementById("pwError").style.display = "none";
-        pendingDeleteId = null;
+      function getVisibleEntries() {
+        var src = getFilteredEntries();
+        if (!searchQuery) return src;
+        var q = searchQuery.toLowerCase();
+        return src.filter(function (e) {
+          return (
+            e.name.toLowerCase().indexOf(q) !== -1 ||
+            (e.amount + "").indexOf(q) !== -1 ||
+            isoToDisplay(e.date).indexOf(q) !== -1
+          );
+        });
       }
-      function togglePwVisibility() {
-        var inp = document.getElementById("deletePassword");
-        inp.type = inp.type === "password" ? "text" : "password";
+      function getGroups(src) {
+        var map = {};
+        (src || entries).forEach(function (e) {
+          var key = e.name.toLowerCase().trim();
+          if (!map[key]) map[key] = { name: e.name, total: 0, items: [] };
+          map[key].total += e.amount;
+          map[key].items.push({
+            id: e.id,
+            name: e.name,
+            amount: e.amount,
+            date: e.date,
+            idx: entries.indexOf(e),
+          });
+        });
+        return Object.values(map).sort(function (a, b) {
+          return b.total - a.total;
+        });
       }
-      async function confirmDelete() {
-        var pw = document.getElementById("deletePassword").value;
-        var hash = await sha256(pw);
-        if (hash !== ADMIN_HASH) {
-          var inp = document.getElementById("deletePassword");
-          inp.classList.add("shake");
-          setTimeout(function () {
-            inp.classList.remove("shake");
-          }, 400);
-          document.getElementById("pwError").style.display = "block";
-          inp.value = "";
-          inp.focus();
+
+      /* ══════════════════════════════════════
+   FIXED EXPORT — robust sheet naming
+══════════════════════════════════════ */
+
+      /* Strip all chars Excel forbids in sheet names, trim to 31 chars */
+      function sanitizeSheetName(raw) {
+        var cleaned = (raw + "")
+          .replace(/[\\\/\?\*\[\]:'"]/g, "") // forbidden chars
+          .replace(/\s+/g, " ") // collapse whitespace
+          .trim();
+        if (!cleaned) cleaned = "Vendor";
+        return cleaned.slice(0, 31);
+      }
+
+      /* Build a registry of unique sheet names — appends _2, _3... on collision */
+      function makeNameRegistry() {
+        var used = {};
+        return function (raw) {
+          var base = sanitizeSheetName(raw);
+          if (!used[base]) {
+            used[base] = 1;
+            return base;
+          }
+          /* Need a suffix — keep base short enough */
+          var n = ++used[base];
+          var suffix = "_" + n;
+          var truncated = base.slice(0, 31 - suffix.length) + suffix;
+          /* register the new name too */
+          used[truncated] = (used[truncated] || 0) + 1;
+          return truncated;
+        };
+      }
+
+      function openExportModal() {
+        var src = getVisibleEntries();
+        if (!src.length) {
+          showToast("No entries to export.");
           return;
         }
-        var id = pendingDeleteId;
-        closeDeleteModal();
-        setSyncStatus("syncing");
-        sbFetch("sheets?id=eq." + id, { method: "DELETE" })
-          .then(function () {
-            sheets = sheets.filter(function (s) {
-              return s.id !== id;
-            });
-            if (currentSheetId === id) {
-              currentSheetId = null;
-              entries = [];
-              document.getElementById("sheetTitle").value = "";
-              document
-                .getElementById("sheetTitle")
-                .setAttribute("readonly", "");
-              document.getElementById("titleSaveBtn").disabled = true;
-              ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
-                document.getElementById(x).disabled = true;
-              });
-              document.getElementById("addBtn").disabled = true;
-            }
-            renderSheetsList();
-            updateStats();
-            renderTable();
-            setSyncStatus("ok");
-          })
-          .catch(function () {
-            setSyncStatus("error");
-          });
+        selectExportOpt(exportOpt);
+        document.getElementById("exportModal").classList.remove("hidden");
+      }
+      function closeExportModal() {
+        document.getElementById("exportModal").classList.add("hidden");
+        var btn = document.getElementById("downloadBtn");
+        btn.textContent = "⬇ Download Excel";
+        btn.classList.remove("btn-downloading");
+        btn.disabled = false;
       }
       document
-        .getElementById("deleteModal")
+        .getElementById("exportModal")
         .addEventListener("click", function (e) {
-          if (e.target === this) closeDeleteModal();
-        });
-      document
-        .getElementById("deletePassword")
-        .addEventListener("keydown", function (e) {
-          if (e.key === "Enter") confirmDelete();
+          if (e.target === this) closeExportModal();
         });
 
+      function selectExportOpt(n) {
+        exportOpt = n;
+        [1, 2, 3].forEach(function (i) {
+          document
+            .getElementById("opt" + i)
+            .classList.toggle("selected", i === n);
+        });
+        updateExportPreview();
+      }
+
+      function updateExportPreview() {
+        var src = getVisibleEntries();
+        var groups = getGroups(src);
+        var preview = document.getElementById("exportPreviewText");
+        var list = document.getElementById("exportSheetsList");
+        var warn = document.getElementById("exportWarning");
+        var chips = "";
+        var vendorCount = groups.length;
+
+        /* Warning if very large number of sheets */
+        if ((exportOpt === 2 || exportOpt === 3) && vendorCount > 200) {
+          warn.className = "export-warning show";
+          warn.textContent =
+            "⚠ " +
+            vendorCount +
+            " vendor sheets is large — Excel may take a few seconds to generate. If the download fails, try using the Standard export instead.";
+        } else {
+          warn.className = "export-warning";
+        }
+
+        if (exportOpt === 1) {
+          preview.textContent = "2 sheets total";
+          chips =
+            '<span class="export-sheet-chip green">All Entries</span><span class="export-sheet-chip">Summary by Vendor</span>';
+        } else if (exportOpt === 2) {
+          preview.textContent = 2 + vendorCount + " sheets total";
+          chips =
+            '<span class="export-sheet-chip green">All Entries</span><span class="export-sheet-chip">Summary by Vendor</span>';
+          groups.slice(0, 6).forEach(function (g) {
+            chips +=
+              '<span class="export-sheet-chip">' +
+              sanitizeSheetName(g.name) +
+              "</span>";
+          });
+          if (vendorCount > 6)
+            chips +=
+              '<span class="export-sheet-chip">+' +
+              (vendorCount - 6) +
+              " more…</span>";
+        } else {
+          preview.textContent = vendorCount + " vendor sheets";
+          groups.slice(0, 8).forEach(function (g) {
+            chips +=
+              '<span class="export-sheet-chip">' +
+              sanitizeSheetName(g.name) +
+              "</span>";
+          });
+          if (vendorCount > 8)
+            chips +=
+              '<span class="export-sheet-chip">+' +
+              (vendorCount - 8) +
+              " more…</span>";
+        }
+        list.innerHTML = chips;
+      }
+
+      function doExport() {
+        var btn = document.getElementById("downloadBtn");
+        if (btn.disabled) return;
+
+        var src = getVisibleEntries();
+        if (!src.length) {
+          showToast("No entries to export.");
+          return;
+        }
+        if (typeof XLSX === "undefined") {
+          showToast("Excel library loading — try again.");
+          return;
+        }
+
+        /* Show loading state */
+        btn.textContent = "⏳ Generating…";
+        btn.classList.add("btn-downloading");
+        btn.disabled = true;
+
+        /* Defer to next tick so the UI updates before the heavy work */
+        setTimeout(function () {
+          try {
+            var title =
+              document.getElementById("sheetTitle").value.trim() ||
+              "Payment Tracker";
+            var suffix = "";
+            if (searchQuery) suffix += " [Search: " + searchQuery + "]";
+            if (dateFrom || dateTo)
+              suffix +=
+                " (" +
+                isoToDisplay(dateFrom || "All") +
+                " → " +
+                isoToDisplay(dateTo || "All") +
+                ")";
+
+            var groups = getGroups(src);
+            var wb = XLSX.utils.book_new();
+            var uniqueName = makeNameRegistry();
+
+            /* ── All Entries sheet ── */
+            function makeAllEntriesSheet(data, t) {
+              var rows = [
+                [t + suffix],
+                [
+                  "Generated: " +
+                    new Date().toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    }),
+                ],
+                [],
+                ["#", "Name / Vendor", "Amount (INR)", "Date Added"],
+              ];
+              data.forEach(function (e, i) {
+                rows.push([i + 1, e.name, e.amount, isoToDisplay(e.date)]);
+              });
+              rows.push([]);
+              rows.push([
+                "",
+                "Grand Total",
+                data.reduce(function (s, e) {
+                  return s + e.amount;
+                }, 0),
+                "",
+              ]);
+              var ws = XLSX.utils.aoa_to_sheet(rows);
+              ws["!cols"] = [{ wch: 5 }, { wch: 36 }, { wch: 18 }, { wch: 14 }];
+              ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
+              return ws;
+            }
+
+            /* ── Summary sheet ── */
+            function makeSummarySheet(data, t) {
+              var grps = getGroups(data);
+              var rows = [
+                [t + " — Summary" + suffix],
+                [],
+                ["Vendor", "No. of Payments", "Total Amount (INR)"],
+              ];
+              grps.forEach(function (g) {
+                rows.push([g.name, g.items.length, g.total]);
+              });
+              rows.push([]);
+              rows.push([
+                "Grand Total",
+                data.length,
+                data.reduce(function (s, e) {
+                  return s + e.amount;
+                }, 0),
+              ]);
+              var ws = XLSX.utils.aoa_to_sheet(rows);
+              ws["!cols"] = [{ wch: 36 }, { wch: 16 }, { wch: 20 }];
+              ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }];
+              return ws;
+            }
+
+            /* ── Per-vendor sheet ── */
+            function makeVendorSheet(vendorName, items) {
+              var total = items.reduce(function (s, e) {
+                return s + e.amount;
+              }, 0);
+              var rows = [
+                [vendorName],
+                [
+                  "Total payments: " +
+                    items.length +
+                    " | Total: ₹" +
+                    total.toLocaleString("en-IN"),
+                ],
+                [],
+                ["#", "Amount (INR)", "Date"],
+              ];
+              items.forEach(function (e, i) {
+                rows.push([i + 1, e.amount, isoToDisplay(e.date)]);
+              });
+              rows.push([]);
+              rows.push(["Total (" + items.length + " payments)", total, ""]);
+              var ws = XLSX.utils.aoa_to_sheet(rows);
+              ws["!cols"] = [{ wch: 5 }, { wch: 18 }, { wch: 14 }];
+              ws["!merges"] = [
+                { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } },
+                { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } },
+              ];
+              return ws;
+            }
+
+            if (exportOpt === 1) {
+              XLSX.utils.book_append_sheet(
+                wb,
+                makeAllEntriesSheet(src, title),
+                uniqueName("All Entries"),
+              );
+              XLSX.utils.book_append_sheet(
+                wb,
+                makeSummarySheet(src, title),
+                uniqueName("Summary by Vendor"),
+              );
+            } else if (exportOpt === 2) {
+              XLSX.utils.book_append_sheet(
+                wb,
+                makeAllEntriesSheet(src, title),
+                uniqueName("All Entries"),
+              );
+              XLSX.utils.book_append_sheet(
+                wb,
+                makeSummarySheet(src, title),
+                uniqueName("Summary by Vendor"),
+              );
+              groups.forEach(function (g) {
+                XLSX.utils.book_append_sheet(
+                  wb,
+                  makeVendorSheet(g.name, g.items),
+                  uniqueName(g.name),
+                );
+              });
+            } else {
+              /* Vendor sheets only */
+              groups.forEach(function (g) {
+                XLSX.utils.book_append_sheet(
+                  wb,
+                  makeVendorSheet(g.name, g.items),
+                  uniqueName(g.name),
+                );
+              });
+            }
+
+            var filename =
+              title.replace(/\s+/g, "_") +
+              (searchQuery
+                ? "_search_" + searchQuery.replace(/\s+/g, "_")
+                : "") +
+              "_" +
+              new Date().toISOString().slice(0, 10) +
+              ".xlsx";
+
+            XLSX.writeFile(wb, filename);
+            closeExportModal();
+            flashBar();
+            showToast(
+              "📊 Exported " +
+                src.length +
+                " entries across " +
+                wb.SheetNames.length +
+                " sheet" +
+                (wb.SheetNames.length === 1 ? "" : "s"),
+            );
+          } catch (err) {
+            btn.textContent = "⬇ Download Excel";
+            btn.classList.remove("btn-downloading");
+            btn.disabled = false;
+            document.getElementById("errMsg").textContent =
+              "Export failed: " + err.message;
+            document.getElementById("errMsg").style.display = "block";
+            console.error("Export error:", err);
+          }
+        }, 50);
+      }
+
+      /* ─── Copy ─── */
+      function copyVisible() {
+        var src = getVisibleEntries();
+        if (!src.length) {
+          showToast("Nothing to copy.");
+          return;
+        }
+        var lines = [];
+        if (searchQuery)
+          lines.push(
+            'Search: "' + searchQuery + '" — ' + src.length + " results",
+          );
+        else if (dateFrom || dateTo)
+          lines.push(
+            "Date range: " +
+              isoToDisplay(dateFrom || "All") +
+              " → " +
+              isoToDisplay(dateTo || "All"),
+          );
+        lines.push("");
+        lines.push("#\tName / Vendor\tAmount\tDate");
+        lines.push("─".repeat(56));
+        src.forEach(function (e, i) {
+          lines.push(
+            i +
+              1 +
+              "\t" +
+              e.name +
+              "\t" +
+              fmt(e.amount) +
+              "\t" +
+              isoToDisplay(e.date),
+          );
+        });
+        lines.push("─".repeat(56));
+        var total = src.reduce(function (s, e) {
+          return s + e.amount;
+        }, 0);
+        lines.push("\tTotal (" + src.length + " entries)\t" + fmt(total));
+        navigator.clipboard
+          .writeText(lines.join("\n"))
+          .then(function () {
+            var btn = document.getElementById("copyBtn");
+            btn.textContent = "✅ Copied!";
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = "📋 Copy";
+              btn.classList.remove("copied");
+            }, 2000);
+            showToast("📋 Copied " + src.length + " entries");
+          })
+          .catch(function () {
+            showToast("⚠ Could not access clipboard.");
+          });
+      }
+
+      function showToast(msg) {
+        var t = document.getElementById("toastNotify");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(function () {
+          t.classList.remove("show");
+        }, 2800);
+      }
+      function updateToolbarState() {
+        var vis = getVisibleEntries();
+        var badge = document.getElementById("exportBadge");
+        var hint = document.getElementById("searchHint");
+        if (searchQuery) {
+          document.getElementById("searchHintCount").textContent = vis.length;
+          document.getElementById("searchHintTerm").textContent =
+            '"' + searchQuery + '"';
+          hint.classList.add("visible");
+        } else {
+          hint.classList.remove("visible");
+        }
+        if (searchQuery || dateFrom || dateTo) {
+          badge.style.display = "inline";
+          badge.textContent = vis.length + " rows";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+
+      /* ─── Paged fetch ─── */
       function fetchAllEntries(sheetId) {
         return new Promise(function (resolve, reject) {
           var allRows = [],
@@ -2091,15 +2707,6 @@
         loadSheets();
       })();
 
-      function getFilteredEntries() {
-        if (!dateFrom && !dateTo) return entries;
-        return entries.filter(function (e) {
-          var d = e.date || "";
-          if (dateFrom && d < dateFrom) return false;
-          if (dateTo && d > dateTo) return false;
-          return true;
-        });
-      }
       function applyDateFilter() {
         dateFrom = document.getElementById("filterFrom").value;
         dateTo = document.getElementById("filterTo").value;
@@ -2108,6 +2715,7 @@
         });
         renderTable();
         updateStats();
+        updateToolbarState();
       }
       function clearDateFilter() {
         dateFrom = "";
@@ -2119,6 +2727,7 @@
         });
         renderTable();
         updateStats();
+        updateToolbarState();
       }
       function applyPreset(p) {
         var now = new Date(),
@@ -2160,6 +2769,7 @@
         if (el) el.classList.add("active");
         renderTable();
         updateStats();
+        updateToolbarState();
       }
 
       function loadSheets() {
@@ -2181,8 +2791,7 @@
       function renderSheetsList() {
         var el = document.getElementById("sheetsList");
         if (!sheets.length) {
-          el.innerHTML =
-            '<div class="no-sheets">No sheets yet — create one above</div>';
+          el.innerHTML = '<div class="no-sheets">No sheets yet</div>';
           return;
         }
         el.innerHTML = sheets
@@ -2275,6 +2884,85 @@
             setSyncStatus("error");
           });
       }
+      function deleteSheet(id) {
+        var sheet = sheets.find(function (s) {
+          return s.id === id;
+        });
+        pendingDeleteId = id;
+        document.getElementById("deleteSheetName").textContent =
+          '"' + (sheet ? sheet.title : "this sheet") + '"';
+        document.getElementById("deletePassword").value = "";
+        document.getElementById("pwError").style.display = "none";
+        document.getElementById("deleteModal").classList.remove("hidden");
+        setTimeout(function () {
+          document.getElementById("deletePassword").focus();
+        }, 120);
+      }
+      function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.add("hidden");
+        document.getElementById("deletePassword").value = "";
+        document.getElementById("pwError").style.display = "none";
+        pendingDeleteId = null;
+      }
+      function togglePwVisibility() {
+        var inp = document.getElementById("deletePassword");
+        inp.type = inp.type === "password" ? "text" : "password";
+      }
+      async function confirmDelete() {
+        var pw = document.getElementById("deletePassword").value;
+        var hash = await sha256(pw);
+        if (hash !== ADMIN_HASH) {
+          var inp = document.getElementById("deletePassword");
+          inp.classList.add("shake");
+          setTimeout(function () {
+            inp.classList.remove("shake");
+          }, 400);
+          document.getElementById("pwError").style.display = "block";
+          inp.value = "";
+          inp.focus();
+          return;
+        }
+        var id = pendingDeleteId;
+        closeDeleteModal();
+        setSyncStatus("syncing");
+        sbFetch("sheets?id=eq." + id, { method: "DELETE" })
+          .then(function () {
+            sheets = sheets.filter(function (s) {
+              return s.id !== id;
+            });
+            if (currentSheetId === id) {
+              currentSheetId = null;
+              entries = [];
+              document.getElementById("sheetTitle").value = "";
+              document
+                .getElementById("sheetTitle")
+                .setAttribute("readonly", "");
+              document.getElementById("titleSaveBtn").disabled = true;
+              ["nameInput", "amtInput", "dateInput"].forEach(function (x) {
+                document.getElementById(x).disabled = true;
+              });
+              document.getElementById("addBtn").disabled = true;
+            }
+            renderSheetsList();
+            updateStats();
+            renderTable();
+            setSyncStatus("ok");
+          })
+          .catch(function () {
+            setSyncStatus("error");
+          });
+      }
+      document
+        .getElementById("deleteModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeDeleteModal();
+        });
+      document
+        .getElementById("deletePassword")
+        .addEventListener("keydown", function (e) {
+          if (e.key === "Enter") confirmDelete();
+        });
+
       function loadEntries(id) {
         document.getElementById("tableBody").innerHTML =
           '<tr><td colspan="5"><div class="table-loading">⏳ Loading…<div class="loading-progress">Fetching…</div></div></td></tr>';
@@ -2285,6 +2973,7 @@
             renderTable();
             updateStats();
             setSyncStatus("ok");
+            updateToolbarState();
           })
           .catch(function () {
             setSyncStatus("error");
@@ -2493,24 +3182,6 @@
         });
         return names;
       }
-      function getGroups(src) {
-        var map = {};
-        (src || entries).forEach(function (e) {
-          var key = e.name.toLowerCase().trim();
-          if (!map[key]) map[key] = { name: e.name, total: 0, items: [] };
-          map[key].total += e.amount;
-          map[key].items.push({
-            id: e.id,
-            name: e.name,
-            amount: e.amount,
-            date: e.date,
-            idx: entries.indexOf(e),
-          });
-        });
-        return Object.values(map).sort(function (a, b) {
-          return b.total - a.total;
-        });
-      }
       function getLastAmt(name) {
         var key = name.toLowerCase().trim();
         for (var i = entries.length - 1; i >= 0; i--) {
@@ -2520,23 +3191,23 @@
         return null;
       }
       function updateStats() {
-        var filtered = getFilteredEntries();
-        var tot = filtered.reduce(function (s, e) {
+        var vis = getVisibleEntries();
+        var tot = vis.reduce(function (s, e) {
           return s + e.amount;
         }, 0);
-        var isF = dateFrom || dateTo;
+        var isF = !!(dateFrom || dateTo || searchQuery);
         document.getElementById("statCount").textContent =
-          getGroups(filtered).length;
-        document.getElementById("statTotal").textContent = filtered.length
+          getGroups(vis).length;
+        document.getElementById("statTotal").textContent = vis.length
           ? fmt(tot)
           : "₹0";
         document.getElementById("statEntries").textContent =
-          filtered.length + (isF ? " / " + entries.length : "");
+          vis.length + (isF ? " / " + entries.length : "");
         document.getElementById("totalLabel").textContent = isF
-          ? "Filtered Total"
+          ? "Visible Total"
           : "Total";
         document.getElementById("entriesLabel").textContent = isF
-          ? "Filtered / All"
+          ? "Visible / All"
           : "Entries";
       }
 
@@ -2639,7 +3310,6 @@
           if (e.key === "Enter") addEntry();
         });
 
-      /* ── View: only Grouped + All now. Search is always-on via input ── */
       function setView(v) {
         view = v;
         document
@@ -2654,8 +3324,6 @@
         openGroups[key] = !openGroups[key];
         renderTable();
       }
-
-      /* Search: live filter on input, no view mode needed */
       var searchInput = document.getElementById("searchInput");
       searchInput.addEventListener("input", function () {
         searchQuery = this.value.trim();
@@ -2663,67 +3331,53 @@
           .getElementById("searchClear")
           .classList.toggle("visible", searchQuery.length > 0);
         renderTable();
+        updateStats();
+        updateToolbarState();
       });
       function clearSearch() {
         searchInput.value = "";
         searchQuery = "";
         document.getElementById("searchClear").classList.remove("visible");
         renderTable();
+        updateStats();
+        updateToolbarState();
         searchInput.focus();
       }
 
       function renderTable() {
         var head = document.getElementById("tableHead"),
           tb = document.getElementById("tableBody");
-        var src = getFilteredEntries();
-        var isF = dateFrom || dateTo;
-
+        var src = getVisibleEntries();
         if (!currentSheetId) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Create or select a sheet to get started</div></div></td></tr>';
+            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Create or select a sheet</div></div></td></tr>';
           return;
         }
         if (!entries.length) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet — add your first payment above</div></div></td></tr>';
+            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet</div></div></td></tr>';
           return;
         }
-        if (src.length === 0 && isF) {
+        if (!src.length) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📅</div><div class="empty-txt">No entries in this date range.</div></div></td></tr>';
+            '<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">' +
+            (searchQuery ? "🔍" : "📅") +
+            '</div><div class="empty-txt">' +
+            (searchQuery
+              ? 'No results for "' + searchQuery + '"'
+              : "No entries in this date range.") +
+            "</div></div></td></tr>";
           return;
         }
-
-        /* If search query active — filter and show flat list */
-        if (searchQuery) {
+        if (searchQuery || view === "all") {
           head.innerHTML =
             '<tr><th style="width:36px">#</th><th style="width:28%">Vendor</th><th>Amount</th><th>Date</th><th style="width:68px"></th></tr>';
-          var q = searchQuery.toLowerCase();
-          var f2 = src
-            .map(function (e) {
-              return { e: e, i: entries.indexOf(e) };
-            })
-            .filter(function (obj) {
-              return (
-                obj.e.name.toLowerCase().indexOf(q) !== -1 ||
-                (obj.e.amount + "").indexOf(q) !== -1 ||
-                isoToDisplay(obj.e.date).indexOf(q) !== -1
-              );
-            });
-          if (!f2.length) {
-            tb.innerHTML =
-              '<tr><td colspan="5"><div class="no-match">🔍 No results for "<strong style="color:#a99cf7">' +
-              searchQuery +
-              '</strong>"</div></td></tr>';
-            return;
-          }
-          tb.innerHTML = f2
-            .map(function (obj, ri) {
-              var e = obj.e,
-                i = obj.i;
+          tb.innerHTML = src
+            .map(function (e, ri) {
+              var i = entries.indexOf(e);
               return (
                 '<tr class="data-row row-new"><td><span class="badge">' +
                 (ri + 1) +
@@ -2745,35 +3399,6 @@
             .join("");
           return;
         }
-
-        if (view === "all") {
-          head.innerHTML =
-            '<tr><th style="width:36px">#</th><th style="width:28%">Vendor</th><th>Amount</th><th>Date</th><th style="width:68px"></th></tr>';
-          tb.innerHTML = src
-            .map(function (e, ri) {
-              var i = entries.indexOf(e);
-              return (
-                '<tr class="data-row row-new"><td><span class="badge">' +
-                (ri + 1) +
-                '</span></td><td style="font-weight:600;color:#d4cfff;">' +
-                e.name +
-                '</td><td class="amt-cell">' +
-                fmt(e.amount) +
-                '</td><td class="date-cell">' +
-                isoToDisplay(e.date) +
-                '</td><td><div class="action-btns"><button class="mod-btn" onclick="openEdit(' +
-                i +
-                ')">✏️</button><button class="del-btn" onclick="delEntry(\'' +
-                e.id +
-                "'," +
-                i +
-                ')">✕</button></div></td></tr>'
-              );
-            })
-            .join("");
-          return;
-        }
-
         var groups = getGroups(src);
         head.innerHTML =
           '<tr><th style="width:34px"></th><th style="width:30%">Vendor</th><th>Total</th><th>Payments</th><th style="width:34px"></th></tr>';
@@ -3331,87 +3956,6 @@
             });
         }
         nb(0);
-      }
-
-      function exportExcel() {
-        var errEl = document.getElementById("errMsg");
-        errEl.style.display = "none";
-        var src = getFilteredEntries();
-        if (!src.length) {
-          errEl.textContent = "No entries to export.";
-          errEl.style.display = "block";
-          return;
-        }
-        if (typeof XLSX === "undefined") {
-          errEl.textContent = "Excel library loading.";
-          errEl.style.display = "block";
-          return;
-        }
-        try {
-          var title =
-            document.getElementById("sheetTitle").value.trim() ||
-            "Payment Tracker";
-          var isF = dateFrom || dateTo;
-          var rn = isF
-            ? " (" +
-              isoToDisplay(dateFrom || "All") +
-              " to " +
-              isoToDisplay(dateTo || "All") +
-              ")"
-            : "";
-          var groups = getGroups(src);
-          var gt = src.reduce(function (s, e) {
-            return s + e.amount;
-          }, 0);
-          var wb = XLSX.utils.book_new();
-          var allRows = [
-            [title + rn],
-            [
-              "Generated: " +
-                new Date().toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                }),
-            ],
-            [],
-            ["#", "Name / Vendor", "Amount (INR)", "Date Added"],
-          ];
-          src.forEach(function (e, i) {
-            allRows.push([i + 1, e.name, e.amount, isoToDisplay(e.date)]);
-          });
-          allRows.push([]);
-          allRows.push(["", "Grand Total", gt, ""]);
-          var ws1 = XLSX.utils.aoa_to_sheet(allRows);
-          ws1["!cols"] = [{ wch: 5 }, { wch: 36 }, { wch: 18 }, { wch: 14 }];
-          ws1["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
-          XLSX.utils.book_append_sheet(wb, ws1, "All Entries");
-          var grpRows = [
-            [title + " — Summary" + rn],
-            [],
-            ["Vendor", "No. of Payments", "Total Amount (INR)"],
-          ];
-          groups.forEach(function (g) {
-            grpRows.push([g.name, g.items.length, g.total]);
-          });
-          grpRows.push([]);
-          grpRows.push(["Grand Total", src.length, gt]);
-          var ws2 = XLSX.utils.aoa_to_sheet(grpRows);
-          ws2["!cols"] = [{ wch: 36 }, { wch: 16 }, { wch: 20 }];
-          ws2["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }];
-          XLSX.utils.book_append_sheet(wb, ws2, "Summary by Vendor");
-          XLSX.writeFile(
-            wb,
-            title.replace(/\s+/g, "_") +
-              "_" +
-              new Date().toISOString().slice(0, 10) +
-              ".xlsx",
-          );
-          flashBar();
-        } catch (err) {
-          errEl.textContent = "Export failed: " + err.message;
-          errEl.style.display = "block";
-        }
       }
     </script>
   </head>
