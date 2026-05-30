@@ -2,7 +2,7 @@
 <html>
   <head>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
       *,
       *::before,
       *::after {
@@ -22,7 +22,7 @@
         padding: 1.5rem 1rem 3rem;
       }
       .hero {
-        background: linear-gradient(135deg, #4c3fce 0%, #6c3fc7 100%);
+        background: linear-gradient(135deg, #4c3fce, #6c3fc7);
         border-radius: 16px;
         padding: 1.4rem 1.6rem;
         margin-bottom: 1.25rem;
@@ -120,11 +120,13 @@
         padding: 1.25rem 1.4rem;
         margin-bottom: 1.25rem;
       }
-      .sheet-manager-top {
+      .sm-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 1rem;
+        gap: 8px;
+        flex-wrap: wrap;
       }
       .sm-title {
         font-size: 12px;
@@ -133,43 +135,181 @@
         text-transform: uppercase;
         color: #7a74a8;
       }
-      .btn-new-sheet {
-        height: 34px;
-        padding: 0 16px;
-        border-radius: 8px;
-        border: none;
-        background: linear-gradient(135deg, #4c3fce, #6c3fc7);
-        color: #fff;
-        font-size: 12px;
+      .sm-btns {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .sm-btn {
+        height: 30px;
+        padding: 0 11px;
+        border-radius: 7px;
+        font-size: 11px;
         font-weight: 600;
         font-family: "Inter", sans-serif;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
         transition: all 0.2s;
+        border: none;
       }
-      .btn-new-sheet:hover {
-        transform: translateY(-1px);
+      .btn-lock {
+        background: rgba(245, 204, 122, 0.1);
+        border: 1px solid rgba(245, 204, 122, 0.3) !important;
+        color: #f5cc7a;
       }
-      .sheets-list {
+      .btn-lock.locked {
+        background: rgba(245, 204, 122, 0.2);
+      }
+      .btn-bin {
+        background: rgba(240, 128, 128, 0.08);
+        border: 1px solid rgba(240, 128, 128, 0.25) !important;
+        color: #f08080;
+      }
+      .btn-folder {
+        border: 1px solid #4c3fce !important;
+        background: rgba(76, 63, 206, 0.12);
+        color: #a99cf7;
+      }
+      .btn-sheet {
+        background: linear-gradient(135deg, #4c3fce, #6c3fc7);
+        color: #fff;
+      }
+      .pin-section {
+        margin-bottom: 10px;
+      }
+      .sec-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #7a74a8;
+        margin-bottom: 6px;
+      }
+      .chips-wrap {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 7px;
+      }
+      .uncat-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #3a3760;
+        margin: 8px 0 6px;
+      }
+      .folder-block {
+        border-radius: 10px;
+        border: 1px solid #2e2a50;
+        transition: border-color 0.15s;
+      }
+      .folder-block + .folder-block {
+        margin-top: 5px;
+      }
+      .folder-block.drag-over-folder {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.04);
+      }
+      .folder-header {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        background: #151325;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+        border-radius: 9px 9px 0 0;
+      }
+      .folder-header:hover {
+        background: #1c1a38;
+      }
+      .f-chev {
+        font-size: 12px;
+        color: #5a5680;
+        transition: transform 0.2s;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+      .f-chev.open {
+        transform: rotate(90deg);
+      }
+      .f-icon {
+        font-size: 15px;
+        flex-shrink: 0;
+      }
+      .f-name {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #c8c4e8;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .f-count {
+        font-size: 10px;
+        color: #4a4670;
+        background: #12101f;
+        padding: 1px 7px;
+        border-radius: 99px;
+        flex-shrink: 0;
+      }
+      .f-act {
+        background: none;
+        border: none;
+        color: #3a3760;
+        cursor: pointer;
+        font-size: 11px;
+        padding: 2px 5px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        transition: all 0.15s;
+      }
+      .f-act:hover {
+        color: #a99cf7;
+        background: rgba(76, 63, 206, 0.15);
+      }
+      .folder-children {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px 10px;
+        background: #12101f;
+        min-height: 38px;
+        border-radius: 0 0 9px 9px;
+      }
+      .folder-children.collapsed {
+        display: none;
+      }
+      .folder-chips-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+      .folder-empty-hint {
+        font-size: 11px;
+        color: #3a3760;
+        align-self: center;
       }
       .sheet-chip {
-        height: 34px;
-        padding: 0 14px;
+        height: 32px;
+        padding: 0 10px;
         border-radius: 8px;
         border: 1px solid #2e2a50;
-        background: #12101f;
+        background: #1a1830;
         color: #7a74a8;
         font-size: 12px;
         font-weight: 500;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         transition: all 0.2s;
-        max-width: 220px;
+        max-width: 340px;
       }
       .sheet-chip:hover {
         border-color: #4c3fce;
@@ -180,25 +320,167 @@
         background: rgba(76, 63, 206, 0.2);
         color: #d4cfff;
       }
-      .sheet-chip-name {
+      .chip-name {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        flex: 1;
       }
-      .sheet-chip-del {
-        color: #4a4670;
-        font-size: 13px;
-        padding: 2px 4px;
-        border-radius: 3px;
+      .chip-pin {
+        font-size: 9px;
         flex-shrink: 0;
       }
-      .sheet-chip-del:hover {
+      .chip-lock {
+        font-size: 9px;
+        color: #f5cc7a;
+        flex-shrink: 0;
+      }
+      .chip-menu-btn {
+        color: #3a3760;
+        font-size: 11px;
+        padding: 1px 3px;
+        border-radius: 3px;
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.15s;
+      }
+      .chip-menu-btn:hover {
+        color: #a99cf7;
+      }
+      .chip-rename-input {
+        width: 120px;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #6c3fc7;
+        outline: none;
+        color: #e8e6f0;
+        font-size: 12px;
+        font-family: "Inter", sans-serif;
+        padding: 0 2px;
+        flex: 1;
+      }
+      .ctx-menu {
+        background: #1e1c38;
+        border: 1px solid #2e2a50;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        z-index: 600;
+        min-width: 175px;
+        overflow: hidden;
+        animation: menuIn 0.15s ease both;
+      }
+      @keyframes menuIn {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .cm-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        font-size: 12px;
+        color: #c8c4e8;
+        cursor: pointer;
+        transition: background 0.12s;
+        white-space: nowrap;
+      }
+      .cm-item:hover {
+        background: #2d2660;
+        color: #d4cfff;
+      }
+      .cm-item.danger {
         color: #f08080;
       }
-      .no-sheets,
-      .sheets-loading {
+      .cm-item.danger:hover {
+        background: rgba(240, 128, 128, 0.1);
+      }
+      .cm-sep {
+        height: 1px;
+        background: #2e2a50;
+        margin: 3px 0;
+      }
+      .cm-sec {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
         color: #4a4670;
+        padding: 5px 14px 2px;
+      }
+      .undo-toast {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1e1c38;
+        border: 1px solid #4c3fce;
+        border-radius: 14px;
+        padding: 11px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        z-index: 500;
+        min-width: 300px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+        transition:
+          opacity 0.25s,
+          transform 0.25s;
+        overflow: hidden;
+      }
+      .undo-toast.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(-50%) translateY(10px);
+      }
+      .undo-msg {
         font-size: 13px;
+        color: #d4cfff;
+        flex: 1;
+      }
+      .undo-btn {
+        height: 28px;
+        padding: 0 14px;
+        border-radius: 7px;
+        border: none;
+        background: #4c3fce;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+      }
+      .undo-close {
+        background: none;
+        border: none;
+        color: #5a5680;
+        cursor: pointer;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .undo-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #4c3fce, #6c3fc7);
+        border-radius: 0 0 14px 14px;
+      }
+      @keyframes undoCountdown {
+        from {
+          width: 100%;
+        }
+        to {
+          width: 0%;
+        }
       }
       .title-bar {
         background: #1a1830;
@@ -209,10 +491,6 @@
         display: flex;
         align-items: center;
         gap: 12px;
-      }
-      .title-bar-icon {
-        font-size: 18px;
-        flex-shrink: 0;
       }
       .title-bar-label {
         font-size: 10px;
@@ -246,10 +524,6 @@
         font-weight: 600;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
         flex-shrink: 0;
       }
       .title-bar-save:disabled {
@@ -365,10 +639,6 @@
         filter: invert(0.5);
         cursor: pointer;
       }
-      .filter-sep {
-        color: #3d3860;
-        font-size: 18px;
-      }
       .filter-actions {
         display: flex;
         gap: 6px;
@@ -450,6 +720,14 @@
         text-transform: uppercase;
         color: #7a74a8;
       }
+      .dh {
+        font-size: 9px;
+        color: #4a4670;
+        letter-spacing: 0;
+        text-transform: none;
+        font-weight: 400;
+        margin-left: 3px;
+      }
       .field input {
         height: 42px;
         padding: 0 12px;
@@ -460,9 +738,7 @@
         font-size: 13px;
         font-family: "Inter", sans-serif;
         width: 100%;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
+        transition: border-color 0.2s;
       }
       .field input::placeholder {
         color: #3d3860;
@@ -476,14 +752,12 @@
         filter: invert(0.6);
         cursor: pointer;
       }
-      /* Date input label shows DD/MM/YYYY hint */
       .date-hint {
-        font-size: 9px;
-        color: #4a4670;
-        letter-spacing: 0;
-        text-transform: none;
-        font-weight: 400;
-        margin-left: 4px;
+        font-size: 10px;
+        color: #4ecba0;
+        margin-top: 3px;
+        font-weight: 600;
+        min-height: 14px;
       }
       .ac-dropdown {
         position: absolute;
@@ -534,15 +808,8 @@
         font-weight: 600;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
         white-space: nowrap;
         box-shadow: 0 4px 14px rgba(76, 63, 206, 0.4);
-        transition: all 0.2s;
-      }
-      .btn-add:hover {
-        transform: translateY(-1px);
       }
       .toolbar {
         margin-bottom: 1rem;
@@ -580,9 +847,6 @@
         background: linear-gradient(135deg, #4c3fce, #6c3fc7);
         color: #fff;
       }
-      .tog-btn:not(.active):hover {
-        color: #c8c4e8;
-      }
       .search-box {
         position: relative;
         flex: 1;
@@ -609,13 +873,9 @@
         font-size: 13px;
         font-family: "Inter", sans-serif;
       }
-      .search-box-input::placeholder {
-        color: #3d3860;
-      }
       .search-box-input:focus {
         outline: none;
         border-color: #6c3fc7;
-        box-shadow: 0 0 0 3px rgba(108, 63, 199, 0.2);
       }
       .search-box-clear {
         position: absolute;
@@ -631,27 +891,6 @@
       }
       .search-box-clear.visible {
         display: block;
-      }
-      .search-hint {
-        font-size: 11px;
-        color: #7a74a8;
-        display: none;
-        align-items: center;
-        gap: 6px;
-      }
-      .search-hint.visible {
-        display: flex;
-      }
-      .search-hint strong {
-        color: #a99cf7;
-      }
-      .hint-tag {
-        background: rgba(76, 63, 206, 0.18);
-        color: #a99cf7;
-        font-size: 10px;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 99px;
       }
       .toolbar-row2 {
         display: flex;
@@ -674,9 +913,6 @@
         white-space: nowrap;
         border: none;
       }
-      .btn-action:active {
-        transform: scale(0.97);
-      }
       .btn-clear-entries {
         border: 1px solid #2e2a50 !important;
         background: none;
@@ -685,57 +921,26 @@
       .btn-clear-entries:hover {
         background: rgba(220, 60, 60, 0.1);
         color: #f08080;
-        border-color: rgba(220, 60, 60, 0.3) !important;
       }
       .btn-import-xls {
         border: 1px solid #4c3fce !important;
         background: rgba(76, 63, 206, 0.1);
         color: #a99cf7;
       }
-      .btn-import-xls:hover {
-        background: rgba(76, 63, 206, 0.22);
-        color: #d4cfff;
-        transform: translateY(-1px);
-      }
       .btn-import-paytm {
         border: 1px solid #00b9f2 !important;
         background: rgba(0, 185, 242, 0.08);
         color: #5dd6f8;
-      }
-      .btn-import-paytm:hover {
-        background: rgba(0, 185, 242, 0.18);
-        color: #a8ecff;
-        transform: translateY(-1px);
-      }
-      .btn-import-sbi {
-        border: 1px solid #1e6bb8 !important;
-        background: rgba(30, 107, 184, 0.12);
-        color: #6aabee;
-      }
-      .btn-import-sbi:hover {
-        background: rgba(30, 107, 184, 0.22);
-        color: #a8d4ff;
-        transform: translateY(-1px);
       }
       .btn-import-bob {
         border: 1px solid #c0541a !important;
         background: rgba(192, 84, 26, 0.12);
         color: #e8895a;
       }
-      .btn-import-bob:hover {
-        background: rgba(192, 84, 26, 0.22);
-        color: #ffb899;
-        transform: translateY(-1px);
-      }
       .btn-copy {
         border: 1px solid #7a4fcf !important;
         background: rgba(122, 79, 207, 0.1);
         color: #c8a8f8;
-      }
-      .btn-copy:hover {
-        background: rgba(122, 79, 207, 0.22);
-        color: #e4d0ff;
-        transform: translateY(-1px);
       }
       .btn-copy.copied {
         background: rgba(78, 203, 160, 0.15) !important;
@@ -745,22 +950,10 @@
       .btn-export-xls {
         background: linear-gradient(135deg, #0d7a5c, #0fa876);
         color: #fff;
-        box-shadow: 0 3px 10px rgba(13, 168, 118, 0.3);
-      }
-      .btn-export-xls:hover {
-        transform: translateY(-1px);
-      }
-      .filter-badge {
-        background: rgba(255, 255, 255, 0.25);
-        color: #fff;
-        font-size: 10px;
-        padding: 1px 6px;
-        border-radius: 99px;
-        margin-left: 2px;
       }
       .toast-notify {
         position: fixed;
-        bottom: 24px;
+        bottom: 80px;
         left: 50%;
         transform: translateX(-50%) translateY(10px);
         background: #1e1c38;
@@ -775,7 +968,7 @@
         transition:
           opacity 0.25s,
           transform 0.25s;
-        z-index: 999;
+        z-index: 400;
         pointer-events: none;
         white-space: nowrap;
       }
@@ -952,17 +1145,6 @@
         font-size: 14px;
         color: #4a4670;
       }
-      .table-loading {
-        text-align: center;
-        padding: 2.5rem 1rem;
-        color: #4a4670;
-        font-size: 13px;
-      }
-      .loading-progress {
-        font-size: 11px;
-        color: #534ab7;
-        margin-top: 4px;
-      }
       .toast-bar {
         position: absolute;
         bottom: 0;
@@ -983,7 +1165,6 @@
         margin-top: 8px;
         display: none;
       }
-      /* ── Modals ── */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -1056,7 +1237,7 @@
         text-transform: uppercase;
         color: #7a74a8;
       }
-      .modal-field input {
+      .modal-input {
         height: 42px;
         padding: 0 13px;
         border-radius: 10px;
@@ -1068,12 +1249,12 @@
         width: 100%;
         transition: border-color 0.2s;
       }
-      .modal-field input:focus {
+      .modal-input:focus {
         outline: none;
         border-color: #6c3fc7;
       }
-      .modal-field input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(0.6);
+      .modal-input option {
+        background: #1a1830;
       }
       .modal-actions {
         display: flex;
@@ -1116,8 +1297,71 @@
         font-family: "Inter", sans-serif;
         cursor: pointer;
       }
-      .btn-cancel:hover {
+      .btn-dl {
+        height: 40px;
+        padding: 0 22px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #0d7a5c, #0fa876);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+      }
+      .btn-dl:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .admin-desc {
+        font-size: 13px;
         color: #c8c4e8;
+        background: #12101f;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 14px;
+        line-height: 1.6;
+      }
+      .pw-field {
+        position: relative;
+      }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #5a5680;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .pw-error {
+        font-size: 12px;
+        color: #f08080;
+        margin-top: 6px;
+        display: none;
+      }
+      .shake {
+        animation: shake 0.4s ease both;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-8px);
+        }
+        40% {
+          transform: translateX(8px);
+        }
+        60% {
+          transform: translateX(-5px);
+        }
+        80% {
+          transform: translateX(5px);
+        }
       }
       .import-info {
         font-size: 12.5px;
@@ -1166,131 +1410,22 @@
       .import-result.err {
         color: #f08080;
       }
-      @keyframes rowIn {
-        from {
-          opacity: 0;
-          transform: translateX(-8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      .row-new {
-        animation: rowIn 0.25s ease both;
-      }
-      .hl {
-        background: rgba(169, 156, 247, 0.25);
-        color: #d4cfff;
-        border-radius: 3px;
-        padding: 0 2px;
-      }
-      .new-sheet-input {
-        height: 42px;
-        padding: 0 13px;
-        border-radius: 10px;
-        border: 1px solid #2e2a50;
-        background: #12101f;
-        color: #e8e6f0;
-        font-size: 14px;
-        font-family: "Inter", sans-serif;
-        width: 100%;
-      }
-      .new-sheet-input:focus {
-        outline: none;
-        border-color: #6c3fc7;
-      }
-      .delete-warning {
-        background: rgba(180, 30, 30, 0.12);
-        border: 1px solid rgba(192, 57, 43, 0.35);
-        border-radius: 10px;
-        padding: 12px 14px;
-        margin-bottom: 16px;
-        display: flex;
-        gap: 10px;
-      }
-      .delete-warning-icon {
-        font-size: 18px;
-        flex-shrink: 0;
-      }
-      .delete-warning-text {
-        font-size: 12.5px;
-        color: #e8a0a0;
-        line-height: 1.6;
-      }
-      .delete-warning-text strong {
-        color: #f08080;
-      }
-      .pw-field {
-        position: relative;
-      }
-      .pw-toggle {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: #5a5680;
-        cursor: pointer;
-        font-size: 16px;
-      }
-      .pw-error {
-        font-size: 12px;
-        color: #f08080;
-        margin-top: 6px;
-        display: none;
-      }
-      .shake {
-        animation: shake 0.4s ease both;
-      }
-      @keyframes shake {
-        0%,
-        100% {
-          transform: translateX(0);
-        }
-        20% {
-          transform: translateX(-8px);
-        }
-        40% {
-          transform: translateX(8px);
-        }
-        60% {
-          transform: translateX(-5px);
-        }
-        80% {
-          transform: translateX(5px);
-        }
-      }
-      .paytm-tag {
-        display: inline-block;
-        background: rgba(0, 185, 242, 0.12);
-        color: #5dd6f8;
-        font-size: 10px;
-        padding: 2px 8px;
-        border-radius: 99px;
-        font-weight: 600;
-        margin-left: 6px;
-      }
-      .sbi-tag {
-        display: inline-block;
-        background: rgba(30, 107, 184, 0.18);
-        color: #6aabee;
-        font-size: 10px;
-        padding: 2px 8px;
-        border-radius: 99px;
-        font-weight: 600;
-        margin-left: 6px;
-      }
+      .paytm-tag,
       .bob-tag {
         display: inline-block;
-        background: rgba(192, 84, 26, 0.18);
-        color: #e8895a;
         font-size: 10px;
         padding: 2px 8px;
         border-radius: 99px;
         font-weight: 600;
         margin-left: 6px;
+      }
+      .paytm-tag {
+        background: rgba(0, 185, 242, 0.12);
+        color: #5dd6f8;
+      }
+      .bob-tag {
+        background: rgba(192, 84, 26, 0.18);
+        color: #e8895a;
       }
       .sheet-detect-badge {
         display: inline-flex;
@@ -1304,7 +1439,6 @@
         color: #4ecba0;
         margin-top: 8px;
       }
-      /* preview tables */
       .prev-filter-row {
         display: flex;
         gap: 8px;
@@ -1371,7 +1505,7 @@
         color: #4ecba0;
       }
       .preview-wrap {
-        max-height: 340px;
+        max-height: 300px;
         overflow-y: auto;
         border-radius: 10px;
         border: 1px solid #2e2a50;
@@ -1394,8 +1528,6 @@
         position: sticky;
         top: 0;
         z-index: 1;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
       }
       .ptbl td {
         padding: 7px 10px;
@@ -1449,12 +1581,10 @@
       .conf-hi {
         color: #4ecba0;
         font-size: 11px;
-        margin-left: 2px;
       }
       .conf-lo {
         color: #f5cc7a;
         font-size: 11px;
-        margin-left: 2px;
       }
       .type-d {
         display: inline-block;
@@ -1494,21 +1624,13 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        transition: all 0.2s;
-      }
-      .btn-do-import:hover {
-        transform: translateY(-1px);
       }
       .btn-do-import:disabled {
         opacity: 0.45;
         cursor: not-allowed;
-        transform: none;
       }
       .btn-do-import.paytm-col {
         background: linear-gradient(135deg, #007ab8, #00b9f2);
-      }
-      .btn-do-import.sbi-col {
-        background: linear-gradient(135deg, #1a4a8a, #1e6bb8);
       }
       .btn-do-import.bob-col {
         background: linear-gradient(135deg, #8a3510, #c0541a);
@@ -1581,223 +1703,107 @@
       .debug-box.show {
         display: block;
       }
-      /* Export */
-      .export-option {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        padding: 14px;
-        border-radius: 12px;
+      .fp-list {
+        max-height: 260px;
+        overflow-y: auto;
         border: 1px solid #2e2a50;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .fp-item {
+        padding: 9px 14px;
+        font-size: 13px;
+        color: #c8c4e8;
         cursor: pointer;
-        transition: all 0.2s;
-        margin-bottom: 10px;
-      }
-      .export-option:hover {
-        border-color: #6c3fc7;
-        background: rgba(76, 63, 206, 0.07);
-      }
-      .export-option.selected {
-        border-color: #6c3fc7;
-        background: rgba(76, 63, 206, 0.15);
-      }
-      .export-option-radio {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        border: 2px solid #4a4670;
-        flex-shrink: 0;
-        margin-top: 2px;
+        transition: background 0.12s;
         display: flex;
         align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
+        gap: 7px;
       }
-      .export-option.selected .export-option-radio {
-        border-color: #6c3fc7;
-        background: #6c3fc7;
+      .fp-item:hover {
+        background: #2d2660;
+        color: #d4cfff;
       }
-      .export-option.selected .export-option-radio::after {
-        content: "";
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #fff;
-        display: block;
+      .fp-item.fp-none {
+        color: #7a74a8;
+        font-style: italic;
       }
-      .export-option-icon {
-        font-size: 22px;
-        flex-shrink: 0;
+      .rb-item {
+        border: 1px solid #2e2a50;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
       }
-      .export-option-title {
+      .rb-info {
+        flex: 1;
+      }
+      .rb-name {
         font-size: 14px;
         font-weight: 600;
         color: #d4cfff;
         margin-bottom: 3px;
       }
-      .export-option-desc {
-        font-size: 12px;
-        color: #5a5680;
-        line-height: 1.5;
-      }
-      .export-option.selected .export-option-desc {
-        color: #7a74a8;
-      }
-      .exp-preview-note {
-        background: #12101f;
-        border: 1px solid #2e2a50;
-        border-radius: 10px;
-        padding: 10px 14px;
-        font-size: 12px;
-        color: #7a74a8;
-        margin-bottom: 12px;
-      }
-      .exp-preview-note strong {
-        color: #a99cf7;
-      }
-      .exp-sheets-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 8px;
-      }
-      .exp-sheet-chip {
-        background: rgba(76, 63, 206, 0.15);
-        color: #a99cf7;
+      .rb-meta {
         font-size: 11px;
-        padding: 3px 10px;
-        border-radius: 99px;
-        border: 1px solid rgba(76, 63, 206, 0.3);
-      }
-      .exp-sheet-chip.green {
-        background: rgba(13, 168, 118, 0.15);
-        color: #4ecba0;
-        border-color: rgba(13, 168, 118, 0.3);
-      }
-      .split-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 8px;
-        flex-wrap: wrap;
-      }
-      .split-label {
-        font-size: 12px;
-        color: #7a74a8;
-      }
-      .split-btn {
-        height: 28px;
-        padding: 0 14px;
-        border-radius: 99px;
-        border: 1px solid #2e2a50;
-        background: none;
         color: #5a5680;
-        font-size: 12px;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-        transition: all 0.15s;
+        line-height: 1.6;
       }
-      .split-btn:hover {
-        border-color: #6c3fc7;
-        color: #a99cf7;
-      }
-      .split-btn.active {
-        background: rgba(76, 63, 206, 0.2);
-        border-color: #6c3fc7;
-        color: #a99cf7;
-      }
-      .prog-wrap {
-        background: #12101f;
-        border: 1px solid #2a2745;
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 12px;
-        display: none;
-      }
-      .prog-wrap.show {
-        display: block;
-      }
-      .prog-top {
+      .rb-btns {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-      .prog-spinner {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        border: 2.5px solid #2e2a50;
-        border-top-color: #6c3fc7;
-        animation: spin 0.7s linear infinite;
+        flex-direction: column;
+        gap: 5px;
         flex-shrink: 0;
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .prog-spinner.done {
-        animation: none;
-        border-color: #4ecba0;
-        border-top-color: #4ecba0;
-      }
-      .prog-main-label {
-        font-size: 13px;
-        font-weight: 500;
-        color: #d4cfff;
-        flex: 1;
-      }
-      .prog-track {
-        height: 8px;
-        background: #2e2a50;
-        border-radius: 99px;
-        overflow: hidden;
-      }
-      .prog-fill {
-        height: 100%;
-        width: 0%;
-        background: linear-gradient(90deg, #4c3fce, #0fa876);
-        border-radius: 99px;
-        transition: width 0.35s ease;
-      }
-      .prog-sub {
+      .btn-restore {
+        height: 30px;
+        padding: 0 14px;
+        border-radius: 7px;
+        border: 1px solid rgba(78, 203, 160, 0.3) !important;
+        background: rgba(78, 203, 160, 0.15);
+        color: #4ecba0;
         font-size: 11px;
-        color: #5a5680;
-        margin-top: 7px;
-        min-height: 14px;
-      }
-      .opts-area {
-        transition: opacity 0.2s;
-      }
-      .opts-area.locked {
-        opacity: 0.25;
-        pointer-events: none;
-        user-select: none;
-      }
-      .btn-dl {
-        height: 40px;
-        padding: 0 22px;
-        border-radius: 10px;
-        border: none;
-        background: linear-gradient(135deg, #0d7a5c, #0fa876);
-        color: #fff;
-        font-size: 13.5px;
         font-weight: 600;
         font-family: "Inter", sans-serif;
         cursor: pointer;
-        transition: all 0.2s;
       }
-      .btn-dl:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
+      .btn-perm-del {
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 7px;
+        border: 1px solid rgba(240, 128, 128, 0.25) !important;
+        background: rgba(240, 128, 128, 0.1);
+        color: #f08080;
+        font-size: 11px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
       }
-      .btn-dl:not(:disabled):hover {
-        transform: translateY(-1px);
+      .emoji-grid {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 6px;
       }
-      .btn-cancel-exp:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
+      .emoji-opt {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid #2e2a50;
+        background: #12101f;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+      .emoji-opt:hover,
+      .emoji-opt.selected {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.2);
       }
     </style>
 
@@ -1807,7 +1813,9 @@
           <div class="hero-icon">💸</div>
           <div>
             <div class="hero-title">Payment Tracker</div>
-            <div class="hero-sub">Accounts payable — cloud backed</div>
+            <div class="hero-sub">
+              Cloud backed · Folders sync across devices ☁️
+            </div>
           </div>
         </div>
         <div class="hero-right">
@@ -1818,21 +1826,36 @@
           <div class="hero-date" id="heroDate"></div>
         </div>
       </div>
-
       <div class="sheet-manager">
-        <div class="sheet-manager-top">
-          <div class="sm-title">📁 Saved Sheets</div>
-          <button class="btn-new-sheet" onclick="openNewSheet()">
-            ＋ New Sheet
-          </button>
+        <div class="sm-top">
+          <div class="sm-title">📁 Sheets</div>
+          <div class="sm-btns">
+            <button
+              class="sm-btn btn-lock"
+              id="dragLockBtn"
+              onclick="toggleDragLock()"
+            >
+              🔓 Unlocked</button
+            ><button
+              class="sm-btn btn-bin"
+              id="recycleBinBtn"
+              onclick="openRecycleBin()"
+              style="display: none"
+            >
+              🗑 Bin</button
+            ><button class="sm-btn btn-folder" onclick="openFolderModal(null)">
+              📂 New Folder</button
+            ><button class="sm-btn btn-sheet" onclick="openNewSheet()">
+              ＋ New Sheet
+            </button>
+          </div>
         </div>
-        <div class="sheets-list" id="sheetsList">
-          <div class="sheets-loading">⏳ Loading…</div>
+        <div id="sheetsArea">
+          <div style="color: #4a4670; font-size: 13px">⏳ Loading…</div>
         </div>
       </div>
-
       <div class="title-bar">
-        <div class="title-bar-icon">📋</div>
+        <div style="font-size: 18px; flex-shrink: 0">📋</div>
         <div style="flex: 1">
           <div class="title-bar-label">Sheet Title</div>
           <input
@@ -1853,7 +1876,6 @@
           ☁️ Save
         </button>
       </div>
-
       <div class="stats">
         <div class="stat stat-purple">
           <div class="stat-label">Vendors</div>
@@ -1868,7 +1890,6 @@
           <div class="stat-val" id="statEntries">0</div>
         </div>
       </div>
-
       <div class="filter-bar">
         <div class="filter-bar-top">
           <div class="filter-bar-label">📅 Date Range</div>
@@ -1877,7 +1898,7 @@
               <span class="filter-date-lbl">From</span
               ><input type="date" class="filter-date" id="filterFrom" />
             </div>
-            <span class="filter-sep">→</span>
+            <span style="color: #3d3860; font-size: 18px">→</span>
             <div class="filter-date-wrap">
               <span class="filter-date-lbl">To</span
               ><input type="date" class="filter-date" id="filterTo" />
@@ -1901,43 +1922,37 @@
               margin-right: 2px;
             "
             >Quick:</span
-          >
-          <button
+          ><button
             class="preset-btn"
             id="presetToday"
             onclick="applyPreset('today')"
           >
-            Today
-          </button>
-          <button
+            Today</button
+          ><button
             class="preset-btn"
             id="presetWeek"
             onclick="applyPreset('week')"
           >
-            This week
-          </button>
-          <button
+            This week</button
+          ><button
             class="preset-btn"
             id="presetMonth"
             onclick="applyPreset('month')"
           >
-            This month
-          </button>
-          <button
+            This month</button
+          ><button
             class="preset-btn"
             id="presetLast30"
             onclick="applyPreset('last30')"
           >
-            Last 30 days
-          </button>
-          <button
+            Last 30 days</button
+          ><button
             class="preset-btn"
             id="presetLast3m"
             onclick="applyPreset('last3m')"
           >
-            Last 3 months
-          </button>
-          <button
+            Last 3 months</button
+          ><button
             class="preset-btn"
             id="presetYear"
             onclick="applyPreset('year')"
@@ -1946,7 +1961,6 @@
           </button>
         </div>
       </div>
-
       <div class="form-card">
         <div class="form-row">
           <div class="field">
@@ -1965,7 +1979,7 @@
             ></div>
           </div>
           <div class="field">
-            <label>Phone <span class="date-hint">(optional)</span></label
+            <label>Phone <span class="dh">(opt)</span></label
             ><input
               id="phoneInput"
               type="tel"
@@ -1975,11 +1989,11 @@
             />
           </div>
           <div class="field">
-            <label>Remark <span class="date-hint">(optional)</span></label
+            <label>Remark <span class="dh">(opt)</span></label
             ><input
               id="remarkInput"
               type="text"
-              placeholder="e.g. Labour…"
+              placeholder="Labour…"
               autocomplete="off"
               disabled
             />
@@ -1997,15 +2011,15 @@
             />
           </div>
           <div class="field">
-            <label>Date <span class="date-hint">DD/MM/YYYY</span></label
+            <label>Date <span class="dh">DD/MM</span></label
             ><input id="dateInput" type="date" disabled />
+            <div class="date-hint" id="dateHint"></div>
           </div>
           <button class="btn-add" id="addBtn" onclick="addEntry()" disabled>
             ＋ Add
           </button>
         </div>
       </div>
-
       <div class="toolbar">
         <div class="toolbar-row1">
           <div class="view-toggle">
@@ -2014,22 +2028,20 @@
               id="btnGrouped"
               onclick="setView('grouped')"
             >
-              ⊞ Grouped
-            </button>
-            <button class="tog-btn" id="btnAll" onclick="setView('all')">
+              ⊞ Grouped</button
+            ><button class="tog-btn" id="btnAll" onclick="setView('all')">
               ≡ All entries
             </button>
           </div>
           <div class="search-box">
-            <span class="search-box-icon">🔍</span>
-            <input
+            <span class="search-box-icon">🔍</span
+            ><input
               class="search-box-input"
               id="searchInput"
               type="text"
               placeholder="Search vendor, phone, remark…"
               autocomplete="off"
-            />
-            <button
+            /><button
               class="search-box-clear"
               id="searchClear"
               onclick="clearSearch()"
@@ -2037,45 +2049,30 @@
               ✕
             </button>
           </div>
-          <div class="search-hint" id="searchHint">
-            Showing <span id="searchHintCount" class="hint-tag">0</span> results
-            for <strong id="searchHintTerm"></strong>
-          </div>
         </div>
         <div class="toolbar-row2">
           <button class="btn-action btn-clear-entries" onclick="clearAll()">
-            🗑 Clear
-          </button>
-          <button class="btn-action btn-import-xls" onclick="openImport()">
-            📥 Import Excel
-          </button>
-          <button class="btn-action btn-import-paytm" onclick="openPaytm()">
-            🔵 Import Paytm
-          </button>
-          <button class="btn-action btn-import-sbi" onclick="openSBI()">
-            🏦 Import SBI
-          </button>
-          <button class="btn-action btn-import-bob" onclick="openBOB()">
-            🏛 Import BOB PDF
-          </button>
-          <button
+            🗑 Clear</button
+          ><button class="btn-action btn-import-xls" onclick="openImport()">
+            📥 Excel</button
+          ><button class="btn-action btn-import-paytm" onclick="openPaytm()">
+            🔵 Paytm</button
+          ><button class="btn-action btn-import-bob" onclick="openBOB()">
+            🏛 BOB PDF</button
+          ><button
             class="btn-action btn-copy"
             id="copyBtn"
             onclick="copyVisible()"
           >
-            📋 Copy
-          </button>
-          <button class="btn-action btn-export-xls" onclick="openExportModal()">
+            📋 Copy</button
+          ><button
+            class="btn-action btn-export-xls"
+            onclick="openExportModal()"
+          >
             📊 Export
-            <span
-              class="filter-badge"
-              id="exportBadge"
-              style="display: none"
-            ></span>
           </button>
         </div>
       </div>
-
       <div class="table-card">
         <table class="pt-table">
           <thead id="tableHead"></thead>
@@ -2085,258 +2082,16 @@
       </div>
       <p class="err-msg" id="errMsg"></p>
     </div>
+
+    <div class="undo-toast hidden" id="undoToast">
+      <span class="undo-msg" id="undoMsg"></span
+      ><button class="undo-btn" onclick="doUndo()">↩ Undo</button
+      ><button class="undo-close" onclick="dismissUndo()">✕</button>
+      <div class="undo-bar" id="undoBar"></div>
+    </div>
     <div class="toast-notify" id="toastNotify"></div>
 
-    <!-- ══ BOB PDF MODAL ══ -->
-    <div class="modal-overlay hidden" id="bobModal">
-      <div class="modal wide">
-        <div class="modal-title">
-          <div
-            class="modal-title-icon"
-            style="background: rgba(192, 84, 26, 0.2)"
-          >
-            🏛
-          </div>
-          Import Bank of Baroda Statement
-          <span class="bob-tag">PDF · Excel · CSV</span>
-        </div>
-        <div id="bobStep1">
-          <div class="pw-note">
-            🔐 <strong>BOB PDF password = your phone number.</strong><br />
-            Unlock first → Open PDF → enter phone number →
-            <strong>File → Print → Save as PDF</strong><br />
-            Or:
-            <a
-              href="https://www.ilovepdf.com/unlock_pdf"
-              target="_blank"
-              style="color: #ffb899"
-              >ilovepdf.com/unlock_pdf</a
-            >
-            — enter phone → download unlocked → upload here.
-          </div>
-          <div
-            class="import-zone bob-zone"
-            onclick="document.getElementById('bobFile').click()"
-          >
-            <span class="import-zone-icon">📄</span>
-            Click to choose BOB statement (PDF / Excel / CSV)
-            <input
-              type="file"
-              id="bobFile"
-              accept=".pdf,.xlsx,.xls,.csv"
-              style="display: none"
-              onchange="handleBOBFile(this)"
-            />
-          </div>
-          <div class="import-result" id="bobUploadResult"></div>
-          <div class="progress-box" id="bobProgressBox">
-            <div class="progress-label" id="bobProgressLabel">Reading PDF…</div>
-            <div class="progress-bar-track">
-              <div class="progress-bar-fill" id="bobProgressFill"></div>
-            </div>
-          </div>
-          <span
-            class="debug-toggle"
-            onclick="
-              document.getElementById('bobDebugBox').classList.toggle('show')
-            "
-            >🔍 Debug text</span
-          >
-          <div class="debug-box" id="bobDebugBox"></div>
-        </div>
-        <div id="bobStep2" style="display: none">
-          <div class="prev-filter-row">
-            <span style="font-size: 12px; font-weight: 600; color: #7a74a8"
-              >Show:</span
-            >
-            <button class="pflt on" id="bfAll" onclick="setBOBFilter('all')">
-              All
-            </button>
-            <button
-              class="pflt debit"
-              id="bfDebit"
-              onclick="setBOBFilter('debit')"
-            >
-              💸 Debits
-            </button>
-            <button
-              class="pflt credit"
-              id="bfCredit"
-              onclick="setBOBFilter('credit')"
-            >
-              💰 Credits
-            </button>
-            <span class="sel-info" id="bobSelInfo">0 selected</span>
-          </div>
-          <div class="stats-row-sm" id="bobStatsRow"></div>
-          <div class="preview-wrap">
-            <table class="ptbl">
-              <thead>
-                <tr>
-                  <th class="chk">
-                    <input
-                      type="checkbox"
-                      id="bobSelAll"
-                      onchange="toggleBOBAll(this)"
-                    />
-                  </th>
-                  <th style="width: 80px">Date</th>
-                  <th style="width: 165px">
-                    Name
-                    <span style="color: #e8895a; font-weight: 400"
-                      >(editable)</span
-                    >
-                  </th>
-                  <th>Description</th>
-                  <th style="width: 52px">Type</th>
-                  <th style="width: 88px">Amount</th>
-                </tr>
-              </thead>
-              <tbody id="bobPreviewBody"></tbody>
-            </table>
-          </div>
-          <div class="import-result" id="bobImportResult"></div>
-          <div class="modal-actions">
-            <button class="btn-cancel" onclick="resetBOB()">← Back</button>
-            <button
-              class="btn-do-import bob-col"
-              id="bobImportBtn"
-              onclick="doBOBImport()"
-            >
-              ⬇ Import Selected
-            </button>
-          </div>
-        </div>
-        <div class="modal-actions" style="margin-top: 10px">
-          <button class="btn-cancel" onclick="closeBOB()">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ SBI MODAL ══ -->
-    <div class="modal-overlay hidden" id="sbiModal">
-      <div class="modal wide">
-        <div class="modal-title">
-          <div
-            class="modal-title-icon"
-            style="background: rgba(30, 107, 184, 0.2)"
-          >
-            🏦
-          </div>
-          Import SBI Statement<span class="sbi-tag">Auto name extraction</span>
-        </div>
-        <div id="sbiStep1">
-          <p class="import-info">
-            Upload SBI statement Excel. Columns: <code>Date</code>
-            <code>Details</code> <code>Ref No</code> <code>Debit</code>
-            <code>Credit</code>
-          </p>
-          <div
-            class="import-zone"
-            onclick="document.getElementById('sbiFile').click()"
-          >
-            <span class="import-zone-icon">📊</span>Click to choose SBI
-            statement (.xlsx / .xls / .csv)
-            <input
-              type="file"
-              id="sbiFile"
-              accept=".xlsx,.xls,.csv"
-              style="display: none"
-              onchange="handleSBIUpload(this)"
-            />
-          </div>
-          <div class="import-result" id="sbiUploadResult"></div>
-          <div id="sbiSheetBadge" style="display: none"></div>
-        </div>
-        <div id="sbiStep2" style="display: none">
-          <div class="prev-filter-row">
-            <span style="font-size: 12px; font-weight: 600; color: #7a74a8"
-              >Show:</span
-            >
-            <button class="pflt on" id="sfAll" onclick="setSBIFilter('all')">
-              All
-            </button>
-            <button
-              class="pflt debit"
-              id="sfDebit"
-              onclick="setSBIFilter('debit')"
-            >
-              💸 Debit
-            </button>
-            <button
-              class="pflt credit"
-              id="sfCredit"
-              onclick="setSBIFilter('credit')"
-            >
-              💰 Credit
-            </button>
-            <span class="sel-info" id="sbiSelInfo">0 selected</span>
-          </div>
-          <div class="stats-row-sm" id="sbiStatsRow"></div>
-          <div class="preview-wrap">
-            <table class="ptbl">
-              <thead>
-                <tr>
-                  <th class="chk">
-                    <input
-                      type="checkbox"
-                      id="sbiSelAll"
-                      onchange="toggleSBIAll(this)"
-                    />
-                  </th>
-                  <th style="width: 80px">Date</th>
-                  <th style="width: 155px">Name (editable)</th>
-                  <th>Raw Details</th>
-                  <th style="width: 50px">Ref</th>
-                  <th style="width: 52px">Type</th>
-                  <th style="width: 82px">Amount</th>
-                </tr>
-              </thead>
-              <tbody id="sbiPreviewBody"></tbody>
-            </table>
-          </div>
-          <div class="import-result" id="sbiImportResult"></div>
-          <div class="modal-actions">
-            <button class="btn-cancel" onclick="resetSBI()">← Back</button>
-            <button
-              class="btn-do-import sbi-col"
-              id="sbiImportBtn"
-              onclick="doSBIImport()"
-            >
-              ⬇ Import Selected
-            </button>
-          </div>
-        </div>
-        <div class="modal-actions" style="margin-top: 10px">
-          <button class="btn-cancel" onclick="closeSBI()">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Other modals -->
-    <div class="modal-overlay hidden" id="newSheetModal">
-      <div class="modal">
-        <div class="modal-title">
-          <div class="modal-title-icon">📁</div>
-          Create new sheet
-        </div>
-        <div class="modal-field">
-          <label>Sheet name</label
-          ><input
-            class="new-sheet-input"
-            id="newSheetName"
-            type="text"
-            placeholder="e.g. May 2026 Expenses"
-            maxlength="80"
-          />
-        </div>
-        <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeNewSheet()">Cancel</button
-          ><button class="btn-save" onclick="createSheet()">Create</button>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay hidden" id="deleteModal">
+    <div class="modal-overlay hidden" id="adminModal">
       <div class="modal">
         <div class="modal-title">
           <div
@@ -2347,29 +2102,124 @@
           </div>
           Admin password required
         </div>
-        <div class="delete-warning">
-          <div class="delete-warning-icon">⚠️</div>
-          <div class="delete-warning-text">
-            Delete <strong id="deleteSheetName">"Sheet"</strong> permanently.
-          </div>
-        </div>
+        <div class="admin-desc" id="adminDesc"></div>
         <div class="modal-field">
-          <label>Admin password</label>
+          <label>Password</label>
           <div class="pw-field">
             <input
-              id="deletePassword"
+              id="adminPw"
+              class="modal-input"
               type="password"
               placeholder="Enter password…"
               autocomplete="off"
-            /><button class="pw-toggle" onclick="togglePwVis()">👁</button>
+            /><button
+              class="pw-toggle"
+              onclick="
+                var i = document.getElementById('adminPw');
+                i.type = i.type === 'password' ? 'text' : 'password';
+              "
+            >
+              👁
+            </button>
           </div>
-          <div class="pw-error" id="pwError">❌ Incorrect password.</div>
+          <div class="pw-error" id="adminPwErr">❌ Incorrect password.</div>
         </div>
         <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button
-          ><button class="btn-delete-confirm" onclick="confirmDelete()">
-            🗑 Delete
+          <button class="btn-cancel" onclick="closeAdminModal()">Cancel</button
+          ><button class="btn-delete-confirm" onclick="doAdmin()">
+            Confirm
           </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay hidden" id="folderModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div class="modal-title-icon">📂</div>
+          <span id="folderModalTitle">New folder</span>
+        </div>
+        <div class="modal-field">
+          <label>Name</label
+          ><input
+            class="modal-input"
+            id="folderName"
+            type="text"
+            placeholder="e.g. RK Payments…"
+            maxlength="50"
+          />
+        </div>
+        <div class="modal-field">
+          <label>Icon</label>
+          <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeFolderModal()">Cancel</button
+          ><button class="btn-save" onclick="saveFolderModal()">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay hidden" id="newSheetModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div class="modal-title-icon">📋</div>
+          Create new sheet
+        </div>
+        <div class="modal-field">
+          <label>Sheet name</label
+          ><input
+            class="modal-input"
+            id="newSheetName"
+            type="text"
+            placeholder="e.g. RK_BoB_SENT_April"
+            maxlength="80"
+          />
+        </div>
+        <div class="modal-field">
+          <label
+            >Folder
+            <span style="font-size: 10px; color: #4a4670"
+              >(optional)</span
+            ></label
+          ><select
+            class="modal-input"
+            id="newSheetFolder"
+            style="cursor: pointer"
+          >
+            <option value="">— No folder —</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeNewSheet()">Cancel</button
+          ><button class="btn-save" onclick="createSheet()">Create</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay hidden" id="pickerModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div class="modal-title-icon">📁</div>
+          <span id="pickerTitle">Choose folder</span>
+        </div>
+        <div class="fp-list" id="pickerList"></div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closePicker()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay hidden" id="recycleBinModal">
+      <div class="modal">
+        <div class="modal-title">
+          <div
+            class="modal-title-icon"
+            style="background: rgba(240, 128, 128, 0.2)"
+          >
+            🗑
+          </div>
+          Recycle Bin
+        </div>
+        <div id="recycleBinList"></div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeRecycleBin()">Close</button>
         </div>
       </div>
     </div>
@@ -2380,28 +2230,54 @@
           Modify entry
         </div>
         <div class="modal-field">
-          <label>Name / vendor</label
-          ><input id="editName" type="text" autocomplete="off" />
+          <label>Name</label
+          ><input
+            id="editName"
+            class="modal-input"
+            type="text"
+            autocomplete="off"
+          />
         </div>
         <div class="modal-field">
-          <label>Phone <span class="date-hint">(optional)</span></label
-          ><input id="editPhone" type="tel" autocomplete="off" />
+          <label>Phone</label
+          ><input
+            id="editPhone"
+            class="modal-input"
+            type="tel"
+            autocomplete="off"
+          />
         </div>
         <div class="modal-field">
-          <label>Remark <span class="date-hint">(optional)</span></label
-          ><input id="editRemark" type="text" autocomplete="off" />
+          <label>Remark</label
+          ><input
+            id="editRemark"
+            class="modal-input"
+            type="text"
+            autocomplete="off"
+          />
         </div>
         <div class="modal-field">
           <label>Amount (₹)</label
-          ><input id="editAmt" type="number" min="0" step="0.01" />
+          ><input
+            id="editAmt"
+            class="modal-input"
+            type="number"
+            min="0"
+            step="0.01"
+          />
         </div>
         <div class="modal-field">
-          <label>Date <span class="date-hint">DD/MM/YYYY</span></label
-          ><input id="editDate" type="date" />
+          <label
+            >Date
+            <span
+              style="font-size: 10px; color: #4ecba0"
+              id="editDateHint"
+            ></span></label
+          ><input id="editDate" class="modal-input" type="date" />
         </div>
         <div class="modal-actions">
           <button class="btn-cancel" onclick="closeEdit()">Cancel</button
-          ><button class="btn-save" onclick="saveEdit()">Save changes</button>
+          ><button class="btn-save" onclick="saveEdit()">Save</button>
         </div>
       </div>
     </div>
@@ -2412,9 +2288,8 @@
           Import from Excel
         </div>
         <p class="import-info">
-          Upload a .xlsx exported from this tracker.<br />Columns:
-          <code>Name / Vendor</code>, <code>Phone</code>, <code>Remark</code>,
-          <code>Amount (INR)</code>, <code>Date Added</code>
+          Upload .xlsx from this tracker. Columns: <code>Name/Vendor</code>
+          <code>Amount</code> <code>Date</code>
         </p>
         <div
           class="import-zone"
@@ -2443,19 +2318,15 @@
           >
             🔵
           </div>
-          Import Paytm<span class="paytm-tag">Auto sheet detection</span>
+          Import Paytm<span class="paytm-tag">Auto-detect</span>
         </div>
         <div id="paytmStep1">
-          <p class="import-info">
-            Upload your Paytm Excel. Auto-detects transaction sheet. Remarks
-            stored separately.
-          </p>
+          <p class="import-info">Upload Paytm Excel statement.</p>
           <div
             class="import-zone"
             onclick="document.getElementById('paytmFile').click()"
           >
-            <span class="import-zone-icon">📂</span>Click to choose Paytm
-            Excel<input
+            <span class="import-zone-icon">📂</span>Click to choose<input
               type="file"
               id="paytmFile"
               accept=".xlsx,.xls,.csv"
@@ -2472,9 +2343,7 @@
         </div>
         <div id="paytmStep2" style="display: none">
           <div class="prev-filter-row">
-            <span style="font-size: 12px; font-weight: 600; color: #7a74a8"
-              >Show:</span
-            ><button class="pflt on" id="fbAll" onclick="filterPaytm('all')">
+            <button class="pflt on" id="fbAll" onclick="filterPaytm('all')">
               All</button
             ><button
               class="pflt debit"
@@ -2488,7 +2357,7 @@
               onclick="filterPaytm('credit')"
             >
               💰 Credit</button
-            ><span class="sel-info" id="selCount">0 selected</span>
+            ><span class="sel-info" id="selCount">0 sel</span>
           </div>
           <div class="preview-wrap">
             <table class="ptbl">
@@ -2505,7 +2374,6 @@
                   <th>Description</th>
                   <th style="width: 90px">Amount</th>
                   <th style="width: 52px">Type</th>
-                  <th style="color: #e0a84a">Remark</th>
                 </tr>
               </thead>
               <tbody id="previewBody"></tbody>
@@ -2521,12 +2389,114 @@
               class="btn-do-import paytm-col"
               onclick="importSelectedPaytm()"
             >
-              Import Selected →
+              Import →
             </button>
           </div>
         </div>
         <div class="modal-actions" style="margin-top: 8px">
           <button class="btn-cancel" onclick="closePaytm()">Close</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay hidden" id="bobModal">
+      <div class="modal wide">
+        <div class="modal-title">
+          <div
+            class="modal-title-icon"
+            style="background: rgba(192, 84, 26, 0.2)"
+          >
+            🏛
+          </div>
+          Import Bank of Baroda<span class="bob-tag">PDF · Excel · CSV</span>
+        </div>
+        <div id="bobStep1">
+          <div class="pw-note">
+            🔐 <strong>BOB PDF password = your phone number.</strong><br />Open
+            PDF → enter phone → <strong>File → Print → Save as PDF</strong>
+          </div>
+          <div
+            class="import-zone bob-zone"
+            onclick="document.getElementById('bobFile').click()"
+          >
+            <span class="import-zone-icon">📄</span>Click to choose BOB
+            statement (PDF / Excel / CSV)<input
+              type="file"
+              id="bobFile"
+              accept=".pdf,.xlsx,.xls,.csv"
+              style="display: none"
+              onchange="handleBOBFile(this)"
+            />
+          </div>
+          <div class="import-result" id="bobUploadResult"></div>
+          <div class="progress-box" id="bobProgressBox">
+            <div class="progress-label" id="bobProgressLabel">Reading…</div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="bobProgressFill"></div>
+            </div>
+          </div>
+          <span
+            class="debug-toggle"
+            onclick="
+              document.getElementById('bobDebugBox').classList.toggle('show')
+            "
+            >🔍 Debug</span
+          >
+          <div class="debug-box" id="bobDebugBox"></div>
+        </div>
+        <div id="bobStep2" style="display: none">
+          <div class="prev-filter-row">
+            <button class="pflt on" id="bfAll" onclick="setBOBFilter('all')">
+              All</button
+            ><button
+              class="pflt debit"
+              id="bfDebit"
+              onclick="setBOBFilter('debit')"
+            >
+              💸 Debits</button
+            ><button
+              class="pflt credit"
+              id="bfCredit"
+              onclick="setBOBFilter('credit')"
+            >
+              💰 Credits</button
+            ><span class="sel-info" id="bobSelInfo">0 sel</span>
+          </div>
+          <div class="stats-row-sm" id="bobStatsRow"></div>
+          <div class="preview-wrap">
+            <table class="ptbl">
+              <thead>
+                <tr>
+                  <th class="chk">
+                    <input
+                      type="checkbox"
+                      id="bobSelAll"
+                      onchange="toggleBOBAll(this)"
+                    />
+                  </th>
+                  <th style="width: 80px">Date</th>
+                  <th style="width: 165px">Name (editable)</th>
+                  <th>Description</th>
+                  <th style="width: 52px">Type</th>
+                  <th style="width: 88px">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="bobPreviewBody"></tbody>
+            </table>
+          </div>
+          <div class="import-result" id="bobImportResult"></div>
+          <div class="modal-actions">
+            <button class="btn-cancel" onclick="resetBOB()">← Back</button
+            ><button
+              class="btn-do-import bob-col"
+              id="bobImportBtn"
+              onclick="doBOBImport()"
+            >
+              ⬇ Import Selected
+            </button>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top: 10px">
+          <button class="btn-cancel" onclick="closeBOB()">Close</button>
         </div>
       </div>
     </div>
@@ -2541,84 +2511,33 @@
           </div>
           Export to Excel
         </div>
-        <div class="opts-area" id="exportOptsArea">
-          <div class="export-option selected" id="opt1" onclick="selExpOpt(1)">
-            <div class="export-option-radio"></div>
-            <div class="export-option-icon">📄</div>
-            <div>
-              <div class="export-option-title">Standard export</div>
-              <div class="export-option-desc">
-                2 sheets: All Entries + Summary by Vendor
-              </div>
-            </div>
-          </div>
-          <div class="export-option" id="opt2" onclick="selExpOpt(2)">
-            <div class="export-option-radio"></div>
-            <div class="export-option-icon">📑</div>
-            <div>
-              <div class="export-option-title">Per-vendor sheets</div>
-              <div class="export-option-desc">
-                All Entries + Summary (hyperlinks) + one sheet per vendor
-              </div>
-            </div>
-          </div>
-          <div class="export-option" id="opt3" onclick="selExpOpt(3)">
-            <div class="export-option-radio"></div>
-            <div class="export-option-icon">🗂️</div>
-            <div>
-              <div class="export-option-title">Vendor sheets only</div>
-              <div class="export-option-desc">
-                One sheet per vendor with ← Back to Summary
-              </div>
-            </div>
-          </div>
-          <div id="splitSizeRow" style="display: none" class="exp-preview-note">
-            <strong>Vendors per file:</strong>
-            <div class="split-row">
-              <span class="split-label">Split every</span
-              ><button
-                class="split-btn active"
-                id="split50"
-                onclick="setSplit(50)"
-              >
-                50</button
-              ><button class="split-btn" id="split100" onclick="setSplit(100)">
-                100</button
-              ><button class="split-btn" id="split200" onclick="setSplit(200)">
-                200</button
-              ><button class="split-btn" id="splitAll" onclick="setSplit(9999)">
-                All in one</button
-              ><span
-                class="split-label"
-                id="splitFilesNote"
-                style="color: #a99cf7"
-              ></span>
-            </div>
-          </div>
-          <div class="exp-preview-note" style="margin-top: 8px">
-            <strong>Will create:</strong> <span id="exportPreviewText"></span>
-            <div class="exp-sheets-list" id="exportSheetsList"></div>
-          </div>
-        </div>
-        <div class="prog-wrap" id="progWrap">
-          <div class="prog-top">
-            <div class="prog-spinner" id="progSpinner"></div>
-            <div class="prog-main-label" id="progMainLabel">Preparing…</div>
-          </div>
-          <div class="prog-track">
-            <div class="prog-fill" id="progFill"></div>
-          </div>
-          <div class="prog-sub" id="progSub"></div>
+        <div
+          style="
+            background: #12101f;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 1rem;
+            font-size: 13px;
+            color: #7a74a8;
+            line-height: 1.6;
+          "
+        >
+          <strong style="color: #a99cf7">Standard Export</strong> — 2 sheets:<br />•
+          <strong style="color: #4ecba0">All Entries</strong> — every row<br />•
+          <strong style="color: #a99cf7">Summary by Vendor</strong> — totals<br /><span
+            style="font-size: 11px; color: #4a4670"
+            >Respects active date/search filter</span
+          >
         </div>
         <div class="modal-actions">
           <button
-            class="btn-cancel btn-cancel-exp"
+            class="btn-cancel"
             id="cancelExportBtn"
             onclick="closeExportModal()"
           >
             Cancel</button
           ><button class="btn-dl" id="downloadBtn" onclick="doExport()">
-            ⬇ Download
+            ⬇ Download Excel
           </button>
         </div>
       </div>
@@ -2629,37 +2548,165 @@
     <script>
       pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
       var SB = "https://nswekmxsotaehmjspfjr.supabase.co";
       var SK =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zd2VrbXhzb3RhZWhtanNwZmpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NjU2NTgsImV4cCI6MjA5NDQ0MTY1OH0.R1YOyTWiYEPc_LkqCaKwdpqAb5xjt6PUggnvFbx0jso";
       var ADMIN_HASH =
         "6179443c3781d86666106ea5847fc4e06b4a98a336d28635eaee64ed031d4fc5";
-      var PAGE = 1000;
+      var PAGE = 1000,
+        EMOJIS = [
+          "📂",
+          "💰",
+          "🏦",
+          "📊",
+          "🏛",
+          "🔵",
+          "💼",
+          "🗂️",
+          "📋",
+          "📈",
+          "💳",
+          "🧾",
+          "🏪",
+          "🏗️",
+          "👤",
+          "📑",
+        ];
+
+      /* ── CLOUD FOLDER SYNC ───────────────────────────────────────────────────────
+   Folders are encoded into the title of a hidden Supabase sheet (CFG_PREFIX).
+   On load that sheet is found, decoded, and applied — so any device that opens
+   the tracker gets the same folder layout automatically, no schema changes needed.
+*/
+      var CFG_PREFIX = "__ptcfg__",
+        cfgSheetRef = null,
+        _cloudSaveTimer = null;
+
+      function loadConfigFromCloud(title) {
+        if (!title || !title.startsWith(CFG_PREFIX)) return;
+        try {
+          var data = JSON.parse(
+            decodeURIComponent(escape(atob(title.slice(CFG_PREFIX.length)))),
+          );
+          if (Array.isArray(data.folders)) folders = data.folders;
+          if (data.sheetFolders && typeof data.sheetFolders === "object")
+            sheetFolders = data.sheetFolders;
+          if (data.sheetMeta && typeof data.sheetMeta === "object")
+            sheetMeta = data.sheetMeta;
+          if (typeof data.dragLocked === "boolean")
+            dragLocked = data.dragLocked;
+          try {
+            localStorage.setItem("pt_f6", JSON.stringify(folders));
+            localStorage.setItem("pt_sf6", JSON.stringify(sheetFolders));
+            localStorage.setItem("pt_meta6", JSON.stringify(sheetMeta));
+            localStorage.setItem("pt_lock6", dragLocked ? "1" : "");
+          } catch (e) {}
+          updateDragLockBtn();
+        } catch (e) {}
+      }
+      async function saveConfigToCloud() {
+        try {
+          var json = JSON.stringify({
+            folders: folders,
+            sheetFolders: sheetFolders,
+            sheetMeta: sheetMeta,
+            dragLocked: dragLocked,
+          });
+          var title = CFG_PREFIX + btoa(unescape(encodeURIComponent(json)));
+          if (cfgSheetRef) {
+            await sb("sheets?id=eq." + cfgSheetRef.id, {
+              method: "PATCH",
+              body: JSON.stringify({ title: title }),
+            });
+            cfgSheetRef.title = title;
+          } else {
+            var r = await sb("sheets", {
+              method: "POST",
+              body: JSON.stringify({ title: title }),
+            });
+            var d = await r.json();
+            cfgSheetRef = Array.isArray(d) ? d[0] : d;
+          }
+        } catch (e) {}
+      }
+      /* ─────────────────────────────────────────────────────────────────────────── */
+
       var entries = [],
         sheets = [],
         currentSheetId = null,
         view = "grouped",
-        openGroups = {};
-      var acIdx = -1,
-        editIdx = -1,
+        openGroups = {},
+        acIdx = -1;
+      var editIdx = -1,
         editEntryId = null,
-        searchQ = "";
-      var paytmRows = [],
-        paytmFilter = "all";
-      var sbiRows = [],
-        sbiFilter = "all";
-      var bobRows = [],
-        bobFilter = "all";
-      var dateFrom = "",
+        searchQ = "",
+        dateFrom = "",
         dateTo = "",
-        pendingDeleteId = null;
-      var exportOpt = 1,
-        splitSize = 50,
         exportRunning = false;
+      var paytmRows = [],
+        paytmFilter = "all",
+        bobRows = [],
+        bobFilter = "all";
+      var folders = [],
+        sheetFolders = {},
+        sheetMeta = {},
+        dragLocked = false,
+        recycleBin = [];
+      var selectedEmoji = "📂",
+        _folderModalParentId = null,
+        _folderEditId = null,
+        _openMenu = null,
+        _adminCb = null;
+      var _undoFn = null,
+        _undoTimer = null,
+        _pickerCb = null,
+        _folderDragId = null;
       var RESERVED = ["grand total", "total", "subtotal", "summary"];
       function isReserved(n) {
         return RESERVED.indexOf(n.toLowerCase().trim()) !== -1;
+      }
+
+      function saveFolderState() {
+        try {
+          localStorage.setItem("pt_f6", JSON.stringify(folders));
+          localStorage.setItem("pt_sf6", JSON.stringify(sheetFolders));
+          localStorage.setItem("pt_meta6", JSON.stringify(sheetMeta));
+          localStorage.setItem("pt_lock6", dragLocked ? "1" : "");
+        } catch (e) {}
+        if (_cloudSaveTimer) clearTimeout(_cloudSaveTimer);
+        _cloudSaveTimer = setTimeout(saveConfigToCloud, 2000);
+      }
+      function saveRecycleBin() {
+        try {
+          var cut = Date.now() - 30 * 864e5;
+          recycleBin = recycleBin.filter((x) => x.deletedAt > cut).slice(-10);
+          localStorage.setItem("pt_bin6", JSON.stringify(recycleBin));
+        } catch (e) {}
+      }
+      function loadState() {
+        try {
+          var f = localStorage.getItem("pt_f6");
+          if (f) folders = JSON.parse(f);
+        } catch (e) {}
+        try {
+          var sf = localStorage.getItem("pt_sf6");
+          if (sf) sheetFolders = JSON.parse(sf);
+        } catch (e) {}
+        try {
+          var m = localStorage.getItem("pt_meta6");
+          if (m) sheetMeta = JSON.parse(m);
+        } catch (e) {}
+        try {
+          dragLocked = !!localStorage.getItem("pt_lock6");
+        } catch (e) {}
+        try {
+          var b = localStorage.getItem("pt_bin6");
+          if (b) {
+            recycleBin = JSON.parse(b);
+            var cut = Date.now() - 30 * 864e5;
+            recycleBin = recycleBin.filter((x) => x.deletedAt > cut);
+          }
+        } catch (e) {}
       }
 
       function sb(path, opts) {
@@ -2696,16 +2743,116 @@
           .map((b) => b.toString(16).padStart(2, "0"))
           .join("");
       }
-
-      /* ── Date helpers ── ALL display as DD/MM/YYYY ── */
-      function isoDisp(iso) {
-        /* Input: YYYY-MM-DD → Output: DD/MM/YYYY */
-        if (!iso) return "—";
-        var p = iso.split("-");
-        return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso;
+      function fetchAllEntries(sid) {
+        return new Promise((res, rej) => {
+          var all = [],
+            off = 0;
+          function pg() {
+            sb(
+              "entries?sheet_id=eq." +
+                sid +
+                "&select=id,name,phone,remark,amount,date&order=created_at.asc&limit=" +
+                PAGE +
+                "&offset=" +
+                off,
+              {
+                headers: {
+                  apikey: SK,
+                  Authorization: "Bearer " + SK,
+                  "Content-Type": "application/json",
+                  Range: off + "-" + (off + PAGE - 1),
+                  "Range-Unit": "items",
+                  Prefer: "count=exact",
+                },
+              },
+            )
+              .then((r) => {
+                var cr = r.headers.get("Content-Range") || "";
+                return r.json().then((d) => ({ data: d, cr }));
+              })
+              .then((result) => {
+                var pg2 = Array.isArray(result.data) ? result.data : [];
+                all = all.concat(pg2);
+                var tot = null,
+                  mx = result.cr.match(/\/(\d+)$/);
+                if (mx) tot = parseInt(mx[1]);
+                if (pg2.length === PAGE && (tot === null || all.length < tot)) {
+                  off += PAGE;
+                  pg();
+                } else res(all);
+              })
+              .catch(rej);
+          }
+          pg();
+        });
       }
+
+      (function () {
+        loadState();
+        var d = new Date();
+        document.getElementById("dateInput").value = d
+          .toISOString()
+          .slice(0, 10);
+        document.getElementById("dateHint").textContent = isoDisp(
+          d.toISOString().slice(0, 10),
+        );
+        var days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        document.getElementById("heroDate").innerHTML =
+          days[d.getDay()] + "<br>" + isoDisp(d.toISOString().slice(0, 10));
+        var eg = document.getElementById("emojiGrid");
+        EMOJIS.forEach((e) => {
+          var btn = document.createElement("button");
+          btn.className =
+            "emoji-opt" + (e === selectedEmoji ? " selected" : "");
+          btn.textContent = e;
+          btn.onclick = () => {
+            selectedEmoji = e;
+            document
+              .querySelectorAll(".emoji-opt")
+              .forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+          };
+          eg.appendChild(btn);
+        });
+        document.addEventListener("click", (e) => {
+          if (_openMenu && !_openMenu.contains(e.target)) closeMenu();
+        });
+        document
+          .getElementById("dateInput")
+          .addEventListener("change", function () {
+            document.getElementById("dateHint").textContent = this.value
+              ? isoDisp(this.value)
+              : "";
+          });
+        document
+          .getElementById("editDate")
+          .addEventListener("change", function () {
+            document.getElementById("editDateHint").textContent = this.value
+              ? "→ " + isoDisp(this.value)
+              : "";
+          });
+        updateDragLockBtn();
+        updateBinBtn();
+        loadSheets();
+      })();
+
       function todayISO() {
         return new Date().toISOString().slice(0, 10);
+      }
+      function isoDisp(iso) {
+        if (!iso) return "—";
+        var p = iso.split("-");
+        return p.length === 3
+          ? p[2].padStart(2, "0") + "/" + p[1].padStart(2, "0") + "/" + p[0]
+          : iso;
       }
       function fmt(n) {
         return Number(n).toLocaleString("en-IN", {
@@ -2726,7 +2873,7 @@
         if (i === -1) return text;
         return (
           text.slice(0, i) +
-          '<span class="hl">' +
+          '<span style="background:rgba(169,156,247,.25);color:#d4cfff;border-radius:3px;padding:0 2px;">' +
           text.slice(i, i + q.length) +
           "</span>" +
           text.slice(i + q.length)
@@ -2736,7 +2883,7 @@
         var t = document.getElementById("toastNotify");
         t.textContent = msg;
         t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 2800);
+        setTimeout(() => t.classList.remove("show"), 2600);
       }
       function flashBar() {
         var b = document.getElementById("toastBar");
@@ -2745,163 +2892,748 @@
         b.classList.add("show");
         setTimeout(() => b.classList.remove("show"), 2200);
       }
+      function findC(hdrs, kws) {
+        for (var i = 0; i < hdrs.length; i++) {
+          var h = (hdrs[i] + "")
+            .toLowerCase()
+            .replace(/[\n\r]/g, " ")
+            .trim();
+          for (var j = 0; j < kws.length; j++) if (h.includes(kws[j])) return i;
+        }
+        return -1;
+      }
+      function closeMenu() {
+        if (_openMenu) {
+          try {
+            _openMenu.remove();
+          } catch (e) {}
+        }
+        _openMenu = null;
+      }
+      function openCtxMenu(btn, html) {
+        closeMenu();
+        var rect = btn.getBoundingClientRect();
+        var menu = document.createElement("div");
+        menu.className = "ctx-menu";
+        menu.style.cssText = "position:fixed;z-index:600;";
+        menu.innerHTML = html;
+        document.body.appendChild(menu);
+        _openMenu = menu;
+        var mh = menu.offsetHeight || 160;
+        var top = rect.bottom + 4;
+        var right = window.innerWidth - rect.right;
+        if (top + mh > window.innerHeight) top = Math.max(4, rect.top - mh - 4);
+        menu.style.top = top + "px";
+        menu.style.right = right + "px";
+      }
 
-      /* ── Data helpers ── */
-      function getFiltered() {
-        if (!dateFrom && !dateTo) return entries;
-        return entries.filter((e) => {
-          var d = e.date || "";
-          if (dateFrom && d < dateFrom) return false;
-          if (dateTo && d > dateTo) return false;
-          return true;
+      function requireAdmin(desc, cb) {
+        _adminCb = cb;
+        document.getElementById("adminDesc").textContent = desc;
+        document.getElementById("adminPw").value = "";
+        document.getElementById("adminPwErr").style.display = "none";
+        document.getElementById("adminModal").classList.remove("hidden");
+        setTimeout(() => document.getElementById("adminPw").focus(), 120);
+      }
+      function closeAdminModal() {
+        document.getElementById("adminModal").classList.add("hidden");
+        _adminCb = null;
+      }
+      async function doAdmin() {
+        var hash = await sha256hex(document.getElementById("adminPw").value);
+        if (hash !== ADMIN_HASH) {
+          var i = document.getElementById("adminPw");
+          i.classList.add("shake");
+          setTimeout(() => i.classList.remove("shake"), 400);
+          document.getElementById("adminPwErr").style.display = "block";
+          i.value = "";
+          i.focus();
+          return;
+        }
+        closeAdminModal();
+        if (_adminCb) {
+          var cb = _adminCb;
+          _adminCb = null;
+          cb();
+        }
+      }
+      document.getElementById("adminModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeAdminModal();
+      });
+      document.getElementById("adminPw").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doAdmin();
+      });
+
+      function showUndoToast(msg, undoFn, ms) {
+        ms = ms || 8000;
+        if (_undoTimer) clearTimeout(_undoTimer);
+        _undoFn = undoFn;
+        document.getElementById("undoMsg").textContent = msg;
+        var bar = document.getElementById("undoBar");
+        bar.style.animation = "none";
+        bar.offsetHeight;
+        bar.style.cssText =
+          "position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#4c3fce,#6c3fc7);border-radius:0 0 14px 14px;animation:undoCountdown " +
+          ms +
+          "ms linear forwards;";
+        document.getElementById("undoToast").classList.remove("hidden");
+        _undoTimer = setTimeout(dismissUndo, ms);
+      }
+      function doUndo() {
+        if (_undoTimer) clearTimeout(_undoTimer);
+        var fn = _undoFn;
+        _undoFn = null;
+        dismissUndo();
+        if (fn) fn();
+      }
+      function dismissUndo() {
+        document.getElementById("undoToast").classList.add("hidden");
+        if (_undoTimer) {
+          clearTimeout(_undoTimer);
+          _undoTimer = null;
+        }
+        _undoFn = null;
+      }
+      function toggleDragLock() {
+        dragLocked = !dragLocked;
+        saveFolderState();
+        updateDragLockBtn();
+        renderSheets();
+      }
+      function updateDragLockBtn() {
+        var btn = document.getElementById("dragLockBtn");
+        btn.textContent = dragLocked ? "🔒 Locked" : "🔓 Unlocked";
+        btn.classList.toggle("locked", dragLocked);
+      }
+
+      function updateBinBtn() {
+        var btn = document.getElementById("recycleBinBtn");
+        if (recycleBin.length) {
+          btn.style.display = "flex";
+          btn.textContent = "🗑 Bin (" + recycleBin.length + ")";
+        } else btn.style.display = "none";
+      }
+      function openRecycleBin() {
+        var list = document.getElementById("recycleBinList");
+        if (!recycleBin.length) {
+          list.innerHTML =
+            '<div style="text-align:center;padding:2rem;color:#4a4670;font-size:13px;">Bin is empty</div>';
+        } else
+          list.innerHTML = recycleBin
+            .map((item) => {
+              var fn = "Uncategorised";
+              if (item.folderId) {
+                var f = folders.find((x) => x.id === item.folderId);
+                if (f) fn = f.icon + " " + f.name;
+              }
+              var dt = new Date(item.deletedAt).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              });
+              return (
+                '<div class="rb-item"><div class="rb-info"><div class="rb-name">' +
+                escH(item.title) +
+                '</div><div class="rb-meta">📅 ' +
+                dt +
+                " · " +
+                escH(fn) +
+                " · " +
+                (item.entries || []).length +
+                ' entries</div></div><div class="rb-btns"><button class="btn-restore" onclick="doRestoreSheet(\'' +
+                item.id +
+                '\')">↩ Restore</button><button class="btn-perm-del" onclick="permDel(\'' +
+                item.id +
+                "')\">🗑</button></div></div>"
+              );
+            })
+            .join("");
+        document.getElementById("recycleBinModal").classList.remove("hidden");
+      }
+      function closeRecycleBin() {
+        document.getElementById("recycleBinModal").classList.add("hidden");
+      }
+      document
+        .getElementById("recycleBinModal")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) closeRecycleBin();
         });
-      }
-      function getVisible() {
-        var s = getFiltered();
-        if (!searchQ) return s;
-        var q = searchQ.toLowerCase();
-        return s.filter(
-          (e) =>
-            e.name.toLowerCase().includes(q) ||
-            (e.phone || "").includes(q) ||
-            (e.remark || "").toLowerCase().includes(q) ||
-            (e.amount + "").includes(q) ||
-            isoDisp(e.date).includes(q),
-        );
-      }
-      function getGroups(src) {
-        var m = {};
-        (src || entries).forEach((e) => {
-          var k = e.name.toLowerCase().trim();
-          if (!m[k]) m[k] = { name: e.name, total: 0, items: [] };
-          m[k].total += e.amount;
-          m[k].items.push({
-            id: e.id,
-            name: e.name,
-            phone: e.phone || "",
-            remark: e.remark || "",
-            amount: e.amount,
-            date: e.date,
-            idx: entries.indexOf(e),
+      async function doRestoreSheet(rid) {
+        var item = recycleBin.find((x) => x.id === rid);
+        if (!item) return;
+        closeRecycleBin();
+        setSync("syncing");
+        try {
+          var resp = await sb("sheets", {
+            method: "POST",
+            body: JSON.stringify({ title: item.title }),
           });
-        });
-        return Object.values(m).sort((a, b) => b.total - a.total);
-      }
-
-      /* ── Paginated fetch ── */
-      function fetchAllEntries(sheetId) {
-        return new Promise((resolve, reject) => {
-          var all = [],
-            offset = 0;
-          function page() {
-            sb(
-              "entries?sheet_id=eq." +
-                sheetId +
-                "&select=id,name,phone,remark,amount,date&order=created_at.asc&limit=" +
-                PAGE +
-                "&offset=" +
-                offset,
-              {
-                headers: {
-                  apikey: SK,
-                  Authorization: "Bearer " + SK,
-                  "Content-Type": "application/json",
-                  Range: offset + "-" + (offset + PAGE - 1),
-                  "Range-Unit": "items",
-                  Prefer: "count=exact",
-                },
-              },
-            )
-              .then((r) => {
-                var cr = r.headers.get("Content-Range") || "";
-                return r.json().then((d) => ({ data: d, cr }));
-              })
-              .then((res) => {
-                var pg = Array.isArray(res.data) ? res.data : [];
-                all = all.concat(pg);
-                var tb = document.getElementById("tableBody");
-                if (tb)
-                  tb.innerHTML =
-                    '<tr><td colspan="7"><div class="table-loading">⏳ Loading…<div class="loading-progress">' +
-                    all.length +
-                    " loaded…</div></div></td></tr>";
-                var tot = null;
-                var mx = res.cr.match(/\/(\d+)$/);
-                if (mx) tot = parseInt(mx[1]);
-                if (pg.length === PAGE && (tot === null || all.length < tot)) {
-                  offset += PAGE;
-                  page();
-                } else resolve(all);
-              })
-              .catch(reject);
+          var ns = await resp.json();
+          ns = Array.isArray(ns) ? ns[0] : ns;
+          sheets.unshift(ns);
+          if (item.folderId && folders.find((f) => f.id === item.folderId))
+            sheetFolders[ns.id] = item.folderId;
+          if (item.entries && item.entries.length) {
+            var ins = item.entries.map((e) => ({
+              sheet_id: ns.id,
+              name: e.name,
+              phone: e.phone || null,
+              remark: e.remark || null,
+              amount: e.amount,
+              date: e.date,
+            }));
+            for (var i = 0; i < ins.length; i += 500)
+              await sb("entries", {
+                method: "POST",
+                body: JSON.stringify(ins.slice(i, i + 500)),
+              });
           }
-          page();
-        });
+          recycleBin = recycleBin.filter((x) => x.id !== rid);
+          saveRecycleBin();
+          saveFolderState();
+          renderSheets();
+          updateBinBtn();
+          setSync("ok");
+          showToast('✅ "' + item.title + '" restored!');
+        } catch (e) {
+          setSync("error");
+        }
+      }
+      function permDel(rid) {
+        recycleBin = recycleBin.filter((x) => x.id !== rid);
+        saveRecycleBin();
+        updateBinBtn();
+        openRecycleBin();
       }
 
-      /* ── Init ── */
-      (function () {
-        var d = new Date();
-        document.getElementById("dateInput").value = d
-          .toISOString()
-          .slice(0, 10);
-        /* heroDate: "Friday 29/05/2026" */
-        var days = [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ];
-        var day = days[d.getDay()];
-        document.getElementById("heroDate").innerHTML =
-          day + "<br>" + isoDisp(d.toISOString().slice(0, 10));
-        loadSheets();
-      })();
-
-      /* ── Sheets ── */
       function loadSheets() {
         sb("sheets?select=id,title,updated_at&order=updated_at.desc")
           .then((r) => r.json())
           .then((d) => {
-            sheets = Array.isArray(d) ? d : [];
+            var all = Array.isArray(d) ? d : [];
+            cfgSheetRef =
+              all.find((s) => s.title && s.title.startsWith(CFG_PREFIX)) ||
+              null;
+            if (cfgSheetRef) loadConfigFromCloud(cfgSheetRef.title);
+            sheets = all.filter(
+              (s) => !s.title || !s.title.startsWith(CFG_PREFIX),
+            );
             renderSheets();
             setSync("ok");
           })
           .catch(() => {
             setSync("error");
-            document.getElementById("sheetsList").innerHTML =
+            document.getElementById("sheetsArea").innerHTML =
               '<div style="color:#f08080;font-size:13px;">⚠ Could not connect to Supabase</div>';
           });
       }
+
       function renderSheets() {
-        var el = document.getElementById("sheetsList");
-        if (!sheets.length) {
-          el.innerHTML =
-            '<div class="no-sheets">No sheets yet — create one above</div>';
+        var area = document.getElementById("sheetsArea"),
+          html = "";
+        var pinned = sheets.filter(
+          (s) => sheetMeta[s.id] && sheetMeta[s.id].pinned,
+        );
+        if (pinned.length)
+          html +=
+            '<div class="pin-section"><div class="sec-label">⭐ Pinned</div><div class="chips-wrap">' +
+            pinned.map((s) => chipHTML(s)).join("") +
+            "</div></div>";
+        var uncat = sheets.filter((s) => !sheetFolders[s.id]);
+        if (uncat.length) {
+          if (folders.length)
+            html += '<div class="uncat-label">Uncategorised</div>';
+          html +=
+            '<div class="chips-wrap" style="margin-bottom:8px;">' +
+            uncat.map((s) => chipHTML(s)).join("") +
+            "</div>";
+        }
+        folders
+          .filter((f) => !f.parentId)
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .forEach((f) => {
+            html += buildFolderHTML(f.id, 0, new Set());
+          });
+        area.innerHTML = html;
+        if (!dragLocked)
+          area.querySelectorAll(".sheet-chip[data-id]").forEach((c) => {
+            c.addEventListener("dragstart", (e) => {
+              e.dataTransfer.setData("sheetId", c.dataset.id);
+              c.classList.add("dragging");
+              e.stopPropagation();
+            });
+            c.addEventListener("dragend", () => c.classList.remove("dragging"));
+          });
+        updateFolderSelects();
+      }
+      function buildFolderHTML(fid, depth, visited) {
+        if (visited.has(fid) || depth > 20) return "";
+        visited.add(fid);
+        var f = folders.find((x) => x.id === fid);
+        if (!f) return "";
+        var isOpen = f.open !== false,
+          fSheets = sheets.filter((s) => sheetFolders[s.id] === fid);
+        var childF = folders
+          .filter((x) => x.parentId === fid)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        var ind = depth > 0 ? "margin-left:" + depth * 14 + "px;" : "";
+        var h =
+          '<div class="folder-block" id="fb_' +
+          fid +
+          '" style="' +
+          ind +
+          '" ondragover="fDragOver(event,\'' +
+          fid +
+          "')\" ondragleave=\"fDragLeave(event,'" +
+          fid +
+          "')\" ondrop=\"fDrop(event,'" +
+          fid +
+          "')\">";
+        h +=
+          '<div class="folder-header" draggable="true" ondragstart="fhDS(event,\'' +
+          fid +
+          '\')" ondragend="fhDE()" onclick="toggleFolder(\'' +
+          fid +
+          "')\">";
+        h +=
+          '<span class="f-chev' +
+          (isOpen ? " open" : "") +
+          '">›</span><span class="f-icon">' +
+          f.icon +
+          '</span><span class="f-name">' +
+          escH(f.name) +
+          "</span>";
+        h +=
+          '<span class="f-count">' +
+          (fSheets.length + childF.length) +
+          "</span>";
+        h +=
+          '<button class="f-act" onclick="event.stopPropagation();openFolderMenu(event,\'' +
+          fid +
+          "')\">⋯</button></div>";
+        h +=
+          '<div class="folder-children' +
+          (isOpen ? "" : " collapsed") +
+          '" id="fc_' +
+          fid +
+          '">';
+        childF.forEach((cf) => {
+          h += buildFolderHTML(cf.id, depth + 1, new Set(visited));
+        });
+        if (fSheets.length)
+          h +=
+            '<div class="folder-chips-row">' +
+            fSheets.map((s) => chipHTML(s)).join("") +
+            "</div>";
+        if (!childF.length && !fSheets.length)
+          h +=
+            '<span class="folder-empty-hint">Drag sheets here or use ⋯ on chip</span>';
+        return h + "</div></div>";
+      }
+      function chipHTML(s) {
+        var active = s.id === currentSheetId ? " active" : "";
+        var pinned = sheetMeta[s.id] && sheetMeta[s.id].pinned;
+        var lockedAttr = dragLocked ? "" : ' draggable="true"';
+        var safeClick = s.title.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+        return (
+          '<div class="sheet-chip' +
+          active +
+          '" data-id="' +
+          s.id +
+          '" title="' +
+          escH(s.title) +
+          '"' +
+          lockedAttr +
+          " onclick=\"selectSheet('" +
+          s.id +
+          "','" +
+          safeClick +
+          "')\" ondblclick=\"startInlineRename('" +
+          s.id +
+          "')\">" +
+          (pinned ? '<span class="chip-pin">⭐</span>' : "") +
+          '<span class="chip-name">' +
+          escH(s.title) +
+          "</span>" +
+          (dragLocked ? '<span class="chip-lock">🔒</span>' : "") +
+          '<button class="chip-menu-btn" onclick="event.stopPropagation();openChipMenu(event,\'' +
+          s.id +
+          "')\">⋯</button></div>"
+        );
+      }
+
+      function openChipMenu(e, sheetId) {
+        var isPinned = sheetMeta[sheetId] && sheetMeta[sheetId].pinned;
+        var inFolder = sheetFolders[sheetId];
+        var html =
+          '<div class="cm-item" onclick="pinToggle(\'' +
+          sheetId +
+          "')\">" +
+          (isPinned ? "★ Unpin" : "⭐ Pin to top") +
+          '</div><div class="cm-item" onclick="startInlineRename(\'' +
+          sheetId +
+          '\')">✏️ Rename</div><div class="cm-sep"></div>';
+        if (folders.length) {
+          html += '<div class="cm-sec">Move to folder</div>';
+          if (inFolder)
+            html +=
+              '<div class="cm-item" onclick="moveToFolder(\'' +
+              sheetId +
+              "',null)\">🚫 Remove from folder</div>";
+          html +=
+            '<div class="cm-item" onclick="openFolderPicker(\'' +
+            sheetId +
+            '\')">📂 Choose folder…</div><div class="cm-sep"></div>';
+        }
+        html +=
+          '<div class="cm-item danger" onclick="promptDeleteSheet(\'' +
+          sheetId +
+          "')\">🔐 Delete sheet</div>";
+        openCtxMenu(e.currentTarget, html);
+      }
+      function openFolderMenu(e, fid) {
+        var html =
+          '<div class="cm-item" onclick="startFolderRename(\'' +
+          fid +
+          '\')">✏️ Rename</div><div class="cm-item" onclick="openFolderModal(\'' +
+          fid +
+          '\')">📂 Add subfolder</div><div class="cm-item" onclick="openFolderMovePicker(\'' +
+          fid +
+          '\')">📁 Move to…</div><div class="cm-sep"></div><div class="cm-item danger" onclick="promptDeleteFolder(\'' +
+          fid +
+          "')\">🔐 Delete folder</div>";
+        openCtxMenu(e.currentTarget, html);
+        e.stopPropagation();
+      }
+
+      function openFolderPicker(sheetId) {
+        closeMenu();
+        _pickerCb = function (fid) {
+          moveToFolder(sheetId, fid);
+          closePicker();
+        };
+        document.getElementById("pickerTitle").textContent = "Move to folder";
+        var html =
+          '<div class="fp-item fp-none" onclick="_pickerCb(null);closePicker()">🚫 No folder</div>' +
+          buildPickerTree(null, 0, null);
+        document.getElementById("pickerList").innerHTML = html;
+        document.getElementById("pickerModal").classList.remove("hidden");
+      }
+      function openFolderMovePicker(fid) {
+        closeMenu();
+        var excl = getFolderDesc(fid);
+        _pickerCb = function (tid) {
+          if (tid !== fid) {
+            var f = folders.find((x) => x.id === fid);
+            if (f) {
+              f.parentId = tid || null;
+              saveFolderState();
+              renderSheets();
+              showToast("📁 Folder moved");
+            }
+          }
+          closePicker();
+        };
+        document.getElementById("pickerTitle").textContent = "Move folder to…";
+        var html =
+          '<div class="fp-item fp-none" onclick="_pickerCb(null)">📂 Root</div>' +
+          buildPickerTree(null, 0, excl);
+        document.getElementById("pickerList").innerHTML = html;
+        document.getElementById("pickerModal").classList.remove("hidden");
+      }
+      function buildPickerTree(pid, depth, excl) {
+        var html = "";
+        folders
+          .filter((f) => (f.parentId || null) === (pid || null))
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .forEach((f) => {
+            if (excl && excl.has(f.id)) return;
+            html +=
+              '<div class="fp-item" style="padding-left:' +
+              (14 + depth * 16) +
+              'px" onclick="_pickerCb(\'' +
+              f.id +
+              "')\">" +
+              f.icon +
+              " " +
+              escH(f.name) +
+              "</div>" +
+              buildPickerTree(f.id, depth + 1, excl);
+          });
+        return html;
+      }
+      function getFolderDesc(fid) {
+        var res = new Set([fid]),
+          q = [fid];
+        while (q.length) {
+          var cur = q.shift();
+          folders
+            .filter((f) => f.parentId === cur)
+            .forEach((c) => {
+              res.add(c.id);
+              q.push(c.id);
+            });
+        }
+        return res;
+      }
+      function closePicker() {
+        document.getElementById("pickerModal").classList.add("hidden");
+        _pickerCb = null;
+      }
+      document.getElementById("pickerModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closePicker();
+      });
+
+      function toggleFolder(fid) {
+        var f = folders.find((x) => x.id === fid);
+        if (!f) return;
+        f.open = !f.open;
+        saveFolderState();
+        renderSheets();
+      }
+      function openFolderModal(parentId) {
+        _folderEditId = null;
+        _folderModalParentId = parentId || null;
+        selectedEmoji = "📂";
+        document
+          .querySelectorAll(".emoji-opt")
+          .forEach((b) =>
+            b.classList.toggle("selected", b.textContent === "📂"),
+          );
+        document.getElementById("folderName").value = "";
+        document.getElementById("folderModalTitle").textContent = parentId
+          ? "New subfolder"
+          : "New folder";
+        document.getElementById("folderModal").classList.remove("hidden");
+        setTimeout(() => document.getElementById("folderName").focus(), 100);
+      }
+      function closeFolderModal() {
+        document.getElementById("folderModal").classList.add("hidden");
+      }
+      function saveFolderModal() {
+        var name = document.getElementById("folderName").value.trim();
+        if (!name) return;
+        if (_folderEditId) {
+          var f = folders.find((x) => x.id === _folderEditId);
+          if (f) {
+            f.name = name;
+            f.icon = selectedEmoji;
+          }
+        } else {
+          var sibs = folders.filter(
+            (x) => (x.parentId || null) === (_folderModalParentId || null),
+          );
+          folders.push({
+            id: "f_" + Date.now(),
+            name,
+            icon: selectedEmoji,
+            parentId: _folderModalParentId || null,
+            open: true,
+            order: sibs.reduce((m, f) => Math.max(m, f.order || 0), 0) + 1,
+          });
+        }
+        saveFolderState();
+        closeFolderModal();
+        renderSheets();
+        showToast(selectedEmoji + " " + name + " saved ☁️");
+      }
+      document.getElementById("folderModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeFolderModal();
+      });
+      document.getElementById("folderName").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") saveFolderModal();
+      });
+      function startFolderRename(fid) {
+        closeMenu();
+        var f = folders.find((x) => x.id === fid);
+        if (!f) return;
+        _folderEditId = fid;
+        selectedEmoji = f.icon;
+        document.getElementById("folderName").value = f.name;
+        document
+          .querySelectorAll(".emoji-opt")
+          .forEach((b) =>
+            b.classList.toggle("selected", b.textContent === f.icon),
+          );
+        document.getElementById("folderModalTitle").textContent =
+          "Rename folder";
+        document.getElementById("folderModal").classList.remove("hidden");
+        setTimeout(() => document.getElementById("folderName").focus(), 100);
+      }
+      function promptDeleteFolder(fid) {
+        closeMenu();
+        var f = folders.find((x) => x.id === fid);
+        requireAdmin(
+          'Delete folder "' +
+            (f ? f.name : "") +
+            '"\nSheets inside become uncategorised.',
+          function () {
+            var snap = {
+              folders: JSON.parse(JSON.stringify(folders)),
+              sheetFolders: JSON.parse(JSON.stringify(sheetFolders)),
+            };
+            var desc = getFolderDesc(fid);
+            desc.forEach(function (did) {
+              folders = folders.filter((x) => x.id !== did);
+              Object.keys(sheetFolders).forEach(function (sid) {
+                if (sheetFolders[sid] === did) delete sheetFolders[sid];
+              });
+            });
+            saveFolderState();
+            renderSheets();
+            showUndoToast("🗑 Folder deleted", function () {
+              folders = snap.folders;
+              sheetFolders = snap.sheetFolders;
+              saveFolderState();
+              renderSheets();
+              showToast("↩ Folder restored");
+            });
+          },
+        );
+      }
+      function moveToFolder(sheetId, folderId) {
+        if (folderId === null) delete sheetFolders[sheetId];
+        else sheetFolders[sheetId] = folderId;
+        saveFolderState();
+        renderSheets();
+        closeMenu();
+        showToast(folderId ? "📂 Moved" : "🚫 Removed from folder");
+      }
+      function updateFolderSelects() {
+        var sel = document.getElementById("newSheetFolder");
+        if (!sel) return;
+        sel.innerHTML = '<option value="">— No folder —</option>';
+        function addOpts(pid, depth) {
+          folders
+            .filter((f) => (f.parentId || null) === (pid || null))
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
+            .forEach((f) => {
+              sel.insertAdjacentHTML(
+                "beforeend",
+                '<option value="' +
+                  f.id +
+                  '">' +
+                  "  ".repeat(depth) +
+                  f.icon +
+                  " " +
+                  escH(f.name) +
+                  "</option>",
+              );
+              addOpts(f.id, depth + 1);
+            });
+        }
+        addOpts(null, 0);
+      }
+      function fhDS(e, fid) {
+        _folderDragId = fid;
+        e.stopPropagation();
+      }
+      function fhDE() {
+        _folderDragId = null;
+      }
+      function fDragOver(e, fid) {
+        e.preventDefault();
+        e.stopPropagation();
+        var fb = document.getElementById("fb_" + fid);
+        if (fb) fb.classList.add("drag-over-folder");
+      }
+      function fDragLeave(e, fid) {
+        var fb = document.getElementById("fb_" + fid);
+        if (fb) fb.classList.remove("drag-over-folder");
+      }
+      function fDrop(e, tfid) {
+        e.preventDefault();
+        e.stopPropagation();
+        var fb = document.getElementById("fb_" + tfid);
+        if (fb) fb.classList.remove("drag-over-folder");
+        if (_folderDragId) {
+          if (_folderDragId !== tfid) {
+            var df = folders.find((x) => x.id === _folderDragId),
+              tf = folders.find((x) => x.id === tfid);
+            if (df && tf && df.parentId === tf.parentId) {
+              var tmp = df.order;
+              df.order = tf.order;
+              tf.order = tmp;
+              saveFolderState();
+              renderSheets();
+            }
+          }
+          _folderDragId = null;
           return;
         }
-        el.innerHTML = sheets
-          .map(
-            (s) =>
-              '<div class="sheet-chip' +
-              (s.id === currentSheetId ? " active" : "") +
-              '" onclick="selectSheet(\'' +
-              s.id +
-              "','" +
-              s.title.replace(/'/g, "\\'") +
-              '\')"><span class="sheet-chip-name">' +
-              s.title +
-              '</span><span class="sheet-chip-del" onclick="event.stopPropagation();deleteSheet(\'' +
-              s.id +
-              '\')" title="Delete">🔐</span></div>',
-          )
-          .join("");
+        var sid = e.dataTransfer.getData("sheetId");
+        if (sid && !dragLocked) moveToFolder(sid, tfid);
       }
+      function pinToggle(sheetId) {
+        closeMenu();
+        if (!sheetMeta[sheetId]) sheetMeta[sheetId] = {};
+        sheetMeta[sheetId].pinned = !sheetMeta[sheetId].pinned;
+        saveFolderState();
+        renderSheets();
+        showToast(sheetMeta[sheetId].pinned ? "⭐ Pinned" : "★ Unpinned");
+      }
+      function startInlineRename(sheetId) {
+        closeMenu();
+        var chips = document.querySelectorAll(
+          '.sheet-chip[data-id="' + sheetId + '"]',
+        );
+        if (!chips.length) return;
+        var chip = chips[0];
+        var nameSpan = chip.querySelector(".chip-name");
+        if (!nameSpan) return;
+        var currentName =
+          (sheets.find((s) => s.id === sheetId) || {}).title || "";
+        var input = document.createElement("input");
+        input.type = "text";
+        input.value = currentName;
+        input.className = "chip-rename-input";
+        nameSpan.replaceWith(input);
+        input.focus();
+        input.select();
+        var committed = false;
+        function commit() {
+          if (committed) return;
+          committed = true;
+          var newName = input.value.trim();
+          if (newName && newName !== currentName) {
+            setSync("syncing");
+            sb("sheets?id=eq." + sheetId, {
+              method: "PATCH",
+              body: JSON.stringify({
+                title: newName,
+                updated_at: new Date().toISOString(),
+              }),
+            })
+              .then(function () {
+                var s = sheets.find((x) => x.id === sheetId);
+                if (s) s.title = newName;
+                if (currentSheetId === sheetId)
+                  document.getElementById("sheetTitle").value = newName;
+                renderSheets();
+                setSync("ok");
+              })
+              .catch(function () {
+                setSync("error");
+                renderSheets();
+              });
+          } else renderSheets();
+        }
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            commit();
+          }
+          if (e.key === "Escape") {
+            committed = true;
+            renderSheets();
+          }
+        });
+        input.addEventListener("blur", commit);
+      }
+
       function openNewSheet() {
         document.getElementById("newSheetName").value = "";
+        updateFolderSelects();
         document.getElementById("newSheetModal").classList.remove("hidden");
         setTimeout(() => document.getElementById("newSheetName").focus(), 100);
       }
@@ -2911,18 +3643,31 @@
       function createSheet() {
         var name = document.getElementById("newSheetName").value.trim();
         if (!name) return;
+        var fid = document.getElementById("newSheetFolder").value || null;
         setSync("syncing");
         sb("sheets", { method: "POST", body: JSON.stringify({ title: name }) })
           .then((r) => r.json())
           .then((d) => {
             var s = Array.isArray(d) ? d[0] : d;
             sheets.unshift(s);
+            if (fid) sheetFolders[s.id] = fid;
+            saveFolderState();
             closeNewSheet();
             selectSheet(s.id, s.title);
             setSync("ok");
           })
           .catch(() => setSync("error"));
       }
+      document
+        .getElementById("newSheetModal")
+        .addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) closeNewSheet();
+        });
+      document
+        .getElementById("newSheetName")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") createSheet();
+        });
       function selectSheet(id, title) {
         currentSheetId = id;
         document.getElementById("sheetTitle").value = title;
@@ -2935,8 +3680,7 @@
           "amtInput",
           "dateInput",
         ].forEach((x) => (document.getElementById(x).disabled = false));
-        document.getElementById("nameInput").placeholder =
-          "e.g. Santosh, DVS Engi…";
+        document.getElementById("nameInput").placeholder = "e.g. Santosh, DVS…";
         document.getElementById("addBtn").disabled = false;
         renderSheets();
         loadEntries(id);
@@ -2959,82 +3703,69 @@
           })
           .catch(() => setSync("error"));
       }
-      function deleteSheet(id) {
-        var s = sheets.find((s) => s.id === id);
-        pendingDeleteId = id;
-        document.getElementById("deleteSheetName").textContent =
-          '"' + (s ? s.title : "this sheet") + '"';
-        document.getElementById("deletePassword").value = "";
-        document.getElementById("pwError").style.display = "none";
-        document.getElementById("deleteModal").classList.remove("hidden");
-        setTimeout(
-          () => document.getElementById("deletePassword").focus(),
-          120,
+      function promptDeleteSheet(sheetId) {
+        closeMenu();
+        var s = sheets.find((x) => x.id === sheetId);
+        requireAdmin(
+          'Delete sheet "' +
+            (s ? s.title : "") +
+            '"\nEntries saved in Recycle Bin for 30 days.',
+          async function () {
+            setSync("syncing");
+            try {
+              var all = await fetchAllEntries(sheetId);
+              var s2 = sheets.find((x) => x.id === sheetId);
+              recycleBin.push({
+                id: sheetId,
+                title: s2 ? s2.title : "Sheet",
+                folderId: sheetFolders[sheetId] || null,
+                deletedAt: Date.now(),
+                entries: all.map((e) => ({
+                  name: e.name,
+                  phone: e.phone,
+                  remark: e.remark,
+                  amount: e.amount,
+                  date: e.date,
+                })),
+              });
+              saveRecycleBin();
+              updateBinBtn();
+              await sb("sheets?id=eq." + sheetId, { method: "DELETE" });
+              sheets = sheets.filter((x) => x.id !== sheetId);
+              delete sheetFolders[sheetId];
+              saveFolderState();
+              if (currentSheetId === sheetId) {
+                currentSheetId = null;
+                entries = [];
+                document.getElementById("sheetTitle").value = "";
+                document
+                  .getElementById("sheetTitle")
+                  .setAttribute("readonly", "");
+                document.getElementById("titleSaveBtn").disabled = true;
+                [
+                  "nameInput",
+                  "phoneInput",
+                  "remarkInput",
+                  "amtInput",
+                  "dateInput",
+                ].forEach((x) => (document.getElementById(x).disabled = true));
+                document.getElementById("addBtn").disabled = true;
+              }
+              renderSheets();
+              updateStats();
+              renderTable();
+              setSync("ok");
+              showUndoToast('🗑 "' + (s2 ? s2.title : "") + '" deleted', null);
+            } catch (e) {
+              setSync("error");
+            }
+          },
         );
       }
-      function closeDeleteModal() {
-        document.getElementById("deleteModal").classList.add("hidden");
-        pendingDeleteId = null;
-      }
-      function togglePwVis() {
-        var i = document.getElementById("deletePassword");
-        i.type = i.type === "password" ? "text" : "password";
-      }
-      async function confirmDelete() {
-        var pw = document.getElementById("deletePassword").value,
-          hash = await sha256hex(pw);
-        if (hash !== ADMIN_HASH) {
-          var i = document.getElementById("deletePassword");
-          i.classList.add("shake");
-          setTimeout(() => i.classList.remove("shake"), 400);
-          document.getElementById("pwError").style.display = "block";
-          i.value = "";
-          i.focus();
-          return;
-        }
-        var id = pendingDeleteId;
-        closeDeleteModal();
-        setSync("syncing");
-        sb("sheets?id=eq." + id, { method: "DELETE" })
-          .then(() => {
-            sheets = sheets.filter((s) => s.id !== id);
-            if (currentSheetId === id) {
-              currentSheetId = null;
-              entries = [];
-              document.getElementById("sheetTitle").value = "";
-              document
-                .getElementById("sheetTitle")
-                .setAttribute("readonly", "");
-              document.getElementById("titleSaveBtn").disabled = true;
-              [
-                "nameInput",
-                "phoneInput",
-                "remarkInput",
-                "amtInput",
-                "dateInput",
-              ].forEach((x) => (document.getElementById(x).disabled = true));
-              document.getElementById("addBtn").disabled = true;
-            }
-            renderSheets();
-            updateStats();
-            renderTable();
-            setSync("ok");
-          })
-          .catch(() => setSync("error"));
-      }
-      document.getElementById("deleteModal").addEventListener("click", (e) => {
-        if (e.target === e.currentTarget) closeDeleteModal();
-      });
-      document
-        .getElementById("deletePassword")
-        .addEventListener("keydown", (e) => {
-          if (e.key === "Enter") confirmDelete();
-        });
 
-      /* ── Entries ── */
       function loadEntries(id) {
         document.getElementById("tableBody").innerHTML =
-          '<tr><td colspan="7"><div class="table-loading">⏳ Loading…</div></td></tr>';
+          '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-txt">Loading…</div></div></td></tr>';
         setSync("syncing");
         fetchAllEntries(id)
           .then((all) => {
@@ -3042,7 +3773,6 @@
             renderTable();
             updateStats();
             setSync("ok");
-            updateToolbar();
           })
           .catch(() => setSync("error"));
       }
@@ -3088,6 +3818,8 @@
             ri.value = "";
             ai.value = "";
             di.value = todayISO();
+            document.getElementById("dateHint").textContent =
+              isoDisp(todayISO());
             ni.focus();
             hideAC();
             renderTable();
@@ -3119,18 +3851,54 @@
       }
       function clearAll() {
         if (!entries.length || !currentSheetId) return;
-        if (!confirm("Delete all entries in this sheet?")) return;
-        setSync("syncing");
-        sb("entries?sheet_id=eq." + currentSheetId, { method: "DELETE" })
-          .then(() => {
-            entries = [];
-            openGroups = {};
-            renderTable();
-            updateStats();
-            setSync("ok");
-            updateSheetTs();
-          })
-          .catch(() => setSync("error"));
+        requireAdmin(
+          "Delete ALL entries in this sheet?\nYou can undo within 8 seconds.",
+          function () {
+            var saved = entries.slice(),
+              sid = currentSheetId;
+            setSync("syncing");
+            sb("entries?sheet_id=eq." + currentSheetId, { method: "DELETE" })
+              .then(function () {
+                entries = [];
+                openGroups = {};
+                renderTable();
+                updateStats();
+                setSync("ok");
+                updateSheetTs();
+                showUndoToast("🗑 All entries cleared", async function () {
+                  setSync("syncing");
+                  var ins = saved.map((e) => ({
+                    sheet_id: sid,
+                    name: e.name,
+                    phone: e.phone || null,
+                    remark: e.remark || null,
+                    amount: e.amount,
+                    date: e.date,
+                  }));
+                  try {
+                    entries = [];
+                    for (var i = 0; i < ins.length; i += 500) {
+                      var r = await sb("entries", {
+                        method: "POST",
+                        body: JSON.stringify(ins.slice(i, i + 500)),
+                      });
+                      var d = await r.json();
+                      entries = entries.concat(Array.isArray(d) ? d : []);
+                    }
+                    renderTable();
+                    updateStats();
+                    flashBar();
+                    setSync("ok");
+                    updateSheetTs();
+                    showToast("↩ Entries restored!");
+                  } catch (e) {
+                    setSync("error");
+                  }
+                });
+              })
+              .catch(() => setSync("error"));
+          },
+        );
       }
       function openEdit(idx) {
         editIdx = idx;
@@ -3140,6 +3908,9 @@
         document.getElementById("editRemark").value = entries[idx].remark || "";
         document.getElementById("editAmt").value = entries[idx].amount;
         document.getElementById("editDate").value = entries[idx].date || "";
+        document.getElementById("editDateHint").textContent = entries[idx].date
+          ? "→ " + isoDisp(entries[idx].date)
+          : "";
         document.getElementById("editModal").classList.remove("hidden");
         setTimeout(() => document.getElementById("editName").focus(), 100);
       }
@@ -3199,18 +3970,47 @@
       document.getElementById("editAmt").addEventListener("keydown", (e) => {
         if (e.key === "Enter") saveEdit();
       });
-      document
-        .getElementById("newSheetModal")
-        .addEventListener("click", (e) => {
-          if (e.target === e.currentTarget) closeNewSheet();
-        });
-      document
-        .getElementById("newSheetName")
-        .addEventListener("keydown", (e) => {
-          if (e.key === "Enter") createSheet();
-        });
 
-      /* ── Stats & Toolbar ── */
+      function getFiltered() {
+        if (!dateFrom && !dateTo) return entries;
+        return entries.filter((e) => {
+          var d = e.date || "";
+          if (dateFrom && d < dateFrom) return false;
+          if (dateTo && d > dateTo) return false;
+          return true;
+        });
+      }
+      function getVisible() {
+        var s = getFiltered();
+        if (!searchQ) return s;
+        var q = searchQ.toLowerCase();
+        return s.filter(
+          (e) =>
+            e.name.toLowerCase().includes(q) ||
+            (e.phone || "").includes(q) ||
+            (e.remark || "").toLowerCase().includes(q) ||
+            (e.amount + "").includes(q) ||
+            isoDisp(e.date).includes(q),
+        );
+      }
+      function getGroups(src) {
+        var m = {};
+        (src || entries).forEach((e) => {
+          var k = e.name.toLowerCase().trim();
+          if (!m[k]) m[k] = { name: e.name, total: 0, items: [] };
+          m[k].total += e.amount;
+          m[k].items.push({
+            id: e.id,
+            name: e.name,
+            phone: e.phone || "",
+            remark: e.remark || "",
+            amount: e.amount,
+            date: e.date,
+            idx: entries.indexOf(e),
+          });
+        });
+        return Object.values(m).sort((a, b) => b.total - a.total);
+      }
       function updateStats() {
         var vis = getVisible(),
           tot = vis.reduce((s, e) => s + e.amount, 0),
@@ -3229,23 +4029,6 @@
           ? "Visible / All"
           : "Entries";
       }
-      function updateToolbar() {
-        var vis = getVisible(),
-          badge = document.getElementById("exportBadge"),
-          hint = document.getElementById("searchHint");
-        if (searchQ) {
-          document.getElementById("searchHintCount").textContent = vis.length;
-          document.getElementById("searchHintTerm").textContent =
-            '"' + searchQ + '"';
-          hint.classList.add("visible");
-        } else hint.classList.remove("visible");
-        if (searchQ || dateFrom || dateTo) {
-          badge.style.display = "inline";
-          badge.textContent = vis.length + " rows";
-        } else badge.style.display = "none";
-      }
-
-      /* ── Autocomplete ── */
       function getNames() {
         var s = {},
           r = [];
@@ -3313,11 +4096,6 @@
         hideAC();
         document.getElementById("phoneInput").focus();
       }
-      function hlAC() {
-        document
-          .querySelectorAll(".ac-item")
-          .forEach((el, i) => el.classList.toggle("ac-active", i === acIdx));
-      }
       var ni = document.getElementById("nameInput");
       ni.addEventListener("input", function () {
         var v = this.value.trim().toLowerCase();
@@ -3337,13 +4115,17 @@
           if (e.key === "ArrowDown") {
             e.preventDefault();
             acIdx = Math.min(acIdx + 1, items.length - 1);
-            hlAC();
+            items.forEach((el, i) =>
+              el.classList.toggle("ac-active", i === acIdx),
+            );
             return;
           }
           if (e.key === "ArrowUp") {
             e.preventDefault();
             acIdx = Math.max(acIdx - 1, -1);
-            hlAC();
+            items.forEach((el, i) =>
+              el.classList.toggle("ac-active", i === acIdx),
+            );
             return;
           }
           if (e.key === "Enter" && acIdx >= 0) {
@@ -3362,8 +4144,6 @@
       document.getElementById("amtInput").addEventListener("keydown", (e) => {
         if (e.key === "Enter") addEntry();
       });
-
-      /* ── View & Filter ── */
       function setView(v) {
         view = v;
         document
@@ -3386,7 +4166,6 @@
           .classList.toggle("visible", searchQ.length > 0);
         renderTable();
         updateStats();
-        updateToolbar();
       });
       function clearSearch() {
         si.value = "";
@@ -3394,7 +4173,6 @@
         document.getElementById("searchClear").classList.remove("visible");
         renderTable();
         updateStats();
-        updateToolbar();
         si.focus();
       }
       function applyDateFilter() {
@@ -3405,7 +4183,6 @@
           .forEach((b) => b.classList.remove("active"));
         renderTable();
         updateStats();
-        updateToolbar();
       }
       function clearDateFilter() {
         dateFrom = "";
@@ -3417,7 +4194,6 @@
           .forEach((b) => b.classList.remove("active"));
         renderTable();
         updateStats();
-        updateToolbar();
       }
       function applyPreset(p) {
         var now = new Date(),
@@ -3456,10 +4232,8 @@
         if (el) el.classList.add("active");
         renderTable();
         updateStats();
-        updateToolbar();
       }
 
-      /* ── Render Table ── */
       function renderTable() {
         var head = document.getElementById("tableHead"),
           tb = document.getElementById("tableBody"),
@@ -3467,13 +4241,13 @@
         if (!currentSheetId) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Create or select a sheet</div></div></td></tr>';
+            '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📁</div><div class="empty-txt">Select or create a sheet above</div></div></td></tr>';
           return;
         }
         if (!entries.length) {
           head.innerHTML = "";
           tb.innerHTML =
-            '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet — add your first payment above</div></div></td></tr>';
+            '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🧾</div><div class="empty-txt">No entries yet</div></div></td></tr>';
           return;
         }
         if (!src.length) {
@@ -3482,9 +4256,7 @@
             '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">' +
             (searchQ ? "🔍" : "📅") +
             '</div><div class="empty-txt">' +
-            (searchQ
-              ? 'No results for "' + searchQ + '"'
-              : "No entries in this date range") +
+            (searchQ ? "No results" : "No entries in range") +
             "</div></div></td></tr>";
           return;
         }
@@ -3505,7 +4277,7 @@
                   "</span>"
                 : '<span style="color:#3a3760;font-size:11px;">—</span>';
               return (
-                '<tr class="data-row row-new"><td><span class="badge">' +
+                '<tr class="data-row"><td><span class="badge">' +
                 (ri + 1) +
                 '</span></td><td style="font-weight:600;color:#d4cfff;">' +
                 hl(e.name, searchQ) +
@@ -3547,7 +4319,7 @@
               "</span>"
             : '<span style="color:#3a3760;font-size:11px;">—</span>';
           html +=
-            '<tr class="group-header row-new" onclick="toggleGroup(\'' +
+            '<tr class="group-header" onclick="toggleGroup(\'' +
             sk +
             "')\">" +
             '<td><span class="chevron ' +
@@ -3571,14 +4343,14 @@
           if (isOpen)
             g.items.forEach((it) => {
               html +=
-                '<tr class="data-row sub-row row-new"><td></td>' +
+                '<tr class="data-row sub-row"><td></td>' +
                 '<td style="color:#c8c4e8;">↳ ' +
                 isoDisp(it.date) +
                 (it.remark
                   ? '<span class="remark-tag">' + it.remark + "</span>"
                   : "") +
                 (it.phone
-                  ? '<span class="phone-tag" style="font-size:10px;margin-left:2px;">📞 ' +
+                  ? '<span class="phone-tag" style="font-size:10px;">📞 ' +
                     it.phone +
                     "</span>"
                   : "") +
@@ -3598,11 +4370,7 @@
         tb.innerHTML = html;
       }
 
-      /* ══════════════════════════════════════════════
-   BOB PDF IMPORTER v4 — exact column positions
-   x40-75=TxnDate  x130-340=Desc  x340-440=Debit
-   x440-510=Credit  x510+=Balance
-══════════════════════════════════════════════ */
+      /* BOB */
       function openBOB() {
         if (!currentSheetId) {
           alert("Select a sheet first.");
@@ -3634,9 +4402,9 @@
           document.getElementById(id).classList.remove("on"),
         );
         document.getElementById("bfAll").classList.add("on");
-        var btn = document.getElementById("bobImportBtn");
-        btn.disabled = false;
-        btn.textContent = "⬇ Import Selected";
+        document.getElementById("bobImportBtn").disabled = false;
+        document.getElementById("bobImportBtn").textContent =
+          "⬇ Import Selected";
       }
       function handleBOBFile(input) {
         var f = input.files[0];
@@ -3647,8 +4415,7 @@
         res.textContent = "Reading…";
         document.getElementById("bobProgressBox").classList.add("show");
         document.getElementById("bobProgressFill").style.width = "5%";
-        document.getElementById("bobProgressLabel").textContent =
-          "Reading file…";
+        document.getElementById("bobProgressLabel").textContent = "Reading…";
         if (ext === "pdf") readBOBPDF(f);
         else readBOBExcel(f);
       }
@@ -3657,22 +4424,25 @@
         try {
           var buf = await file.arrayBuffer();
           var pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-          var nPages = pdf.numPages;
-          var items = [];
+          var nPages = pdf.numPages,
+            items = [];
           for (var p = 1; p <= nPages; p++) {
             document.getElementById("bobProgressFill").style.width =
               Math.round(5 + (p / nPages) * 70) + "%";
             document.getElementById("bobProgressLabel").textContent =
               "Page " + p + "/" + nPages + "…";
             var page = await pdf.getPage(p);
-            var vp = page.getViewport({ scale: 1 });
-            var content = await page.getTextContent();
+            var vp = page.getViewport({ scale: 1 }),
+              content = await page.getTextContent();
             content.items.forEach((it) => {
               var str = (it.str || "").trim();
               if (!str) return;
-              var x = Math.round(it.transform[4]);
-              var y = Math.round(vp.height - it.transform[5]);
-              items.push({ str, x, y, page: p });
+              items.push({
+                str,
+                x: Math.round(it.transform[4]),
+                y: Math.round(vp.height - it.transform[5]),
+                page: p,
+              });
             });
           }
           document.getElementById("bobDebugBox").textContent = items
@@ -3680,18 +4450,16 @@
             .map((i) => "[p" + i.page + " y" + i.y + " x" + i.x + "] " + i.str)
             .join("\n");
           document.getElementById("bobProgressFill").style.width = "85%";
-          document.getElementById("bobProgressLabel").textContent =
-            "Parsing transactions…";
           var txns = parseBOBItems(items);
           document.getElementById("bobProgressBox").classList.remove("show");
           if (!txns.length) {
             res.className = "import-result err";
-            res.textContent = "⚠ 0 transactions found. Check debug text below.";
+            res.textContent = "⚠ 0 transactions — check debug";
             document.getElementById("bobDebugBox").classList.add("show");
             return;
           }
           res.textContent =
-            "✓ Found " + txns.length + " transactions (" + nPages + " pages)";
+            "✓ Found " + txns.length + " (" + nPages + " pages)";
           bobRows = txns;
           setBOBFilter("all");
           renderBOBPreview();
@@ -3704,69 +4472,62 @@
           res.textContent =
             err.message &&
             (err.message.includes("password") ||
-              err.message.includes("encrypted"))
-              ? "🔐 PDF still password-protected. Open → enter phone number → File → Print → Save as PDF"
+              err.message.includes("encrypt"))
+              ? "🔐 Still password-protected. Open → phone → Print → Save as PDF"
               : "Error: " + err.message;
           document.getElementById("bobDebugBox").classList.add("show");
-          console.error(err);
         }
       }
       function parseBOBItems(items) {
         var DATE_RE = /^(\d{1,2})-(\d{2})-(\d{4})$/;
-        var dateItems = items.filter(
+        var dIs = items.filter(
           (it) => it.x >= 40 && it.x <= 75 && DATE_RE.test(it.str),
         );
         var txns = [],
-          seenKey = new Set();
-        dateItems.forEach((dateItem) => {
-          var pg = dateItem.page,
-            dY = dateItem.y;
-          var dateStr = parseBOBDate(dateItem.str);
-          if (!dateStr || dateStr.slice(0, 4) < "2000") return;
-          var winItems = items.filter(
+          seen = new Set();
+        dIs.forEach((di) => {
+          var pg = di.page,
+            dY = di.y,
+            ds = parseBOBDate(di.str);
+          if (!ds || ds.slice(0, 4) < "2000") return;
+          var wi = items.filter(
             (it) =>
               it.page === pg &&
               it.y >= dY - 15 &&
               it.y <= dY + 25 &&
               it.x > 100,
           );
-          var descParts = [],
-            debitStr = "",
-            creditStr = "";
-          winItems.forEach((it) => {
+          var dp = [],
+            debitS = "",
+            creditS = "";
+          wi.forEach((it) => {
             var x = it.x,
               s = it.str;
             if (s === "-") return;
-            if (x >= 130 && x <= 340)
-              descParts.push({ y: it.y, x: it.x, str: s });
+            if (x >= 130 && x <= 340) dp.push({ y: it.y, x: it.x, str: s });
             else if (x > 340 && x <= 440) {
-              if (parseBOBAmt(s) > 0) debitStr = s;
+              if (parseBOBAmt(s) > 0) debitS = s;
             } else if (x > 440 && x <= 510) {
-              if (parseBOBAmt(s) > 0) creditStr = s;
+              if (parseBOBAmt(s) > 0) creditS = s;
             }
           });
-          descParts.sort((a, b) => (a.y !== b.y ? a.y - b.y : a.x - b.x));
-          var desc = descParts
+          dp.sort((a, b) => (a.y !== b.y ? a.y - b.y : a.x - b.x));
+          var desc = dp
             .map((d) => d.str)
             .join(" ")
             .replace(/\s+/g, " ")
             .trim();
-          if (!desc) return;
-          if (
-            /^(opening balance|closing balance|account statement|page \d|note:|this is a computer)/i.test(
-              desc,
-            )
-          )
+          if (!desc || /^(opening balance|closing balance|page \d)/i.test(desc))
             return;
-          var debit = parseBOBAmt(debitStr),
-            credit = parseBOBAmt(creditStr);
+          var debit = parseBOBAmt(debitS),
+            credit = parseBOBAmt(creditS);
           if (debit === 0 && credit === 0) return;
-          var key = dateStr + "|" + (debit || credit) + "|" + desc.slice(0, 25);
-          if (seenKey.has(key)) return;
-          seenKey.add(key);
+          var key = ds + "|" + (debit || credit) + "|" + desc.slice(0, 25);
+          if (seen.has(key)) return;
+          seen.add(key);
           var ext = extractBOBName(desc);
           txns.push({
-            date: dateStr,
+            date: ds,
             desc,
             isDebit: debit > 0,
             amount: debit > 0 ? debit : credit,
@@ -3786,33 +4547,16 @@
             np = h.split("@")[0];
           if (/^\d{10,}$/.test(np))
             return { name: np, conf: "high", type: "UPI" };
-          if (/^paytmqr/i.test(np))
-            return { name: tc(np.slice(0, 20)), conf: "medium", type: "UPI" };
-          if (/^gpay[-‐](\d+)/i.test(np)) {
-            var gm = np.match(/^gpay[-‐](\d+)/i);
-            return { name: gm[1], conf: "high", type: "UPI" };
-          }
           return { name: tc(np), conf: "high", type: "UPI" };
         }
         if (/UPI\/[\d]+\/[\d:]+\/REVERSAL/i.test(d))
           return { name: "UPI Reversal", conf: "high", type: "REVERSAL" };
-        var m2 = d.match(/UPI\/[^\/]+\/[^\/]+\/UPI\/([^\/\s@]+)/i);
-        if (m2) {
-          var n = tc(m2[1].replace(/[-\/]+$/, "").split("@")[0]);
-          if (n && n.length > 1) return { name: n, conf: "high", type: "UPI" };
-        }
-        var m3 = d.match(/IMPS\/P2A\/\d+\/([A-Z][A-Z\s\.]{1,40?})\/[A-Za-z]/i);
+        var m3 = d.match(/IMPS\/P2A\/\d+\/([A-Z][A-Z\s\.]{1,40})/i);
         if (m3) return { name: tc(m3[1].trim()), conf: "high", type: "IMPS" };
-        var m3b = d.match(/IMPS\/P2A\/\d+\/([A-Z][A-Z\s\.]{1,40})/i);
-        if (m3b) return { name: tc(m3b[1].trim()), conf: "high", type: "IMPS" };
         var m4 = d.match(/IMPS\/[^\/]*\/\d+\/([A-Z][A-Z\s\.]{2,35})/i);
         if (m4) return { name: tc(m4[1].trim()), conf: "medium", type: "IMPS" };
         var m5 = d.match(/NEFT\/[^\/]*\/[A-Z0-9]+\/([A-Z][A-Z\s\.]{2,40})/i);
         if (m5) return { name: tc(m5[1].trim()), conf: "high", type: "NEFT" };
-        var m6 = d.match(/RTGS[-\/][A-Z0-9]+[-\/]([A-Z][A-Z\s\.]{2,35})[-\/]/i);
-        if (m6) return { name: tc(m6[1].trim()), conf: "high", type: "RTGS" };
-        if (/loan recovery/i.test(d))
-          return { name: "Loan Recovery", conf: "high", type: "LOAN" };
         if (/CLG|MICR|CHQ|CHEQUE/i.test(d)) {
           var c = d.match(/(\d{6,})/);
           return {
@@ -3837,8 +4581,8 @@
           .join(" ");
       }
       function parseBOBDate(raw) {
-        var s = (raw || "").toString().trim();
-        var m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+        var s = (raw || "").toString().trim(),
+          m = s.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
         if (m)
           return (
             m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0")
@@ -3848,19 +4592,9 @@
       function parseBOBAmt(raw) {
         if (!raw || raw === "-") return 0;
         if (typeof raw === "number") return Math.abs(raw);
-        var s = (raw + "").replace(/[,\s₹]/g, "").trim();
-        var n = parseFloat(s);
+        var s = (raw + "").replace(/[,\s₹]/g, "").trim(),
+          n = parseFloat(s);
         return isNaN(n) ? 0 : Math.abs(n);
-      }
-      function findC(hdrs, kws) {
-        for (var i = 0; i < hdrs.length; i++) {
-          var h = (hdrs[i] + "")
-            .toLowerCase()
-            .replace(/[\n\r]/g, " ")
-            .trim();
-          for (var j = 0; j < kws.length; j++) if (h.includes(kws[j])) return i;
-        }
-        return -1;
       }
       function readBOBExcel(file) {
         var res = document.getElementById("bobUploadResult");
@@ -3903,15 +4637,15 @@
             }
             if (hRow === -1) {
               res.className = "import-result err";
-              res.textContent = "⚠ Could not find statement headers.";
+              res.textContent = "⚠ Cannot find headers.";
               document
                 .getElementById("bobProgressBox")
                 .classList.remove("show");
               return;
             }
             var txns = [];
-            for (var i = hRow + 1; i < rows.length; i++) {
-              var row = rows[i];
+            for (var i2 = hRow + 1; i2 < rows.length; i2++) {
+              var row = rows[i2];
               if (!row || !row[cDate]) continue;
               var ds = parseBOBDate((row[cDate] || "").toString());
               if (!ds || ds.slice(0, 4) < "2000") continue;
@@ -3920,8 +4654,8 @@
                   ? (row[cDesc] || "").toString().replace(/\s+/g, " ").trim()
                   : "";
               if (!desc || /opening balance/i.test(desc)) continue;
-              var debit = cDebit !== -1 ? parseBOBAmt(row[cDebit]) : 0;
-              var credit = cCredit !== -1 ? parseBOBAmt(row[cCredit]) : 0;
+              var debit = cDebit !== -1 ? parseBOBAmt(row[cDebit]) : 0,
+                credit = cCredit !== -1 ? parseBOBAmt(row[cCredit]) : 0;
               if (debit === 0 && credit === 0) continue;
               var ext = extractBOBName(desc);
               txns.push({
@@ -3938,11 +4672,10 @@
             document.getElementById("bobProgressBox").classList.remove("show");
             if (!txns.length) {
               res.className = "import-result err";
-              res.textContent = "⚠ No transactions found.";
+              res.textContent = "⚠ No transactions.";
               return;
             }
-            res.textContent =
-              "✓ Found " + txns.length + ' transactions (sheet: "' + sn + '")';
+            res.textContent = "✓ Found " + txns.length;
             bobRows = txns;
             setBOBFilter("all");
             renderBOBPreview();
@@ -3972,28 +4705,22 @@
       }
       function updateBOBStats() {
         var tD = bobRows
-          .filter((r) => r.isDebit)
-          .reduce((s, r) => s + r.amount, 0);
-        var tC = bobRows
-          .filter((r) => !r.isDebit)
-          .reduce((s, r) => s + r.amount, 0);
-        var sel = bobRows.filter((r) => r.selected).length;
+            .filter((r) => r.isDebit)
+            .reduce((s, r) => s + r.amount, 0),
+          tC = bobRows
+            .filter((r) => !r.isDebit)
+            .reduce((s, r) => s + r.amount, 0),
+          sel = bobRows.filter((r) => r.selected).length;
         document.getElementById("bobSelInfo").textContent =
-          sel + " of " + bobRows.length + " selected";
+          sel + "/" + bobRows.length + " sel";
         document.getElementById("bobStatsRow").innerHTML =
           '<div class="stat-sm"><strong>' +
           bobRows.length +
-          "</strong>Transactions</div>" +
-          '<div class="stat-sm d"><strong>₹' +
+          '</strong>Total</div><div class="stat-sm d"><strong>₹' +
           fmt(tD) +
-          "</strong>Debits (" +
-          bobRows.filter((r) => r.isDebit).length +
-          ")</div>" +
-          '<div class="stat-sm c"><strong>₹' +
+          '</strong>Debits</div><div class="stat-sm c"><strong>₹' +
           fmt(tC) +
-          "</strong>Credits (" +
-          bobRows.filter((r) => !r.isDebit).length +
-          ")</div>";
+          "</strong>Credits</div>";
       }
       function renderBOBPreview() {
         var vis = bobRows.filter(
@@ -4021,16 +4748,13 @@
             var sd = r.desc.length > 65 ? r.desc.slice(0, 65) + "…" : r.desc;
             var nc = r.conf === "high" ? "nme-inp hi" : "nme-inp lo";
             return (
-              "<tr>" +
-              '<td class="chk"><input type="checkbox" ' +
+              '<tr><td class="chk"><input type="checkbox" ' +
               (r.selected ? "checked" : "") +
               ' onchange="bobRows[' +
               ai +
-              '].selected=this.checked;updateBOBStats()" /></td>' +
-              '<td style="font-size:11px;color:#7a74a8;white-space:nowrap;">' +
+              '].selected=this.checked;updateBOBStats()" /></td><td style="font-size:11px;color:#7a74a8;white-space:nowrap;">' +
               isoDisp(r.date) +
-              "</td>" +
-              '<td><div style="display:flex;align-items:center;gap:4px;"><input class="' +
+              '</td><td><div style="display:flex;align-items:center;gap:4px;"><input class="' +
               nc +
               '" value="' +
               escH(r.name) +
@@ -4038,21 +4762,17 @@
               ai +
               '].name=this.value" onchange="this.className=\'nme-inp ed\'" />' +
               conf +
-              "</div></td>" +
-              '<td class="det-col" title="' +
+              '</div></td><td class="det-col" title="' +
               escH(r.desc) +
               '">' +
               escH(sd) +
-              "</td>" +
-              "<td>" +
+              "</td><td>" +
               td +
-              "</td>" +
-              '<td style="font-weight:600;text-align:right;color:' +
+              '</td><td style="font-weight:600;text-align:right;color:' +
               (r.isDebit ? "#f08080" : "#4ecba0") +
               ';">₹' +
               fmt(r.amount) +
-              "</td>" +
-              "</tr>"
+              "</td></tr>"
             );
           })
           .join("");
@@ -4122,387 +4842,20 @@
           document.getElementById("bobImportResult").className =
             "import-result";
           document.getElementById("bobImportResult").textContent =
-            "✅ Imported " + allIns.length + " transactions!";
-          btn.textContent = "✅ Done — " + allIns.length + " imported";
-          showToast("🏛 BOB: imported " + allIns.length + " transactions");
+            "✅ Imported " + allIns.length + "!";
+          btn.textContent = "✅ Done — " + allIns.length;
+          showToast("🏛 BOB: " + allIns.length + " imported");
         } catch (err) {
           document.getElementById("bobImportResult").className =
             "import-result err";
           document.getElementById("bobImportResult").textContent =
-            "❌ Error: " + err.message;
+            "❌ " + err.message;
           btn.disabled = false;
           btn.textContent = "⬇ Import Selected";
         }
       }
 
-      /* ── SBI ── */
-      function extractSBIName(d) {
-        var m = d.match(
-          /IMPS\/[^\/]+\/[A-Z0-9]+-xx\d+-[^\/]+\/([a-zA-Z][a-zA-Z\s]{1,30})/i,
-        );
-        if (m) {
-          var n = tc(m[1]);
-          if (n) return { name: n, conf: "high", type: "IMPS" };
-        }
-        var m2 = d.match(
-          /NEFT[^*]*(?:\*[^*]*){2}\*([a-zA-Z][^*\n]{2,40})(?:\s+\d{5,}|\s+AT\s|$)/i,
-        );
-        if (m2) {
-          var n = tc(m2[1]);
-          if (n && n.length > 2)
-            return { name: n, conf: "medium", type: "NEFT" };
-        }
-        if (/REMT\s+THRU\s+CHQ|RTGS/i.test(d)) {
-          var rm = d.match(/NO:\s*([A-Z0-9]+)/i);
-          return {
-            name: rm ? "CHQ-" + rm[1].slice(-8) : "Cheque Pmt",
-            conf: "low",
-            type: "CHQ",
-          };
-        }
-        return { name: d.slice(0, 60), conf: "low", type: "OTHER" };
-      }
-      function parseSBIDate(raw) {
-        if (!raw) return todayISO();
-        if (typeof raw === "number") {
-          var d = new Date(Math.round((raw - 25569) * 86400 * 1000));
-          return d.toISOString().slice(0, 10);
-        }
-        var s = (raw + "").trim();
-        var m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
-        if (m)
-          return (
-            m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0")
-          );
-        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-        return todayISO();
-      }
-      function parseSBIAmt(raw) {
-        if (typeof raw === "number") return Math.abs(raw);
-        var s = (raw + "").replace(/[,\s₹Rs]/g, "");
-        var n = parseFloat(s);
-        return isNaN(n) ? 0 : Math.abs(n);
-      }
-      function pickTxSheet(wb) {
-        var names = wb.SheetNames;
-        if (names.length === 1) return { name: names[0] };
-        var txKw = [
-          "statement",
-          "transaction",
-          "passbook",
-          "history",
-          "payment",
-        ];
-        for (var i = 0; i < names.length; i++) {
-          var nl = names[i].toLowerCase();
-          for (var k = 0; k < txKw.length; k++)
-            if (nl.includes(txKw[k])) return { name: names[i] };
-        }
-        var sumKw = ["summary", "summ", "overview"];
-        var ns = names.filter(
-          (n) => !sumKw.some((k) => n.toLowerCase().includes(k)),
-        );
-        if (ns.length) return { name: ns[0] };
-        return { name: names[0] };
-      }
-      function openSBI() {
-        if (!currentSheetId) {
-          alert("Select a sheet first.");
-          return;
-        }
-        resetSBI();
-        document.getElementById("sbiModal").classList.remove("hidden");
-      }
-      function closeSBI() {
-        document.getElementById("sbiModal").classList.add("hidden");
-        sbiRows = [];
-      }
-      document.getElementById("sbiModal").addEventListener("click", (e) => {
-        if (e.target === e.currentTarget) closeSBI();
-      });
-      function resetSBI() {
-        sbiRows = [];
-        sbiFilter = "all";
-        document.getElementById("sbiStep1").style.display = "block";
-        document.getElementById("sbiStep2").style.display = "none";
-        document.getElementById("sbiUploadResult").textContent = "";
-        document.getElementById("sbiImportResult").textContent = "";
-        document.getElementById("sbiFile").value = "";
-        document.getElementById("sbiSheetBadge").style.display = "none";
-        ["sfAll", "sfDebit", "sfCredit"].forEach((id) =>
-          document.getElementById(id).classList.remove("on"),
-        );
-        document.getElementById("sfAll").classList.add("on");
-        var btn = document.getElementById("sbiImportBtn");
-        btn.disabled = false;
-        btn.textContent = "⬇ Import Selected";
-      }
-      function handleSBIUpload(input) {
-        var file = input.files[0];
-        if (!file) return;
-        var res = document.getElementById("sbiUploadResult");
-        res.className = "import-result";
-        res.textContent = "Reading…";
-        var reader = new FileReader();
-        reader.onload = (ev) => {
-          try {
-            var wb = XLSX.read(ev.target.result, { type: "array", raw: true });
-            var det = pickTxSheet(wb);
-            var ws = wb.Sheets[det.name];
-            document.getElementById("sbiSheetBadge").innerHTML =
-              '<div class="sheet-detect-badge">✓ Using "' +
-              det.name +
-              '"</div>';
-            document.getElementById("sbiSheetBadge").style.display = "block";
-            var rows = XLSX.utils.sheet_to_json(ws, {
-              header: 1,
-              defval: "",
-              raw: true,
-            });
-            var hRow = -1,
-              cDate = -1,
-              cDet = -1,
-              cRef = -1,
-              cDebit = -1,
-              cCredit = -1;
-            for (var r = 0; r < Math.min(25, rows.length); r++) {
-              var j = (rows[r] || []).join("|").toLowerCase();
-              if (
-                j.includes("date") &&
-                (j.includes("debit") || j.includes("credit"))
-              ) {
-                hRow = r;
-                var h = rows[r];
-                cDate = findC(h, ["date"]);
-                cDet = findC(h, [
-                  "details",
-                  "description",
-                  "particulars",
-                  "narration",
-                  "transaction",
-                ]);
-                cRef = findC(h, ["ref", "cheque", "chq", "utr"]);
-                cDebit = findC(h, ["debit", "dr", "withdrawal"]);
-                cCredit = findC(h, ["credit", "cr", "deposit"]);
-                break;
-              }
-            }
-            if (hRow === -1 || cDate === -1) {
-              res.className = "import-result err";
-              res.textContent = "⚠ Could not find headers.";
-              return;
-            }
-            if (cDet === -1) cDet = 1;
-            sbiRows = [];
-            for (var i = hRow + 1; i < rows.length; i++) {
-              var row = rows[i];
-              if (!row || !row[cDate]) continue;
-              var dateStr = parseSBIDate(row[cDate]);
-              if (!dateStr || dateStr.slice(0, 4) < "2000") continue;
-              var details = (row[cDet] || "")
-                .toString()
-                .replace(/\s+/g, " ")
-                .trim();
-              if (!details) continue;
-              var debit = cDebit !== -1 ? parseSBIAmt(row[cDebit]) : 0;
-              var credit = cCredit !== -1 ? parseSBIAmt(row[cCredit]) : 0;
-              if (debit === 0 && credit === 0) continue;
-              var ref = cRef !== -1 && row[cRef] ? (row[cRef] + "").trim() : "";
-              var ext = extractSBIName(details);
-              sbiRows.push({
-                date: dateStr,
-                details,
-                ref,
-                isDebit: debit > 0,
-                amount: debit > 0 ? debit : credit,
-                name: ext.name,
-                conf: ext.conf,
-                type: ext.type || "OTHER",
-                selected: true,
-              });
-            }
-            if (!sbiRows.length) {
-              res.className = "import-result err";
-              res.textContent = "⚠ No transactions found.";
-              return;
-            }
-            res.textContent = "✓ Found " + sbiRows.length + " transactions";
-            document.getElementById("sbiStep1").style.display = "none";
-            document.getElementById("sbiStep2").style.display = "block";
-            renderSBIPreview();
-            updateSBIStats();
-          } catch (err) {
-            res.className = "import-result err";
-            res.textContent = "Error: " + err.message;
-          }
-        };
-        reader.readAsArrayBuffer(file);
-      }
-      function setSBIFilter(f) {
-        sbiFilter = f;
-        ["sfAll", "sfDebit", "sfCredit"].forEach((id) =>
-          document.getElementById(id).classList.remove("on"),
-        );
-        document
-          .getElementById(
-            f === "all" ? "sfAll" : f === "debit" ? "sfDebit" : "sfCredit",
-          )
-          .classList.add("on");
-        renderSBIPreview();
-        updateSBIStats();
-      }
-      function updateSBIStats() {
-        var tD = sbiRows
-          .filter((r) => r.isDebit)
-          .reduce((s, r) => s + r.amount, 0);
-        var tC = sbiRows
-          .filter((r) => !r.isDebit)
-          .reduce((s, r) => s + r.amount, 0);
-        var sel = sbiRows.filter((r) => r.selected).length;
-        document.getElementById("sbiSelInfo").textContent =
-          sel + " of " + sbiRows.length + " selected";
-        document.getElementById("sbiStatsRow").innerHTML =
-          '<div class="stat-sm"><strong>' +
-          sbiRows.length +
-          '</strong>Transactions</div><div class="stat-sm d"><strong>₹' +
-          fmt(tD) +
-          '</strong>Debits</div><div class="stat-sm c"><strong>₹' +
-          fmt(tC) +
-          "</strong>Credits</div>";
-      }
-      function renderSBIPreview() {
-        var vis = sbiRows.filter(
-          (r) =>
-            sbiFilter === "all" ||
-            (sbiFilter === "debit" && r.isDebit) ||
-            (sbiFilter === "credit" && !r.isDebit),
-        );
-        var tb = document.getElementById("sbiPreviewBody");
-        if (!vis.length) {
-          tb.innerHTML =
-            '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#4a4670;">No transactions</td></tr>';
-          return;
-        }
-        tb.innerHTML = vis
-          .map((r) => {
-            var ai = sbiRows.indexOf(r);
-            var conf =
-              r.conf === "high"
-                ? '<span class="conf-hi">✓</span>'
-                : '<span class="conf-lo">⚠</span>';
-            var td = r.isDebit
-              ? '<span class="type-d">Debit</span>'
-              : '<span class="type-c">Credit</span>';
-            var sd =
-              r.details.length > 50 ? r.details.slice(0, 50) + "…" : r.details;
-            var nc = r.conf === "high" ? "nme-inp hi" : "nme-inp lo";
-            return (
-              '<tr><td class="chk"><input type="checkbox" ' +
-              (r.selected ? "checked" : "") +
-              ' onchange="sbiRows[' +
-              ai +
-              '].selected=this.checked;updateSBIStats()" /></td><td style="font-size:11px;color:#7a74a8;white-space:nowrap;">' +
-              isoDisp(r.date) +
-              '</td><td><div style="display:flex;align-items:center;gap:4px;"><input class="' +
-              nc +
-              '" value="' +
-              escH(r.name) +
-              '" oninput="sbiRows[' +
-              ai +
-              '].name=this.value" onchange="this.className=\'nme-inp ed\'" />' +
-              conf +
-              '</div></td><td class="det-col" title="' +
-              escH(r.details) +
-              '">' +
-              escH(sd) +
-              '</td><td style="font-size:10px;color:#5a5680;">' +
-              escH(r.ref ? r.ref.slice(-10) : "—") +
-              "</td><td>" +
-              td +
-              '</td><td style="font-weight:600;text-align:right;color:' +
-              (r.isDebit ? "#f08080" : "#4ecba0") +
-              ';">₹' +
-              fmt(r.amount) +
-              "</td></tr>"
-            );
-          })
-          .join("");
-        var allSel = vis.length > 0 && vis.every((r) => r.selected);
-        document.getElementById("sbiSelAll").checked = allSel;
-        document.getElementById("sbiSelAll").indeterminate =
-          !allSel && vis.some((r) => r.selected);
-      }
-      function toggleSBIAll(cb) {
-        var vis = sbiRows.filter(
-          (r) =>
-            sbiFilter === "all" ||
-            (sbiFilter === "debit" && r.isDebit) ||
-            (sbiFilter === "credit" && !r.isDebit),
-        );
-        vis.forEach((r) => (r.selected = cb.checked));
-        renderSBIPreview();
-        updateSBIStats();
-      }
-      async function doSBIImport() {
-        if (!currentSheetId) {
-          alert("Select a sheet first.");
-          return;
-        }
-        var toImport = sbiRows.filter((r) => r.selected && r.name.trim());
-        if (!toImport.length) {
-          alert("No rows selected.");
-          return;
-        }
-        var btn = document.getElementById("sbiImportBtn");
-        btn.disabled = true;
-        btn.textContent = "⏳ Importing…";
-        var toInsert = toImport.map((r) => {
-          var rem = r.type !== "OTHER" ? r.type : "";
-          if (r.ref) rem = (rem ? rem + " " : "") + "#" + r.ref.slice(-8);
-          return {
-            sheet_id: currentSheetId,
-            name: r.name.trim().slice(0, 120),
-            phone: null,
-            remark: rem || null,
-            amount: r.amount,
-            date: r.date,
-          };
-        });
-        var BATCH = 500,
-          allIns = [];
-        try {
-          for (var i = 0; i < toInsert.length; i += BATCH) {
-            var resp = await sb("entries", {
-              method: "POST",
-              body: JSON.stringify(toInsert.slice(i, i + BATCH)),
-            });
-            if (!resp.ok) throw new Error("HTTP " + resp.status);
-            var data = await resp.json();
-            allIns = allIns.concat(Array.isArray(data) ? data : []);
-          }
-          entries = entries.concat(allIns);
-          renderTable();
-          updateStats();
-          flashBar();
-          setSync("ok");
-          updateSheetTs();
-          document.getElementById("sbiImportResult").className =
-            "import-result";
-          document.getElementById("sbiImportResult").textContent =
-            "✅ Imported " + allIns.length + " transactions!";
-          btn.textContent = "✅ Done — " + allIns.length + " imported";
-          showToast("🏦 SBI: imported " + allIns.length + " transactions");
-        } catch (err) {
-          document.getElementById("sbiImportResult").className =
-            "import-result err";
-          document.getElementById("sbiImportResult").textContent =
-            "❌ Error: " + err.message;
-          btn.disabled = false;
-          btn.textContent = "⬇ Import Selected";
-        }
-      }
-
-      /* ── Paytm ── */
+      /* PAYTM */
       function pickPaytmSheet(wb) {
         var names = wb.SheetNames;
         if (names.length === 1) return names[0];
@@ -4518,11 +4871,7 @@
           for (var k = 0; k < txKw.length; k++)
             if (nl.includes(txKw[k])) return names[i];
         }
-        var sumKw = ["summary", "summ", "overview"];
-        var ns = names.filter(
-          (n) => !sumKw.some((k) => n.toLowerCase().includes(k)),
-        );
-        return ns.length ? ns[0] : names[0];
+        return names[0];
       }
       function parsePaytmAmt(raw) {
         if (typeof raw === "number")
@@ -4541,10 +4890,7 @@
           sign = -1;
           s = s.replace(/dr$/i, "");
         }
-        if (/cr$/i.test(s)) {
-          sign = 1;
-          s = s.replace(/cr$/i, "");
-        }
+        if (/cr$/i.test(s)) s = s.replace(/cr$/i, "");
         var n = parseFloat(s);
         if (isNaN(n) || n === 0) return null;
         return { value: Math.abs(n), debit: sign < 0 };
@@ -4555,8 +4901,8 @@
           var d = new Date(Math.round((raw - 25569) * 86400 * 1000));
           return d.toISOString().slice(0, 10);
         }
-        var s = (raw + "").trim();
-        var m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
+        var s = (raw + "").trim(),
+          m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
         if (m)
           return (
             m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0")
@@ -4659,7 +5005,7 @@
             if (cRemark === cDesc) cRemark = -1;
             if (cAmt === -1) {
               res.className = "import-result err";
-              res.textContent = "⚠ Could not find Amount column.";
+              res.textContent = "⚠ No Amount column.";
               return;
             }
             paytmRows = [];
@@ -4668,25 +5014,22 @@
               if (!row || row.join("").toString().trim() === "") continue;
               var parsed = parsePaytmAmt(row[cAmt]);
               if (!parsed) continue;
-              var desc =
-                cDesc !== -1 ? (row[cDesc] + "").trim() : "Transaction " + i;
-              if (!desc) desc = "Transaction " + i;
-              var remark = cRemark !== -1 ? (row[cRemark] + "").trim() : "";
+              var desc = cDesc !== -1 ? (row[cDesc] + "").trim() : "Txn " + i;
+              if (!desc) desc = "Txn " + i;
               paytmRows.push({
                 date: cDate !== -1 ? parsePaytmDate(row[cDate]) : todayISO(),
                 desc,
                 amount: parsed.value,
                 debit: parsed.debit,
-                remark,
                 selected: true,
               });
             }
             if (!paytmRows.length) {
               res.className = "import-result err";
-              res.textContent = "⚠ No transactions found.";
+              res.textContent = "⚠ No transactions.";
               return;
             }
-            res.textContent = "✓ Found " + paytmRows.length + " transactions";
+            res.textContent = "✓ Found " + paytmRows.length;
             document.getElementById("paytmStep1").style.display = "none";
             document.getElementById("paytmStep2").style.display = "block";
             renderPaytmPreview();
@@ -4718,7 +5061,7 @@
             (paytmFilter === "credit" && !r.debit),
         );
         document.getElementById("selCount").textContent =
-          paytmRows.filter((r) => r.selected).length + " selected";
+          paytmRows.filter((r) => r.selected).length + " sel";
         document.getElementById("previewInfo").textContent =
           "Showing " + vis.length + " of " + paytmRows.length;
         tb.innerHTML = vis
@@ -4726,17 +5069,14 @@
             var oi = paytmRows.indexOf(r);
             var desc = r.desc.length > 36 ? r.desc.slice(0, 36) + "…" : r.desc;
             var tt = r.debit
-              ? '<span class="type-d">Debit</span>'
-              : '<span class="type-c">Credit</span>';
-            var rmk = r.remark
-              ? '<span class="remark-tag">' + r.remark.slice(0, 18) + "</span>"
-              : '<span style="color:#3a3760;">—</span>';
+              ? '<span class="type-d">D</span>'
+              : '<span class="type-c">C</span>';
             return (
               '<tr><td class="chk"><input type="checkbox" ' +
               (r.selected ? "checked" : "") +
               ' onchange="paytmRows[' +
               oi +
-              '].selected=this.checked;updateSelCount()" /></td><td style="font-size:11px;white-space:nowrap;">' +
+              "].selected=this.checked;document.getElementById('selCount').textContent=paytmRows.filter(r=>r.selected).length+' sel'\" /></td><td style=\"font-size:11px;white-space:nowrap;\">" +
               isoDisp(r.date) +
               '</td><td title="' +
               r.desc +
@@ -4748,8 +5088,6 @@
               fmt(r.amount) +
               "</td><td>" +
               tt +
-              "</td><td>" +
-              rmk +
               "</td></tr>"
             );
           })
@@ -4758,10 +5096,6 @@
         document.getElementById("selectAll").checked = allSel;
         document.getElementById("selectAll").indeterminate =
           !allSel && vis.some((r) => r.selected);
-      }
-      function updateSelCount() {
-        document.getElementById("selCount").textContent =
-          paytmRows.filter((r) => r.selected).length + " selected";
       }
       function toggleSelectAll(cb) {
         var vis = paytmRows.filter(
@@ -4783,7 +5117,7 @@
           sheet_id: currentSheetId,
           name: r.desc.slice(0, 120),
           phone: null,
-          remark: r.remark || null,
+          remark: null,
           amount: r.amount,
           date: r.date,
         }));
@@ -4806,7 +5140,7 @@
             flashBar();
             setSync("ok");
             updateSheetTs();
-            res.textContent = "✓ Imported " + allIns.length + " transactions!";
+            res.textContent = "✓ Imported " + allIns.length + "!";
             paytmRows = [];
             return;
           }
@@ -4825,7 +5159,7 @@
         nb(0);
       }
 
-      /* ── Excel Import ── */
+      /* EXCEL IMPORT */
       function openImport() {
         if (!currentSheetId) {
           alert("Select a sheet first.");
@@ -4868,8 +5202,7 @@
               for (var c = 0; c < rows[r].length; c++) {
                 var cell = (rows[r][c] + "").toLowerCase().trim();
                 if (cell.includes("name") || cell.includes("vendor")) nC = c;
-                if (cell === "phone" || cell === "mobile" || cell === "contact")
-                  pC = c;
+                if (cell === "phone" || cell === "mobile") pC = c;
                 if (cell === "remark" || cell === "remarks") rmC = c;
                 if (cell.includes("amount")) aC = c;
                 if (cell.includes("date")) dC = c;
@@ -4890,8 +5223,8 @@
                 n = (row[nC] + "").trim(),
                 a = parseFloat(row[aC]);
               if (!n || isNaN(a) || a <= 0 || isReserved(n)) continue;
-              var phone = pC !== -1 ? (row[pC] + "").trim() : "";
-              var remark = rmC !== -1 ? (row[rmC] + "").trim() : "";
+              var phone = pC !== -1 ? (row[pC] + "").trim() : "",
+                remark = rmC !== -1 ? (row[rmC] + "").trim() : "";
               var d = "";
               if (dC !== -1 && row[dC]) {
                 var raw2 = (row[dC] + "").trim();
@@ -4903,9 +5236,8 @@
                     p[1].padStart(2, "0") +
                     "-" +
                     p[0].padStart(2, "0");
-                } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw2)) {
-                  d = raw2;
-                } else d = todayISO();
+                } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw2)) d = raw2;
+                else d = todayISO();
               } else d = todayISO();
               toInsert.push({
                 sheet_id: currentSheetId,
@@ -4961,14 +5293,14 @@
         reader.readAsArrayBuffer(file);
       }
 
-      /* ── Copy ── */
+      /* COPY */
       function copyVisible() {
         var src = getVisible();
         if (!src.length) {
           showToast("Nothing to copy.");
           return;
         }
-        var lines = ["#\tVendor\tPhone\tRemark\tAmount\tDate", "─".repeat(70)];
+        var lines = ["#\tVendor\tPhone\tRemark\tAmount\tDate", "─".repeat(60)];
         src.forEach((e, i) =>
           lines.push(
             i +
@@ -4985,9 +5317,10 @@
               isoDisp(e.date),
           ),
         );
-        lines.push("─".repeat(70));
         lines.push(
-          "\tTotal\t\t\t₹" + fmt(src.reduce((s, e) => s + e.amount, 0)),
+          "─".repeat(60) +
+            "\n\tTotal\t\t\t₹" +
+            fmt(src.reduce((s, e) => s + e.amount, 0)),
         );
         navigator.clipboard
           .writeText(lines.join("\n"))
@@ -5004,74 +5337,17 @@
           .catch(() => showToast("⚠ Clipboard unavailable."));
       }
 
-      /* ── Export ── */
-      function sanitizeName(raw) {
-        return (
-          (raw + "")
-            .replace(/[\\\/\?\*\[\]:'"]/g, "")
-            .replace(/\s+/g, " ")
-            .trim()
-            .slice(0, 31) || "Vendor"
-        );
-      }
-      function makeNameReg() {
-        var u = {};
-        return (r) => {
-          var b = sanitizeName(r);
-          if (!u[b]) {
-            u[b] = 1;
-            return b;
-          }
-          var n = ++u[b];
-          var ss = "_" + n;
-          return b.slice(0, 31 - ss.length) + ss;
-        };
-      }
-      function yieldUI(ms) {
-        return new Promise((r) => setTimeout(r, ms || 8));
-      }
-      function setProgress(pct, main, sub) {
-        document.getElementById("progFill").style.width = pct + "%";
-        document.getElementById("progMainLabel").textContent = main;
-        document.getElementById("progSub").textContent = sub || "";
-      }
-      function doneProgress(label) {
-        document.getElementById("progFill").style.width = "100%";
-        document.getElementById("progMainLabel").textContent =
-          label || "✅ Ready!";
-        document.getElementById("progSub").textContent = "";
-        document.getElementById("progSpinner").classList.add("done");
-      }
-      function setSplit(n) {
-        splitSize = n;
-        ["split50", "split100", "split200", "splitAll"].forEach((id) =>
-          document.getElementById(id).classList.remove("active"),
-        );
-        var map = {
-          50: "split50",
-          100: "split100",
-          200: "split200",
-          9999: "splitAll",
-        };
-        if (map[n]) document.getElementById(map[n]).classList.add("active");
-        updateExpPreview();
-      }
+      /* EXPORT (standard: All Entries + Summary) */
       function openExportModal() {
         var src = getVisible();
         if (!src.length) {
-          showToast("No entries to export.");
+          showToast("No entries.");
           return;
         }
         exportRunning = false;
-        document.getElementById("progWrap").classList.remove("show");
-        document.getElementById("exportOptsArea").classList.remove("locked");
         document.getElementById("downloadBtn").disabled = false;
+        document.getElementById("downloadBtn").textContent = "⬇ Download Excel";
         document.getElementById("cancelExportBtn").disabled = false;
-        document.getElementById("progFill").style.width = "0%";
-        document.getElementById("progSpinner").classList.remove("done");
-        document.getElementById("progMainLabel").textContent = "Preparing…";
-        document.getElementById("progSub").textContent = "";
-        selExpOpt(exportOpt);
         document.getElementById("exportModal").classList.remove("hidden");
       }
       function closeExportModal() {
@@ -5081,187 +5357,23 @@
       document.getElementById("exportModal").addEventListener("click", (e) => {
         if (e.target === e.currentTarget) closeExportModal();
       });
-      function selExpOpt(n) {
-        if (exportRunning) return;
-        exportOpt = n;
-        [1, 2, 3].forEach((i) =>
-          document
-            .getElementById("opt" + i)
-            .classList.toggle("selected", i === n),
-        );
-        document.getElementById("splitSizeRow").style.display =
-          n === 2 || n === 3 ? "block" : "none";
-        updateExpPreview();
-      }
-      function updateExpPreview() {
-        var src = getVisible(),
-          groups = getGroups(src),
-          vc = groups.length;
-        var pt = document.getElementById("exportPreviewText"),
-          pl = document.getElementById("exportSheetsList"),
-          chips = "";
-        if (exportOpt === 1) {
-          pt.textContent = "2 sheets, 1 file";
-          chips =
-            '<span class="exp-sheet-chip green">All Entries</span><span class="exp-sheet-chip">Summary</span>';
-          document.getElementById("splitFilesNote").textContent = "";
-        } else {
-          var nf = splitSize >= 9999 ? 1 : Math.ceil(vc / splitSize);
-          pt.textContent =
-            vc + " vendor sheets, " + nf + " file" + (nf === 1 ? "" : "s");
-          document.getElementById("splitFilesNote").textContent =
-            nf > 1 ? "→ " + nf + " files" : "→ 1 file";
-          if (exportOpt === 2)
-            chips =
-              '<span class="exp-sheet-chip green">All Entries</span><span class="exp-sheet-chip">Summary ⇌ links</span>';
-          groups
-            .slice(0, 4)
-            .forEach(
-              (g) =>
-                (chips +=
-                  '<span class="exp-sheet-chip">' +
-                  sanitizeName(g.name) +
-                  "</span>"),
-            );
-          if (vc > 4)
-            chips +=
-              '<span class="exp-sheet-chip">+' + (vc - 4) + " more…</span>";
-        }
-        pl.innerHTML = chips;
-      }
-      function makeAllSheet(data, title, suffix) {
-        var rows = [
-          [title + suffix],
-          [
-            "Generated: " +
-              new Date().toLocaleDateString("en-IN", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }),
-          ],
-          [],
-          ["#", "Name / Vendor", "Phone", "Remark", "Amount (INR)", "Date"],
-        ];
-        data.forEach((e, i) =>
-          rows.push([
-            i + 1,
-            e.name,
-            e.phone || "",
-            e.remark || "",
-            e.amount,
-            isoDisp(e.date),
-          ]),
-        );
-        rows.push([]);
-        rows.push([
-          "",
-          "Grand Total",
-          "",
-          "",
-          data.reduce((s, e) => s + e.amount, 0),
-          "",
-        ]);
-        var ws = XLSX.utils.aoa_to_sheet(rows);
-        ws["!cols"] = [
-          { wch: 5 },
-          { wch: 28 },
-          { wch: 14 },
-          { wch: 16 },
-          { wch: 16 },
-          { wch: 12 },
-        ];
-        ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
-        return ws;
-      }
-      function makeSumSheet(data, title, suffix, groups, lookup) {
-        var rows = [
-          [title + " — Summary" + suffix],
-          [],
-          ["Vendor", "Phone", "Payments", "Total (INR)"],
-        ];
-        var lr = [];
-        groups.forEach((g, gi) => {
-          var phone = g.items.reduce(
-            (p, it) => p || (it.phone ? it.phone : ""),
-            "",
-          );
-          rows.push([g.name, phone, g.items.length, g.total]);
-          lr.push({ row: 3 + gi, name: g.name });
-        });
-        rows.push([]);
-        rows.push([
-          "Grand Total",
-          "",
-          data.length,
-          data.reduce((s, e) => s + e.amount, 0),
-        ]);
-        var ws = XLSX.utils.aoa_to_sheet(rows);
-        ws["!cols"] = [{ wch: 28 }, { wch: 14 }, { wch: 12 }, { wch: 20 }];
-        ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
-        lr.forEach((l) => {
-          var ca = XLSX.utils.encode_cell({ r: l.row, c: 0 });
-          var sn = lookup(l.name);
-          if (!ws[ca]) return;
-          ws[ca].l = { Target: "#'" + sn + "'!A1" };
-          ws[ca].s = { font: { color: { rgb: "0563C1" }, underline: true } };
-        });
-        return ws;
-      }
-      function makeVendorSheet(vname, items, sumSN) {
-        var total = items.reduce((s, e) => s + e.amount, 0);
-        var phone = items.reduce((p, e) => p || (e.phone ? e.phone : ""), "");
-        var rows = [
-          [vname, "", "", "", "", ""],
-          [
-            "Total: " +
-              items.length +
-              " — ₹" +
-              total.toLocaleString("en-IN") +
-              (phone ? " | 📞 " + phone : ""),
-            "",
-            "",
-            "",
-            "",
-            "",
-          ],
-          ["", "", "", "", "", "← Back to Summary"],
-          [],
-          ["#", "Name / Vendor", "Phone", "Remark", "Amount (INR)", "Date"],
-        ];
-        items.forEach((e, i) =>
-          rows.push([
-            i + 1,
-            e.name,
-            e.phone || "",
-            e.remark || "",
-            e.amount,
-            isoDisp(e.date),
-          ]),
-        );
-        rows.push([]);
-        rows.push(["", "", "", "Total", total, ""]);
-        var ws = XLSX.utils.aoa_to_sheet(rows);
-        ws["!cols"] = [
-          { wch: 5 },
-          { wch: 24 },
-          { wch: 14 },
-          { wch: 16 },
-          { wch: 16 },
-          { wch: 12 },
-        ];
-        ws["!merges"] = [
-          { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
-          { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
-        ];
-        var bc = XLSX.utils.encode_cell({ r: 2, c: 5 });
-        if (ws[bc]) {
-          ws[bc].l = { Target: "#'" + sumSN + "'!A1" };
-          ws[bc].s = {
-            font: { color: { rgb: "0563C1" }, underline: true, bold: true },
-          };
-        }
-        return ws;
+      function makeNameReg() {
+        var u = {};
+        return function (r) {
+          var b =
+            (r + "")
+              .replace(/[\\\/\?\*\[\]:'"]/g, "")
+              .replace(/\s+/g, " ")
+              .trim()
+              .slice(0, 31) || "Sheet";
+          if (!u[b]) {
+            u[b] = 1;
+            return b;
+          }
+          var n = ++u[b];
+          var ss = "_" + n;
+          return b.slice(0, 31 - ss.length) + ss;
+        };
       }
       async function doExport() {
         if (exportRunning) return;
@@ -5270,146 +5382,97 @@
           showToast("No entries.");
           return;
         }
-        if (typeof XLSX === "undefined") {
-          showToast("Excel library not loaded.");
-          return;
-        }
         exportRunning = true;
-        document.getElementById("downloadBtn").disabled = true;
+        var btn = document.getElementById("downloadBtn");
+        btn.disabled = true;
+        btn.textContent = "⏳ Building…";
         document.getElementById("cancelExportBtn").disabled = true;
-        document.getElementById("exportOptsArea").classList.add("locked");
-        document.getElementById("progWrap").classList.add("show");
-        setProgress(0, "Starting…", "");
-        await yieldUI(30);
         try {
           var title =
             document.getElementById("sheetTitle").value.trim() ||
             "Payment Tracker";
-          var suffix = "";
-          if (searchQ) suffix += " [Search: " + searchQ + "]";
-          if (dateFrom || dateTo)
-            suffix +=
-              " (" +
-              isoDisp(dateFrom || "All") +
-              " → " +
-              isoDisp(dateTo || "All") +
-              ")";
-          var groups = getGroups(src),
-            SN = "Summary by Vendor";
-          if (exportOpt === 1) {
-            var wb = XLSX.utils.book_new();
-            var un = makeNameReg();
-            setProgress(20, "Building All Entries…", "");
-            await yieldUI();
-            XLSX.utils.book_append_sheet(
-              wb,
-              makeAllSheet(src, title, suffix),
-              un("All Entries"),
+          var groups = getGroups(src);
+          var wb = XLSX.utils.book_new();
+          var un = makeNameReg();
+          var allRows = [
+            [title],
+            ["Generated: " + new Date().toLocaleDateString("en-IN")],
+            [],
+            ["#", "Name/Vendor", "Phone", "Remark", "Amount (INR)", "Date"],
+          ];
+          src.forEach((e, i) =>
+            allRows.push([
+              i + 1,
+              e.name,
+              e.phone || "",
+              e.remark || "",
+              e.amount,
+              isoDisp(e.date),
+            ]),
+          );
+          allRows.push(
+            [],
+            [
+              "",
+              "Grand Total",
+              "",
+              "",
+              src.reduce((s, e) => s + e.amount, 0),
+              "",
+            ],
+          );
+          var ws1 = XLSX.utils.aoa_to_sheet(allRows);
+          ws1["!cols"] = [
+            { wch: 5 },
+            { wch: 28 },
+            { wch: 14 },
+            { wch: 16 },
+            { wch: 16 },
+            { wch: 12 },
+          ];
+          ws1["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
+          XLSX.utils.book_append_sheet(wb, ws1, un("All Entries"));
+          var sumRows = [
+            [title + " — Summary"],
+            [],
+            ["Vendor", "Phone", "Payments", "Total (INR)"],
+          ];
+          groups.forEach((g) => {
+            var phone = g.items.reduce(
+              (p, it) => p || (it.phone ? it.phone : ""),
+              "",
             );
-            setProgress(60, "Building Summary…", "");
-            await yieldUI();
-            XLSX.utils.book_append_sheet(
-              wb,
-              makeSumSheet(src, title, suffix, groups, () => ""),
-              un(SN),
-            );
-            setProgress(90, "Writing…", "");
-            await yieldUI();
-            doneProgress("✅ Ready!");
-            await yieldUI(1200);
-            XLSX.writeFile(
-              wb,
-              title.replace(/\s+/g, "_") +
-                "_" +
-                new Date().toISOString().slice(0, 10) +
-                ".xlsx",
-            );
-            await yieldUI(400);
-          } else {
-            var eff = splitSize >= 9999 ? groups.length : splitSize;
-            var batches = [];
-            for (var b = 0; b < groups.length; b += eff)
-              batches.push(groups.slice(b, b + eff));
-            var tB = batches.length,
-              tG = groups.length,
-              dG = 0;
-            for (var bi = 0; bi < tB; bi++) {
-              var batch = batches[bi];
-              var wb2 = XLSX.utils.book_new();
-              var un2 = makeNameReg();
-              var fl = tB > 1 ? " (Part " + (bi + 1) + "/" + tB + ")" : "";
-              var sn = un2(SN);
-              var vsn = {};
-              batch.forEach((g) => (vsn[g.name] = un2(g.name)));
-              function lv(n) {
-                return vsn[n] || sanitizeName(n);
-              }
-              if (exportOpt === 2) {
-                setProgress(
-                  Math.round((dG / tG) * 80),
-                  "File " + (bi + 1) + "/" + tB + "…",
-                  "",
-                );
-                await yieldUI();
-                XLSX.utils.book_append_sheet(
-                  wb2,
-                  makeAllSheet(src, title + fl, suffix),
-                  un2("All Entries"),
-                );
-                XLSX.utils.book_append_sheet(
-                  wb2,
-                  makeSumSheet(src, title + fl, suffix, batch, lv),
-                  sn,
-                );
-              }
-              for (var gi = 0; gi < batch.length; gi++) {
-                XLSX.utils.book_append_sheet(
-                  wb2,
-                  makeVendorSheet(batch[gi].name, batch[gi].items, sn),
-                  vsn[batch[gi].name],
-                );
-                dG++;
-                if ((gi + 1) % 5 === 0 || gi === batch.length - 1) {
-                  setProgress(
-                    Math.round((dG / tG) * 85),
-                    "Building…",
-                    "Sheet " + (gi + 1) + "/" + batch.length,
-                  );
-                  await yieldUI();
-                }
-              }
-              setProgress(85 + Math.round(((bi + 1) / tB) * 10), "Saving…", "");
-              await yieldUI();
-              var fn =
-                title.replace(/\s+/g, "_") +
-                (tB > 1 ? "_part" + (bi + 1) : "") +
-                ".xlsx";
-              doneProgress(
-                tB > 1 ? "✅ File " + (bi + 1) + "/" + tB : "✅ Ready!",
-              );
-              await yieldUI(tB > 1 ? 1000 : 1200);
-              XLSX.writeFile(wb2, fn);
-              await yieldUI(600);
-              if (bi < tB - 1) {
-                document.getElementById("progSpinner").classList.remove("done");
-                document.getElementById("progMainLabel").textContent =
-                  "Preparing next…";
-              }
-            }
-          }
-          exportRunning = false;
-          document.getElementById("exportModal").classList.add("hidden");
-          flashBar();
+            sumRows.push([g.name, phone, g.items.length, g.total]);
+          });
+          sumRows.push(
+            [],
+            [
+              "Grand Total",
+              "",
+              src.length,
+              src.reduce((s, e) => s + e.amount, 0),
+            ],
+          );
+          var ws2 = XLSX.utils.aoa_to_sheet(sumRows);
+          ws2["!cols"] = [{ wch: 28 }, { wch: 14 }, { wch: 12 }, { wch: 20 }];
+          ws2["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
+          XLSX.utils.book_append_sheet(wb, ws2, un("Summary by Vendor"));
+          XLSX.writeFile(
+            wb,
+            title.replace(/\s+/g, "_") + "_" + todayISO() + ".xlsx",
+          );
           showToast("📊 Exported " + src.length + " entries");
+          flashBar();
+          closeExportModal();
         } catch (err) {
-          exportRunning = false;
-          document.getElementById("progWrap").classList.remove("show");
-          document.getElementById("exportOptsArea").classList.remove("locked");
-          document.getElementById("downloadBtn").disabled = false;
-          document.getElementById("cancelExportBtn").disabled = false;
           document.getElementById("errMsg").textContent =
             "Export failed: " + err.message;
           document.getElementById("errMsg").style.display = "block";
+        } finally {
+          exportRunning = false;
+          btn.disabled = false;
+          btn.textContent = "⬇ Download Excel";
+          document.getElementById("cancelExportBtn").disabled = false;
         }
       }
     </script>
