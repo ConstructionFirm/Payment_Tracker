@@ -2,7 +2,7 @@
 <html>
   <head>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
       *,
       *::before,
       *::after {
@@ -22,7 +22,7 @@
         padding: 1.5rem 1rem 3rem;
       }
       .hero {
-        background: linear-gradient(135deg, #4c3fce, #6c3fc7);
+        background: linear-gradient(135deg, #4c3fce 0%, #6c3fc7 100%);
         border-radius: 16px;
         padding: 1.4rem 1.6rem;
         margin-bottom: 1.25rem;
@@ -200,6 +200,7 @@
         color: #3a3760;
         margin: 8px 0 6px;
       }
+      /* FIX: removed overflow:hidden from folder-block so menus don't get clipped */
       .folder-block {
         border-radius: 10px;
         border: 1px solid #2e2a50;
@@ -267,6 +268,7 @@
         border-radius: 4px;
         flex-shrink: 0;
         transition: all 0.15s;
+        position: relative;
       }
       .f-act:hover {
         color: #a99cf7;
@@ -294,6 +296,7 @@
         color: #3a3760;
         align-self: center;
       }
+      /* FIX: increased max-width for chips so text is more readable */
       .sheet-chip {
         height: 32px;
         padding: 0 10px;
@@ -310,6 +313,7 @@
         gap: 6px;
         transition: all 0.2s;
         max-width: 340px;
+        position: relative;
       }
       .sheet-chip:hover {
         border-color: #4c3fce;
@@ -319,6 +323,10 @@
         border-color: #6c3fc7;
         background: rgba(76, 63, 206, 0.2);
         color: #d4cfff;
+      }
+      .sheet-chip.dragging {
+        opacity: 0.35;
+        transform: scale(0.95);
       }
       .chip-name {
         overflow: hidden;
@@ -346,6 +354,7 @@
         cursor: pointer;
         line-height: 1;
         transition: color 0.15s;
+        position: relative;
       }
       .chip-menu-btn:hover {
         color: #a99cf7;
@@ -362,6 +371,7 @@
         padding: 0 2px;
         flex: 1;
       }
+      /* FIX: ctx-menu now uses fixed positioning (set inline), so z-index matters more */
       .ctx-menu {
         background: #1e1c38;
         border: 1px solid #2e2a50;
@@ -738,7 +748,9 @@
         font-size: 13px;
         font-family: "Inter", sans-serif;
         width: 100%;
-        transition: border-color 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
       }
       .field input::placeholder {
         color: #3d3860;
@@ -757,6 +769,7 @@
         color: #4ecba0;
         margin-top: 3px;
         font-weight: 600;
+        letter-spacing: 0.03em;
         min-height: 14px;
       }
       .ac-dropdown {
@@ -810,6 +823,10 @@
         cursor: pointer;
         white-space: nowrap;
         box-shadow: 0 4px 14px rgba(76, 63, 206, 0.4);
+        transition: all 0.2s;
+      }
+      .btn-add:hover {
+        transform: translateY(-1px);
       }
       .toolbar {
         margin-bottom: 1rem;
@@ -876,6 +893,7 @@
       .search-box-input:focus {
         outline: none;
         border-color: #6c3fc7;
+        box-shadow: 0 0 0 3px rgba(108, 63, 199, 0.2);
       }
       .search-box-clear {
         position: absolute;
@@ -921,6 +939,7 @@
       .btn-clear-entries:hover {
         background: rgba(220, 60, 60, 0.1);
         color: #f08080;
+        border-color: rgba(220, 60, 60, 0.3) !important;
       }
       .btn-import-xls {
         border: 1px solid #4c3fce !important;
@@ -931,6 +950,11 @@
         border: 1px solid #00b9f2 !important;
         background: rgba(0, 185, 242, 0.08);
         color: #5dd6f8;
+      }
+      .btn-import-sbi {
+        border: 1px solid #1e6bb8 !important;
+        background: rgba(30, 107, 184, 0.12);
+        color: #6aabee;
       }
       .btn-import-bob {
         border: 1px solid #c0541a !important;
@@ -950,6 +974,15 @@
       .btn-export-xls {
         background: linear-gradient(135deg, #0d7a5c, #0fa876);
         color: #fff;
+        box-shadow: 0 3px 10px rgba(13, 168, 118, 0.3);
+      }
+      .filter-badge {
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+        font-size: 10px;
+        padding: 1px 6px;
+        border-radius: 99px;
+        margin-left: 2px;
       }
       .toast-notify {
         position: fixed;
@@ -1145,6 +1178,12 @@
         font-size: 14px;
         color: #4a4670;
       }
+      .table-loading {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: #4a4670;
+        font-size: 13px;
+      }
       .toast-bar {
         position: absolute;
         bottom: 0;
@@ -1297,22 +1336,6 @@
         font-family: "Inter", sans-serif;
         cursor: pointer;
       }
-      .btn-dl {
-        height: 40px;
-        padding: 0 22px;
-        border-radius: 10px;
-        border: none;
-        background: linear-gradient(135deg, #0d7a5c, #0fa876);
-        color: #fff;
-        font-size: 13.5px;
-        font-weight: 600;
-        font-family: "Inter", sans-serif;
-        cursor: pointer;
-      }
-      .btn-dl:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
-      }
       .admin-desc {
         font-size: 13px;
         color: #c8c4e8;
@@ -1411,6 +1434,7 @@
         color: #f08080;
       }
       .paytm-tag,
+      .sbi-tag,
       .bob-tag {
         display: inline-block;
         font-size: 10px;
@@ -1422,6 +1446,10 @@
       .paytm-tag {
         background: rgba(0, 185, 242, 0.12);
         color: #5dd6f8;
+      }
+      .sbi-tag {
+        background: rgba(30, 107, 184, 0.18);
+        color: #6aabee;
       }
       .bob-tag {
         background: rgba(192, 84, 26, 0.18);
@@ -1528,6 +1556,8 @@
         position: sticky;
         top: 0;
         z-index: 1;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
       }
       .ptbl td {
         padding: 7px 10px;
@@ -1624,6 +1654,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        transition: all 0.2s;
       }
       .btn-do-import:disabled {
         opacity: 0.45;
@@ -1631,6 +1662,9 @@
       }
       .btn-do-import.paytm-col {
         background: linear-gradient(135deg, #007ab8, #00b9f2);
+      }
+      .btn-do-import.sbi-col {
+        background: linear-gradient(135deg, #1a4a8a, #1e6bb8);
       }
       .btn-do-import.bob-col {
         background: linear-gradient(135deg, #8a3510, #c0541a);
@@ -1702,6 +1736,226 @@
       }
       .debug-box.show {
         display: block;
+      }
+      .export-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid #2e2a50;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 10px;
+      }
+      .export-option:hover {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.07);
+      }
+      .export-option.selected {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.15);
+      }
+      .export-option-radio {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #4a4670;
+        flex-shrink: 0;
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .export-option.selected .export-option-radio {
+        border-color: #6c3fc7;
+        background: #6c3fc7;
+      }
+      .export-option.selected .export-option-radio::after {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #fff;
+        display: block;
+      }
+      .export-option-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .export-option-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #d4cfff;
+        margin-bottom: 3px;
+      }
+      .export-option-desc {
+        font-size: 12px;
+        color: #5a5680;
+        line-height: 1.5;
+      }
+      .exp-preview-note {
+        background: #12101f;
+        border: 1px solid #2e2a50;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 12px;
+        color: #7a74a8;
+        margin-bottom: 12px;
+      }
+      .exp-preview-note strong {
+        color: #a99cf7;
+      }
+      .exp-sheets-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .exp-sheet-chip {
+        background: rgba(76, 63, 206, 0.15);
+        color: #a99cf7;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 99px;
+        border: 1px solid rgba(76, 63, 206, 0.3);
+      }
+      .exp-sheet-chip.green {
+        background: rgba(13, 168, 118, 0.15);
+        color: #4ecba0;
+        border-color: rgba(13, 168, 118, 0.3);
+      }
+      .split-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .split-btn {
+        height: 28px;
+        padding: 0 14px;
+        border-radius: 99px;
+        border: 1px solid #2e2a50;
+        background: none;
+        color: #5a5680;
+        font-size: 12px;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .split-btn:hover,
+      .split-btn.active {
+        background: rgba(76, 63, 206, 0.2);
+        border-color: #6c3fc7;
+        color: #a99cf7;
+      }
+      .prog-wrap {
+        background: #12101f;
+        border: 1px solid #2a2745;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .prog-wrap.show {
+        display: block;
+      }
+      .prog-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .prog-spinner {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2.5px solid #2e2a50;
+        border-top-color: #6c3fc7;
+        animation: spin 0.7s linear infinite;
+        flex-shrink: 0;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .prog-spinner.done {
+        animation: none;
+        border-color: #4ecba0;
+        border-top-color: #4ecba0;
+      }
+      .prog-main-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: #d4cfff;
+        flex: 1;
+      }
+      .prog-track {
+        height: 8px;
+        background: #2e2a50;
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .prog-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #4c3fce, #0fa876);
+        border-radius: 99px;
+        transition: width 0.35s ease;
+      }
+      .prog-sub {
+        font-size: 11px;
+        color: #5a5680;
+        margin-top: 7px;
+        min-height: 14px;
+      }
+      .opts-area.locked {
+        opacity: 0.25;
+        pointer-events: none;
+        user-select: none;
+      }
+      .btn-dl {
+        height: 40px;
+        padding: 0 22px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #0d7a5c, #0fa876);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+      }
+      .btn-dl:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .emoji-grid {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .emoji-opt {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid #2e2a50;
+        background: #12101f;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+      .emoji-opt:hover,
+      .emoji-opt.selected {
+        border-color: #6c3fc7;
+        background: rgba(76, 63, 206, 0.2);
       }
       .fp-list {
         max-height: 260px;
@@ -1781,30 +2035,6 @@
         font-family: "Inter", sans-serif;
         cursor: pointer;
       }
-      .emoji-grid {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        margin-top: 6px;
-      }
-      .emoji-opt {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        border: 1px solid #2e2a50;
-        background: #12101f;
-        font-size: 18px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.15s;
-      }
-      .emoji-opt:hover,
-      .emoji-opt.selected {
-        border-color: #6c3fc7;
-        background: rgba(76, 63, 206, 0.2);
-      }
     </style>
 
     <div class="wrap">
@@ -1813,9 +2043,7 @@
           <div class="hero-icon">💸</div>
           <div>
             <div class="hero-title">Payment Tracker</div>
-            <div class="hero-sub">
-              Cloud backed · Folders sync across devices ☁️
-            </div>
+            <div class="hero-sub">Cloud backed · Organised</div>
           </div>
         </div>
         <div class="hero-right">
@@ -1842,7 +2070,7 @@
               onclick="openRecycleBin()"
               style="display: none"
             >
-              🗑 Bin</button
+              🗑 Bin (0)</button
             ><button class="sm-btn btn-folder" onclick="openFolderModal(null)">
               📂 New Folder</button
             ><button class="sm-btn btn-sheet" onclick="openNewSheet()">
@@ -2010,9 +2238,9 @@
               disabled
             />
           </div>
+          <!-- FIX: date hint shows DD/MM/YYYY -->
           <div class="field">
-            <label>Date <span class="dh">DD/MM</span></label
-            ><input id="dateInput" type="date" disabled />
+            <label>Date</label><input id="dateInput" type="date" disabled />
             <div class="date-hint" id="dateHint"></div>
           </div>
           <button class="btn-add" id="addBtn" onclick="addEntry()" disabled>
@@ -2054,11 +2282,13 @@
           <button class="btn-action btn-clear-entries" onclick="clearAll()">
             🗑 Clear</button
           ><button class="btn-action btn-import-xls" onclick="openImport()">
-            📥 Excel</button
+            📥 Import Excel</button
           ><button class="btn-action btn-import-paytm" onclick="openPaytm()">
-            🔵 Paytm</button
+            🔵 Import Paytm</button
+          ><button class="btn-action btn-import-sbi" onclick="openSBI()">
+            🏦 Import SBI</button
           ><button class="btn-action btn-import-bob" onclick="openBOB()">
-            🏛 BOB PDF</button
+            🏛 Import BOB PDF</button
           ><button
             class="btn-action btn-copy"
             id="copyBtn"
@@ -2070,6 +2300,11 @@
             onclick="openExportModal()"
           >
             📊 Export
+            <span
+              class="filter-badge"
+              id="exportBadge"
+              style="display: none"
+            ></span>
           </button>
         </div>
       </div>
@@ -2091,6 +2326,7 @@
     </div>
     <div class="toast-notify" id="toastNotify"></div>
 
+    <!-- Admin modal -->
     <div class="modal-overlay hidden" id="adminModal">
       <div class="modal">
         <div class="modal-title">
@@ -2132,6 +2368,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Folder modal -->
     <div class="modal-overlay hidden" id="folderModal">
       <div class="modal">
         <div class="modal-title">
@@ -2158,6 +2396,8 @@
         </div>
       </div>
     </div>
+
+    <!-- New sheet -->
     <div class="modal-overlay hidden" id="newSheetModal">
       <div class="modal">
         <div class="modal-title">
@@ -2194,6 +2434,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Folder picker -->
     <div class="modal-overlay hidden" id="pickerModal">
       <div class="modal">
         <div class="modal-title">
@@ -2206,6 +2448,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Recycle bin -->
     <div class="modal-overlay hidden" id="recycleBinModal">
       <div class="modal">
         <div class="modal-title">
@@ -2216,6 +2460,9 @@
             🗑
           </div>
           Recycle Bin
+          <span style="font-size: 12px; color: #5a5680; font-weight: 400"
+            >(30-day recovery)</span
+          >
         </div>
         <div id="recycleBinList"></div>
         <div class="modal-actions">
@@ -2223,6 +2470,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Edit entry -->
     <div class="modal-overlay hidden" id="editModal">
       <div class="modal">
         <div class="modal-title">
@@ -2281,6 +2530,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Excel import -->
     <div class="modal-overlay hidden" id="importModal">
       <div class="modal">
         <div class="modal-title">
@@ -2309,6 +2560,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Paytm -->
     <div class="modal-overlay hidden" id="paytmModal">
       <div class="modal wide">
         <div class="modal-title">
@@ -2357,7 +2610,7 @@
               onclick="filterPaytm('credit')"
             >
               💰 Credit</button
-            ><span class="sel-info" id="selCount">0 sel</span>
+            ><span class="sel-info" id="selCount">0 selected</span>
           </div>
           <div class="preview-wrap">
             <table class="ptbl">
@@ -2374,6 +2627,7 @@
                   <th>Description</th>
                   <th style="width: 90px">Amount</th>
                   <th style="width: 52px">Type</th>
+                  <th>Remark</th>
                 </tr>
               </thead>
               <tbody id="previewBody"></tbody>
@@ -2389,7 +2643,7 @@
               class="btn-do-import paytm-col"
               onclick="importSelectedPaytm()"
             >
-              Import →
+              Import Selected →
             </button>
           </div>
         </div>
@@ -2398,6 +2652,99 @@
         </div>
       </div>
     </div>
+
+    <!-- SBI -->
+    <div class="modal-overlay hidden" id="sbiModal">
+      <div class="modal wide">
+        <div class="modal-title">
+          <div
+            class="modal-title-icon"
+            style="background: rgba(30, 107, 184, 0.2)"
+          >
+            🏦
+          </div>
+          Import SBI<span class="sbi-tag">Auto name extraction</span>
+        </div>
+        <div id="sbiStep1">
+          <p class="import-info">
+            Upload SBI Excel. Columns: <code>Date</code> <code>Details</code>
+            <code>Debit</code> <code>Credit</code>
+          </p>
+          <div
+            class="import-zone"
+            onclick="document.getElementById('sbiFile').click()"
+          >
+            <span class="import-zone-icon">📊</span>Click to choose<input
+              type="file"
+              id="sbiFile"
+              accept=".xlsx,.xls,.csv"
+              style="display: none"
+              onchange="handleSBIUpload(this)"
+            />
+          </div>
+          <div class="import-result" id="sbiUploadResult"></div>
+          <div id="sbiSheetBadge" style="display: none"></div>
+        </div>
+        <div id="sbiStep2" style="display: none">
+          <div class="prev-filter-row">
+            <button class="pflt on" id="sfAll" onclick="setSBIFilter('all')">
+              All</button
+            ><button
+              class="pflt debit"
+              id="sfDebit"
+              onclick="setSBIFilter('debit')"
+            >
+              💸 Debit</button
+            ><button
+              class="pflt credit"
+              id="sfCredit"
+              onclick="setSBIFilter('credit')"
+            >
+              💰 Credit</button
+            ><span class="sel-info" id="sbiSelInfo">0 sel</span>
+          </div>
+          <div class="stats-row-sm" id="sbiStatsRow"></div>
+          <div class="preview-wrap">
+            <table class="ptbl">
+              <thead>
+                <tr>
+                  <th class="chk">
+                    <input
+                      type="checkbox"
+                      id="sbiSelAll"
+                      onchange="toggleSBIAll(this)"
+                    />
+                  </th>
+                  <th style="width: 80px">Date</th>
+                  <th style="width: 155px">Name</th>
+                  <th>Details</th>
+                  <th style="width: 50px">Ref</th>
+                  <th style="width: 52px">Type</th>
+                  <th style="width: 82px">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="sbiPreviewBody"></tbody>
+            </table>
+          </div>
+          <div class="import-result" id="sbiImportResult"></div>
+          <div class="modal-actions">
+            <button class="btn-cancel" onclick="resetSBI()">← Back</button
+            ><button
+              class="btn-do-import sbi-col"
+              id="sbiImportBtn"
+              onclick="doSBIImport()"
+            >
+              ⬇ Import
+            </button>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top: 10px">
+          <button class="btn-cancel" onclick="closeSBI()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOB -->
     <div class="modal-overlay hidden" id="bobModal">
       <div class="modal wide">
         <div class="modal-title">
@@ -2412,7 +2759,14 @@
         <div id="bobStep1">
           <div class="pw-note">
             🔐 <strong>BOB PDF password = your phone number.</strong><br />Open
-            PDF → enter phone → <strong>File → Print → Save as PDF</strong>
+            PDF → enter phone → <strong>File → Print → Save as PDF</strong
+            ><br />Or:
+            <a
+              href="https://www.ilovepdf.com/unlock_pdf"
+              target="_blank"
+              style="color: #ffb899"
+              >ilovepdf.com/unlock_pdf</a
+            >
           </div>
           <div
             class="import-zone bob-zone"
@@ -2500,6 +2854,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Export -->
     <div class="modal-overlay hidden" id="exportModal">
       <div class="modal">
         <div class="modal-title">
@@ -2511,23 +2867,70 @@
           </div>
           Export to Excel
         </div>
-        <div
-          style="
-            background: #12101f;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 1rem;
-            font-size: 13px;
-            color: #7a74a8;
-            line-height: 1.6;
-          "
-        >
-          <strong style="color: #a99cf7">Standard Export</strong> — 2 sheets:<br />•
-          <strong style="color: #4ecba0">All Entries</strong> — every row<br />•
-          <strong style="color: #a99cf7">Summary by Vendor</strong> — totals<br /><span
-            style="font-size: 11px; color: #4a4670"
-            >Respects active date/search filter</span
-          >
+        <div class="opts-area" id="exportOptsArea">
+          <div class="export-option selected" id="opt1" onclick="selExpOpt(1)">
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">📄</div>
+            <div>
+              <div class="export-option-title">Standard export</div>
+              <div class="export-option-desc">
+                2 sheets: All Entries + Summary
+              </div>
+            </div>
+          </div>
+          <div class="export-option" id="opt2" onclick="selExpOpt(2)">
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">📑</div>
+            <div>
+              <div class="export-option-title">Per-vendor sheets</div>
+              <div class="export-option-desc">
+                All Entries + Summary + one sheet per vendor
+              </div>
+            </div>
+          </div>
+          <div class="export-option" id="opt3" onclick="selExpOpt(3)">
+            <div class="export-option-radio"></div>
+            <div class="export-option-icon">🗂️</div>
+            <div>
+              <div class="export-option-title">Vendor sheets only</div>
+              <div class="export-option-desc">One sheet per vendor</div>
+            </div>
+          </div>
+          <div id="splitSizeRow" style="display: none" class="exp-preview-note">
+            <strong>Vendors per file:</strong>
+            <div class="split-row">
+              <button
+                class="split-btn active"
+                id="split50"
+                onclick="setSplit(50)"
+              >
+                50</button
+              ><button class="split-btn" id="split100" onclick="setSplit(100)">
+                100</button
+              ><button class="split-btn" id="split200" onclick="setSplit(200)">
+                200</button
+              ><button class="split-btn" id="splitAll" onclick="setSplit(9999)">
+                All</button
+              ><span
+                id="splitFilesNote"
+                style="font-size: 12px; color: #a99cf7"
+              ></span>
+            </div>
+          </div>
+          <div class="exp-preview-note" style="margin-top: 8px">
+            <strong>Will create:</strong> <span id="exportPreviewText"></span>
+            <div class="exp-sheets-list" id="exportSheetsList"></div>
+          </div>
+        </div>
+        <div class="prog-wrap" id="progWrap">
+          <div class="prog-top">
+            <div class="prog-spinner" id="progSpinner"></div>
+            <div class="prog-main-label" id="progMainLabel">Preparing…</div>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill" id="progFill"></div>
+          </div>
+          <div class="prog-sub" id="progSub"></div>
         </div>
         <div class="modal-actions">
           <button
@@ -2537,7 +2940,7 @@
           >
             Cancel</button
           ><button class="btn-dl" id="downloadBtn" onclick="doExport()">
-            ⬇ Download Excel
+            ⬇ Download
           </button>
         </div>
       </div>
@@ -2572,81 +2975,26 @@
           "👤",
           "📑",
         ];
-
-      /* ── CLOUD FOLDER SYNC ───────────────────────────────────────────────────────
-   Folders are encoded into the title of a hidden Supabase sheet (CFG_PREFIX).
-   On load that sheet is found, decoded, and applied — so any device that opens
-   the tracker gets the same folder layout automatically, no schema changes needed.
-*/
-      var CFG_PREFIX = "__ptcfg__",
-        cfgSheetRef = null,
-        _cloudSaveTimer = null;
-
-      function loadConfigFromCloud(title) {
-        if (!title || !title.startsWith(CFG_PREFIX)) return;
-        try {
-          var data = JSON.parse(
-            decodeURIComponent(escape(atob(title.slice(CFG_PREFIX.length)))),
-          );
-          if (Array.isArray(data.folders)) folders = data.folders;
-          if (data.sheetFolders && typeof data.sheetFolders === "object")
-            sheetFolders = data.sheetFolders;
-          if (data.sheetMeta && typeof data.sheetMeta === "object")
-            sheetMeta = data.sheetMeta;
-          if (typeof data.dragLocked === "boolean")
-            dragLocked = data.dragLocked;
-          try {
-            localStorage.setItem("pt_f6", JSON.stringify(folders));
-            localStorage.setItem("pt_sf6", JSON.stringify(sheetFolders));
-            localStorage.setItem("pt_meta6", JSON.stringify(sheetMeta));
-            localStorage.setItem("pt_lock6", dragLocked ? "1" : "");
-          } catch (e) {}
-          updateDragLockBtn();
-        } catch (e) {}
-      }
-      async function saveConfigToCloud() {
-        try {
-          var json = JSON.stringify({
-            folders: folders,
-            sheetFolders: sheetFolders,
-            sheetMeta: sheetMeta,
-            dragLocked: dragLocked,
-          });
-          var title = CFG_PREFIX + btoa(unescape(encodeURIComponent(json)));
-          if (cfgSheetRef) {
-            await sb("sheets?id=eq." + cfgSheetRef.id, {
-              method: "PATCH",
-              body: JSON.stringify({ title: title }),
-            });
-            cfgSheetRef.title = title;
-          } else {
-            var r = await sb("sheets", {
-              method: "POST",
-              body: JSON.stringify({ title: title }),
-            });
-            var d = await r.json();
-            cfgSheetRef = Array.isArray(d) ? d[0] : d;
-          }
-        } catch (e) {}
-      }
-      /* ─────────────────────────────────────────────────────────────────────────── */
-
       var entries = [],
         sheets = [],
         currentSheetId = null,
         view = "grouped",
         openGroups = {},
-        acIdx = -1;
-      var editIdx = -1,
+        acIdx = -1,
+        editIdx = -1,
         editEntryId = null,
         searchQ = "",
         dateFrom = "",
-        dateTo = "",
-        exportRunning = false;
+        dateTo = "";
       var paytmRows = [],
         paytmFilter = "all",
+        sbiRows = [],
+        sbiFilter = "all",
         bobRows = [],
         bobFilter = "all";
+      var exportOpt = 1,
+        splitSize = 50,
+        exportRunning = false;
       var folders = [],
         sheetFolders = {},
         sheetMeta = {},
@@ -2673,8 +3021,6 @@
           localStorage.setItem("pt_meta6", JSON.stringify(sheetMeta));
           localStorage.setItem("pt_lock6", dragLocked ? "1" : "");
         } catch (e) {}
-        if (_cloudSaveTimer) clearTimeout(_cloudSaveTimer);
-        _cloudSaveTimer = setTimeout(saveConfigToCloud, 2000);
       }
       function saveRecycleBin() {
         try {
@@ -2793,6 +3139,7 @@
         document.getElementById("dateInput").value = d
           .toISOString()
           .slice(0, 10);
+        // FIX: show DD/MM/YYYY hint for date input
         document.getElementById("dateHint").textContent = isoDisp(
           d.toISOString().slice(0, 10),
         );
@@ -2825,6 +3172,7 @@
         document.addEventListener("click", (e) => {
           if (_openMenu && !_openMenu.contains(e.target)) closeMenu();
         });
+        // FIX: update date hint when date changes
         document
           .getElementById("dateInput")
           .addEventListener("change", function () {
@@ -2847,6 +3195,7 @@
       function todayISO() {
         return new Date().toISOString().slice(0, 10);
       }
+      // FIX: DD/MM/YYYY display
       function isoDisp(iso) {
         if (!iso) return "—";
         var p = iso.split("-");
@@ -2902,6 +3251,7 @@
         }
         return -1;
       }
+      // FIX: universal close menu
       function closeMenu() {
         if (_openMenu) {
           try {
@@ -2910,6 +3260,8 @@
         }
         _openMenu = null;
       }
+
+      // FIX: openCtxMenu - uses fixed positioning, appended to body to avoid overflow:hidden clipping
       function openCtxMenu(btn, html) {
         closeMenu();
         var rect = btn.getBoundingClientRect();
@@ -2919,14 +3271,18 @@
         menu.innerHTML = html;
         document.body.appendChild(menu);
         _openMenu = menu;
+        // Position after append so we can measure
+        var mw = menu.offsetWidth || 175;
         var mh = menu.offsetHeight || 160;
         var top = rect.bottom + 4;
         var right = window.innerWidth - rect.right;
-        if (top + mh > window.innerHeight) top = Math.max(4, rect.top - mh - 4);
+        if (top + mh > window.innerHeight) top = rect.top - mh - 4;
+        if (right + mw > window.innerWidth) right = 0;
         menu.style.top = top + "px";
         menu.style.right = right + "px";
       }
 
+      /* ADMIN MODAL */
       function requireAdmin(desc, cb) {
         _adminCb = cb;
         document.getElementById("adminDesc").textContent = desc;
@@ -2964,9 +3320,13 @@
         if (e.key === "Enter") doAdmin();
       });
 
+      /* UNDO TOAST */
       function showUndoToast(msg, undoFn, ms) {
         ms = ms || 8000;
-        if (_undoTimer) clearTimeout(_undoTimer);
+        if (_undoTimer) {
+          clearTimeout(_undoTimer);
+          _undoTimer = null;
+        }
         _undoFn = undoFn;
         document.getElementById("undoMsg").textContent = msg;
         var bar = document.getElementById("undoBar");
@@ -2980,7 +3340,10 @@
         _undoTimer = setTimeout(dismissUndo, ms);
       }
       function doUndo() {
-        if (_undoTimer) clearTimeout(_undoTimer);
+        if (_undoTimer) {
+          clearTimeout(_undoTimer);
+          _undoTimer = null;
+        }
         var fn = _undoFn;
         _undoFn = null;
         dismissUndo();
@@ -2994,6 +3357,8 @@
         }
         _undoFn = null;
       }
+
+      /* DRAG LOCK */
       function toggleDragLock() {
         dragLocked = !dragLocked;
         saveFolderState();
@@ -3006,6 +3371,7 @@
         btn.classList.toggle("locked", dragLocked);
       }
 
+      /* RECYCLE BIN */
       function updateBinBtn() {
         var btn = document.getElementById("recycleBinBtn");
         if (recycleBin.length) {
@@ -3036,7 +3402,7 @@
                 escH(item.title) +
                 '</div><div class="rb-meta">📅 ' +
                 dt +
-                " · " +
+                " · 📁 " +
                 escH(fn) +
                 " · " +
                 (item.entries || []).length +
@@ -3044,7 +3410,7 @@
                 item.id +
                 '\')">↩ Restore</button><button class="btn-perm-del" onclick="permDel(\'' +
                 item.id +
-                "')\">🗑</button></div></div>"
+                "')\">🗑 Delete</button></div></div>"
               );
             })
             .join("");
@@ -3106,18 +3472,12 @@
         openRecycleBin();
       }
 
+      /* SHEETS */
       function loadSheets() {
         sb("sheets?select=id,title,updated_at&order=updated_at.desc")
           .then((r) => r.json())
           .then((d) => {
-            var all = Array.isArray(d) ? d : [];
-            cfgSheetRef =
-              all.find((s) => s.title && s.title.startsWith(CFG_PREFIX)) ||
-              null;
-            if (cfgSheetRef) loadConfigFromCloud(cfgSheetRef.title);
-            sheets = all.filter(
-              (s) => !s.title || !s.title.startsWith(CFG_PREFIX),
-            );
+            sheets = Array.isArray(d) ? d : [];
             renderSheets();
             setSync("ok");
           })
@@ -3127,7 +3487,6 @@
               '<div style="color:#f08080;font-size:13px;">⚠ Could not connect to Supabase</div>';
           });
       }
-
       function renderSheets() {
         var area = document.getElementById("sheetsArea"),
           html = "";
@@ -3171,8 +3530,8 @@
         visited.add(fid);
         var f = folders.find((x) => x.id === fid);
         if (!f) return "";
-        var isOpen = f.open !== false,
-          fSheets = sheets.filter((s) => sheetFolders[s.id] === fid);
+        var isOpen = f.open !== false;
+        var fSheets = sheets.filter((s) => sheetFolders[s.id] === fid);
         var childF = folders
           .filter((x) => x.parentId === fid)
           .sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -3207,6 +3566,7 @@
           '<span class="f-count">' +
           (fSheets.length + childF.length) +
           "</span>";
+        // FIX: stopPropagation on folder menu button
         h +=
           '<button class="f-act" onclick="event.stopPropagation();openFolderMenu(event,\'' +
           fid +
@@ -3230,6 +3590,7 @@
             '<span class="folder-empty-hint">Drag sheets here or use ⋯ on chip</span>';
         return h + "</div></div>";
       }
+      // FIX: chip now has title on the div itself for full-name tooltip
       function chipHTML(s) {
         var active = s.id === currentSheetId ? " active" : "";
         var pinned = sheetMeta[s.id] && sheetMeta[s.id].pinned;
@@ -3262,6 +3623,7 @@
         );
       }
 
+      // FIX: chip menu uses openCtxMenu for fixed positioning
       function openChipMenu(e, sheetId) {
         var isPinned = sheetMeta[sheetId] && sheetMeta[sheetId].pinned;
         var inFolder = sheetFolders[sheetId];
@@ -3291,6 +3653,8 @@
           "')\">🔐 Delete sheet</div>";
         openCtxMenu(e.currentTarget, html);
       }
+
+      // FIX: folder menu uses openCtxMenu for fixed positioning — this was the main folder delete bug
       function openFolderMenu(e, fid) {
         var html =
           '<div class="cm-item" onclick="startFolderRename(\'' +
@@ -3306,6 +3670,7 @@
         e.stopPropagation();
       }
 
+      /* FOLDER PICKER */
       function openFolderPicker(sheetId) {
         closeMenu();
         _pickerCb = function (fid) {
@@ -3314,7 +3679,7 @@
         };
         document.getElementById("pickerTitle").textContent = "Move to folder";
         var html =
-          '<div class="fp-item fp-none" onclick="_pickerCb(null);closePicker()">🚫 No folder</div>' +
+          '<div class="fp-item fp-none" onclick="_pickerCb(null);closePicker()">🚫 No folder (uncategorised)</div>' +
           buildPickerTree(null, 0, null);
         document.getElementById("pickerList").innerHTML = html;
         document.getElementById("pickerModal").classList.remove("hidden");
@@ -3336,7 +3701,7 @@
         };
         document.getElementById("pickerTitle").textContent = "Move folder to…";
         var html =
-          '<div class="fp-item fp-none" onclick="_pickerCb(null)">📂 Root</div>' +
+          '<div class="fp-item fp-none" onclick="_pickerCb(null)">📂 Root (no parent)</div>' +
           buildPickerTree(null, 0, excl);
         document.getElementById("pickerList").innerHTML = html;
         document.getElementById("pickerModal").classList.remove("hidden");
@@ -3384,6 +3749,7 @@
         if (e.target === e.currentTarget) closePicker();
       });
 
+      /* FOLDER CRUD */
       function toggleFolder(fid) {
         var f = folders.find((x) => x.id === fid);
         if (!f) return;
@@ -3435,7 +3801,7 @@
         saveFolderState();
         closeFolderModal();
         renderSheets();
-        showToast(selectedEmoji + " " + name + " saved ☁️");
+        showToast(selectedEmoji + " " + name);
       }
       document.getElementById("folderModal").addEventListener("click", (e) => {
         if (e.target === e.currentTarget) closeFolderModal();
@@ -3497,7 +3863,10 @@
         saveFolderState();
         renderSheets();
         closeMenu();
-        showToast(folderId ? "📂 Moved" : "🚫 Removed from folder");
+        var fn = folderId
+          ? (folders.find((f) => f.id === folderId) || {}).name
+          : "";
+        showToast(folderId ? "📂 Moved to " + fn : "🚫 Removed from folder");
       }
       function updateFolderSelects() {
         var sel = document.getElementById("newSheetFolder");
@@ -3534,18 +3903,25 @@
       function fDragOver(e, fid) {
         e.preventDefault();
         e.stopPropagation();
-        var fb = document.getElementById("fb_" + fid);
-        if (fb) fb.classList.add("drag-over-folder");
+        if (!_folderDragId)
+          document.getElementById("fb_" + fid) &&
+            document
+              .getElementById("fb_" + fid)
+              .classList.add("drag-over-folder");
       }
       function fDragLeave(e, fid) {
-        var fb = document.getElementById("fb_" + fid);
-        if (fb) fb.classList.remove("drag-over-folder");
+        document.getElementById("fb_" + fid) &&
+          document
+            .getElementById("fb_" + fid)
+            .classList.remove("drag-over-folder");
       }
       function fDrop(e, tfid) {
         e.preventDefault();
         e.stopPropagation();
-        var fb = document.getElementById("fb_" + tfid);
-        if (fb) fb.classList.remove("drag-over-folder");
+        document.getElementById("fb_" + tfid) &&
+          document
+            .getElementById("fb_" + tfid)
+            .classList.remove("drag-over-folder");
         if (_folderDragId) {
           if (_folderDragId !== tfid) {
             var df = folders.find((x) => x.id === _folderDragId),
@@ -3570,7 +3946,9 @@
         sheetMeta[sheetId].pinned = !sheetMeta[sheetId].pinned;
         saveFolderState();
         renderSheets();
-        showToast(sheetMeta[sheetId].pinned ? "⭐ Pinned" : "★ Unpinned");
+        showToast(
+          sheetMeta[sheetId].pinned ? "⭐ Pinned to top" : "★ Unpinned",
+        );
       }
       function startInlineRename(sheetId) {
         closeMenu();
@@ -3581,8 +3959,9 @@
         var chip = chips[0];
         var nameSpan = chip.querySelector(".chip-name");
         if (!nameSpan) return;
-        var currentName =
-          (sheets.find((s) => s.id === sheetId) || {}).title || "";
+        var currentName = sheets.find((s) => s.id === sheetId)
+          ? sheets.find((s) => s.id === sheetId).title
+          : "";
         var input = document.createElement("input");
         input.type = "text";
         input.value = currentName;
@@ -3631,6 +4010,7 @@
         input.addEventListener("blur", commit);
       }
 
+      /* SHEET CRUD */
       function openNewSheet() {
         document.getElementById("newSheetName").value = "";
         updateFolderSelects();
@@ -3755,7 +4135,10 @@
               updateStats();
               renderTable();
               setSync("ok");
-              showUndoToast('🗑 "' + (s2 ? s2.title : "") + '" deleted', null);
+              showUndoToast(
+                '🗑 "' + (s2 ? s2.title : "") + '" deleted — check Recycle Bin',
+                null,
+              );
             } catch (e) {
               setSync("error");
             }
@@ -3763,9 +4146,10 @@
         );
       }
 
+      /* ENTRIES */
       function loadEntries(id) {
         document.getElementById("tableBody").innerHTML =
-          '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-txt">Loading…</div></div></td></tr>';
+          '<tr><td colspan="7"><div class="table-loading">⏳ Loading…</div></td></tr>';
         setSync("syncing");
         fetchAllEntries(id)
           .then((all) => {
@@ -3773,6 +4157,7 @@
             renderTable();
             updateStats();
             setSync("ok");
+            updateToolbar();
           })
           .catch(() => setSync("error"));
       }
@@ -3971,6 +4356,7 @@
         if (e.key === "Enter") saveEdit();
       });
 
+      /* DATA */
       function getFiltered() {
         if (!dateFrom && !dateTo) return entries;
         return entries.filter((e) => {
@@ -4028,6 +4414,14 @@
         document.getElementById("entriesLabel").textContent = isF
           ? "Visible / All"
           : "Entries";
+      }
+      function updateToolbar() {
+        var vis = getVisible(),
+          badge = document.getElementById("exportBadge");
+        if (searchQ || dateFrom || dateTo) {
+          badge.style.display = "inline";
+          badge.textContent = vis.length + " rows";
+        } else badge.style.display = "none";
       }
       function getNames() {
         var s = {},
@@ -4166,6 +4560,7 @@
           .classList.toggle("visible", searchQ.length > 0);
         renderTable();
         updateStats();
+        updateToolbar();
       });
       function clearSearch() {
         si.value = "";
@@ -4173,6 +4568,7 @@
         document.getElementById("searchClear").classList.remove("visible");
         renderTable();
         updateStats();
+        updateToolbar();
         si.focus();
       }
       function applyDateFilter() {
@@ -4183,6 +4579,7 @@
           .forEach((b) => b.classList.remove("active"));
         renderTable();
         updateStats();
+        updateToolbar();
       }
       function clearDateFilter() {
         dateFrom = "";
@@ -4194,6 +4591,7 @@
           .forEach((b) => b.classList.remove("active"));
         renderTable();
         updateStats();
+        updateToolbar();
       }
       function applyPreset(p) {
         var now = new Date(),
@@ -4232,8 +4630,10 @@
         if (el) el.classList.add("active");
         renderTable();
         updateStats();
+        updateToolbar();
       }
 
+      /* TABLE */
       function renderTable() {
         var head = document.getElementById("tableHead"),
           tb = document.getElementById("tableBody"),
@@ -4370,7 +4770,7 @@
         tb.innerHTML = html;
       }
 
-      /* BOB */
+      /* BOB PDF */
       function openBOB() {
         if (!currentSheetId) {
           alert("Select a sheet first.");
@@ -4402,9 +4802,9 @@
           document.getElementById(id).classList.remove("on"),
         );
         document.getElementById("bfAll").classList.add("on");
-        document.getElementById("bobImportBtn").disabled = false;
-        document.getElementById("bobImportBtn").textContent =
-          "⬇ Import Selected";
+        var btn = document.getElementById("bobImportBtn");
+        btn.disabled = false;
+        btn.textContent = "⬇ Import Selected";
       }
       function handleBOBFile(input) {
         var f = input.files[0];
@@ -4644,8 +5044,8 @@
               return;
             }
             var txns = [];
-            for (var i2 = hRow + 1; i2 < rows.length; i2++) {
-              var row = rows[i2];
+            for (var i = hRow + 1; i < rows.length; i++) {
+              var row = rows[i];
               if (!row || !row[cDate]) continue;
               var ds = parseBOBDate((row[cDate] || "").toString());
               if (!ds || ds.slice(0, 4) < "2000") continue;
@@ -4855,6 +5255,352 @@
         }
       }
 
+      /* SBI */
+      function extractSBIName(d) {
+        var m = d.match(
+          /IMPS\/[^\/]+\/[A-Z0-9]+-xx\d+-[^\/]+\/([a-zA-Z][a-zA-Z\s]{1,30})/i,
+        );
+        if (m) {
+          var n = tc(m[1]);
+          if (n) return { name: n, conf: "high", type: "IMPS" };
+        }
+        return { name: d.slice(0, 60), conf: "low", type: "OTHER" };
+      }
+      function parseSBIDate(raw) {
+        if (!raw) return todayISO();
+        if (typeof raw === "number") {
+          var d = new Date(Math.round((raw - 25569) * 86400 * 1000));
+          return d.toISOString().slice(0, 10);
+        }
+        var s = (raw + "").trim(),
+          m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})/);
+        if (m)
+          return (
+            m[3] + "-" + m[2].padStart(2, "0") + "-" + m[1].padStart(2, "0")
+          );
+        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+        return todayISO();
+      }
+      function parseSBIAmt(raw) {
+        if (typeof raw === "number") return Math.abs(raw);
+        var s = (raw + "").replace(/[,\s₹Rs]/g, ""),
+          n = parseFloat(s);
+        return isNaN(n) ? 0 : Math.abs(n);
+      }
+      function pickTxSheet(wb) {
+        var names = wb.SheetNames;
+        if (names.length === 1) return { name: names[0] };
+        var txKw = [
+          "statement",
+          "transaction",
+          "passbook",
+          "history",
+          "payment",
+        ];
+        for (var i = 0; i < names.length; i++) {
+          var nl = names[i].toLowerCase();
+          for (var k = 0; k < txKw.length; k++)
+            if (nl.includes(txKw[k])) return { name: names[i] };
+        }
+        return { name: names[0] };
+      }
+      function openSBI() {
+        if (!currentSheetId) {
+          alert("Select a sheet first.");
+          return;
+        }
+        resetSBI();
+        document.getElementById("sbiModal").classList.remove("hidden");
+      }
+      function closeSBI() {
+        document.getElementById("sbiModal").classList.add("hidden");
+        sbiRows = [];
+      }
+      document.getElementById("sbiModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeSBI();
+      });
+      function resetSBI() {
+        sbiRows = [];
+        sbiFilter = "all";
+        document.getElementById("sbiStep1").style.display = "block";
+        document.getElementById("sbiStep2").style.display = "none";
+        document.getElementById("sbiUploadResult").textContent = "";
+        document.getElementById("sbiImportResult").textContent = "";
+        document.getElementById("sbiFile").value = "";
+        document.getElementById("sbiSheetBadge").style.display = "none";
+        ["sfAll", "sfDebit", "sfCredit"].forEach((id) =>
+          document.getElementById(id).classList.remove("on"),
+        );
+        document.getElementById("sfAll").classList.add("on");
+        var btn = document.getElementById("sbiImportBtn");
+        btn.disabled = false;
+        btn.textContent = "⬇ Import";
+      }
+      function handleSBIUpload(input) {
+        var file = input.files[0];
+        if (!file) return;
+        var res = document.getElementById("sbiUploadResult");
+        res.className = "import-result";
+        res.textContent = "Reading…";
+        var reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            var wb = XLSX.read(ev.target.result, { type: "array", raw: true });
+            var det = pickTxSheet(wb);
+            var ws = wb.Sheets[det.name];
+            document.getElementById("sbiSheetBadge").innerHTML =
+              '<div class="sheet-detect-badge">✓ Using "' +
+              det.name +
+              '"</div>';
+            document.getElementById("sbiSheetBadge").style.display = "block";
+            var rows = XLSX.utils.sheet_to_json(ws, {
+              header: 1,
+              defval: "",
+              raw: true,
+            });
+            var hRow = -1,
+              cDate = -1,
+              cDet = -1,
+              cRef = -1,
+              cDebit = -1,
+              cCredit = -1;
+            for (var r = 0; r < Math.min(25, rows.length); r++) {
+              var j = (rows[r] || []).join("|").toLowerCase();
+              if (
+                j.includes("date") &&
+                (j.includes("debit") || j.includes("credit"))
+              ) {
+                hRow = r;
+                var h = rows[r];
+                cDate = findC(h, ["date"]);
+                cDet = findC(h, [
+                  "details",
+                  "description",
+                  "particulars",
+                  "narration",
+                  "transaction",
+                ]);
+                cRef = findC(h, ["ref", "cheque", "chq", "utr"]);
+                cDebit = findC(h, ["debit", "dr", "withdrawal"]);
+                cCredit = findC(h, ["credit", "cr", "deposit"]);
+                break;
+              }
+            }
+            if (hRow === -1 || cDate === -1) {
+              res.className = "import-result err";
+              res.textContent = "⚠ Cannot find headers.";
+              return;
+            }
+            if (cDet === -1) cDet = 1;
+            sbiRows = [];
+            for (var i = hRow + 1; i < rows.length; i++) {
+              var row = rows[i];
+              if (!row || !row[cDate]) continue;
+              var dateStr = parseSBIDate(row[cDate]);
+              if (!dateStr || dateStr.slice(0, 4) < "2000") continue;
+              var details = (row[cDet] || "")
+                .toString()
+                .replace(/\s+/g, " ")
+                .trim();
+              if (!details) continue;
+              var debit = cDebit !== -1 ? parseSBIAmt(row[cDebit]) : 0,
+                credit = cCredit !== -1 ? parseSBIAmt(row[cCredit]) : 0;
+              if (debit === 0 && credit === 0) continue;
+              var ref = cRef !== -1 && row[cRef] ? (row[cRef] + "").trim() : "";
+              var ext = extractSBIName(details);
+              sbiRows.push({
+                date: dateStr,
+                details,
+                ref,
+                isDebit: debit > 0,
+                amount: debit > 0 ? debit : credit,
+                name: ext.name,
+                conf: ext.conf,
+                type: ext.type || "OTHER",
+                selected: true,
+              });
+            }
+            if (!sbiRows.length) {
+              res.className = "import-result err";
+              res.textContent = "⚠ No transactions.";
+              return;
+            }
+            res.textContent = "✓ Found " + sbiRows.length;
+            document.getElementById("sbiStep1").style.display = "none";
+            document.getElementById("sbiStep2").style.display = "block";
+            renderSBIPreview();
+            updateSBIStats();
+          } catch (err) {
+            res.className = "import-result err";
+            res.textContent = "Error: " + err.message;
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      }
+      function setSBIFilter(f) {
+        sbiFilter = f;
+        ["sfAll", "sfDebit", "sfCredit"].forEach((id) =>
+          document.getElementById(id).classList.remove("on"),
+        );
+        document
+          .getElementById(
+            f === "all" ? "sfAll" : f === "debit" ? "sfDebit" : "sfCredit",
+          )
+          .classList.add("on");
+        renderSBIPreview();
+        updateSBIStats();
+      }
+      function updateSBIStats() {
+        var tD = sbiRows
+            .filter((r) => r.isDebit)
+            .reduce((s, r) => s + r.amount, 0),
+          tC = sbiRows
+            .filter((r) => !r.isDebit)
+            .reduce((s, r) => s + r.amount, 0),
+          sel = sbiRows.filter((r) => r.selected).length;
+        document.getElementById("sbiSelInfo").textContent =
+          sel + "/" + sbiRows.length + " sel";
+        document.getElementById("sbiStatsRow").innerHTML =
+          '<div class="stat-sm"><strong>' +
+          sbiRows.length +
+          '</strong>Total</div><div class="stat-sm d"><strong>₹' +
+          fmt(tD) +
+          '</strong>Debits</div><div class="stat-sm c"><strong>₹' +
+          fmt(tC) +
+          "</strong>Credits</div>";
+      }
+      function renderSBIPreview() {
+        var vis = sbiRows.filter(
+          (r) =>
+            sbiFilter === "all" ||
+            (sbiFilter === "debit" && r.isDebit) ||
+            (sbiFilter === "credit" && !r.isDebit),
+        );
+        var tb = document.getElementById("sbiPreviewBody");
+        if (!vis.length) {
+          tb.innerHTML =
+            '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#4a4670;">No transactions</td></tr>';
+          return;
+        }
+        tb.innerHTML = vis
+          .map((r) => {
+            var ai = sbiRows.indexOf(r);
+            var conf =
+              r.conf === "high"
+                ? '<span class="conf-hi">✓</span>'
+                : '<span class="conf-lo">⚠</span>';
+            var td = r.isDebit
+              ? '<span class="type-d">Debit</span>'
+              : '<span class="type-c">Credit</span>';
+            var sd =
+              r.details.length > 50 ? r.details.slice(0, 50) + "…" : r.details;
+            var nc = r.conf === "high" ? "nme-inp hi" : "nme-inp lo";
+            return (
+              '<tr><td class="chk"><input type="checkbox" ' +
+              (r.selected ? "checked" : "") +
+              ' onchange="sbiRows[' +
+              ai +
+              '].selected=this.checked;updateSBIStats()" /></td><td style="font-size:11px;color:#7a74a8;white-space:nowrap;">' +
+              isoDisp(r.date) +
+              '</td><td><div style="display:flex;align-items:center;gap:4px;"><input class="' +
+              nc +
+              '" value="' +
+              escH(r.name) +
+              '" oninput="sbiRows[' +
+              ai +
+              '].name=this.value" onchange="this.className=\'nme-inp ed\'" />' +
+              conf +
+              '</div></td><td class="det-col" title="' +
+              escH(r.details) +
+              '">' +
+              escH(sd) +
+              '</td><td style="font-size:10px;color:#5a5680;">' +
+              escH(r.ref ? r.ref.slice(-10) : "—") +
+              "</td><td>" +
+              td +
+              '</td><td style="font-weight:600;text-align:right;color:' +
+              (r.isDebit ? "#f08080" : "#4ecba0") +
+              ';">₹' +
+              fmt(r.amount) +
+              "</td></tr>"
+            );
+          })
+          .join("");
+        var allSel = vis.length > 0 && vis.every((r) => r.selected);
+        document.getElementById("sbiSelAll").checked = allSel;
+        document.getElementById("sbiSelAll").indeterminate =
+          !allSel && vis.some((r) => r.selected);
+      }
+      function toggleSBIAll(cb) {
+        var vis = sbiRows.filter(
+          (r) =>
+            sbiFilter === "all" ||
+            (sbiFilter === "debit" && r.isDebit) ||
+            (sbiFilter === "credit" && !r.isDebit),
+        );
+        vis.forEach((r) => (r.selected = cb.checked));
+        renderSBIPreview();
+        updateSBIStats();
+      }
+      async function doSBIImport() {
+        if (!currentSheetId) {
+          alert("Select a sheet first.");
+          return;
+        }
+        var toImport = sbiRows.filter((r) => r.selected && r.name.trim());
+        if (!toImport.length) {
+          alert("No rows selected.");
+          return;
+        }
+        var btn = document.getElementById("sbiImportBtn");
+        btn.disabled = true;
+        btn.textContent = "⏳ Importing…";
+        var toInsert = toImport.map((r) => {
+          var rem = r.type !== "OTHER" ? r.type : "";
+          if (r.ref) rem = (rem ? rem + " " : "") + "#" + r.ref.slice(-8);
+          return {
+            sheet_id: currentSheetId,
+            name: r.name.trim().slice(0, 120),
+            phone: null,
+            remark: rem || null,
+            amount: r.amount,
+            date: r.date,
+          };
+        });
+        var BATCH = 500,
+          allIns = [];
+        try {
+          for (var i = 0; i < toInsert.length; i += BATCH) {
+            var resp = await sb("entries", {
+              method: "POST",
+              body: JSON.stringify(toInsert.slice(i, i + BATCH)),
+            });
+            if (!resp.ok) throw new Error("HTTP " + resp.status);
+            var data = await resp.json();
+            allIns = allIns.concat(Array.isArray(data) ? data : []);
+          }
+          entries = entries.concat(allIns);
+          renderTable();
+          updateStats();
+          flashBar();
+          setSync("ok");
+          updateSheetTs();
+          document.getElementById("sbiImportResult").className =
+            "import-result";
+          document.getElementById("sbiImportResult").textContent =
+            "✅ Imported " + allIns.length + "!";
+          btn.textContent = "✅ Done — " + allIns.length;
+          showToast("🏦 SBI: " + allIns.length + " imported");
+        } catch (err) {
+          document.getElementById("sbiImportResult").className =
+            "import-result err";
+          document.getElementById("sbiImportResult").textContent =
+            "❌ " + err.message;
+          btn.disabled = false;
+          btn.textContent = "⬇ Import";
+        }
+      }
+
       /* PAYTM */
       function pickPaytmSheet(wb) {
         var names = wb.SheetNames;
@@ -5016,11 +5762,13 @@
               if (!parsed) continue;
               var desc = cDesc !== -1 ? (row[cDesc] + "").trim() : "Txn " + i;
               if (!desc) desc = "Txn " + i;
+              var remark = cRemark !== -1 ? (row[cRemark] + "").trim() : "";
               paytmRows.push({
                 date: cDate !== -1 ? parsePaytmDate(row[cDate]) : todayISO(),
                 desc,
                 amount: parsed.value,
                 debit: parsed.debit,
+                remark,
                 selected: true,
               });
             }
@@ -5061,7 +5809,7 @@
             (paytmFilter === "credit" && !r.debit),
         );
         document.getElementById("selCount").textContent =
-          paytmRows.filter((r) => r.selected).length + " sel";
+          paytmRows.filter((r) => r.selected).length + " selected";
         document.getElementById("previewInfo").textContent =
           "Showing " + vis.length + " of " + paytmRows.length;
         tb.innerHTML = vis
@@ -5069,14 +5817,17 @@
             var oi = paytmRows.indexOf(r);
             var desc = r.desc.length > 36 ? r.desc.slice(0, 36) + "…" : r.desc;
             var tt = r.debit
-              ? '<span class="type-d">D</span>'
-              : '<span class="type-c">C</span>';
+              ? '<span class="type-d">Debit</span>'
+              : '<span class="type-c">Credit</span>';
+            var rmk = r.remark
+              ? '<span class="remark-tag">' + r.remark.slice(0, 18) + "</span>"
+              : '<span style="color:#3a3760;">—</span>';
             return (
               '<tr><td class="chk"><input type="checkbox" ' +
               (r.selected ? "checked" : "") +
               ' onchange="paytmRows[' +
               oi +
-              "].selected=this.checked;document.getElementById('selCount').textContent=paytmRows.filter(r=>r.selected).length+' sel'\" /></td><td style=\"font-size:11px;white-space:nowrap;\">" +
+              '].selected=this.checked;updateSelCount()" /></td><td style="font-size:11px;white-space:nowrap;">' +
               isoDisp(r.date) +
               '</td><td title="' +
               r.desc +
@@ -5088,6 +5839,8 @@
               fmt(r.amount) +
               "</td><td>" +
               tt +
+              "</td><td>" +
+              rmk +
               "</td></tr>"
             );
           })
@@ -5096,6 +5849,10 @@
         document.getElementById("selectAll").checked = allSel;
         document.getElementById("selectAll").indeterminate =
           !allSel && vis.some((r) => r.selected);
+      }
+      function updateSelCount() {
+        document.getElementById("selCount").textContent =
+          paytmRows.filter((r) => r.selected).length + " selected";
       }
       function toggleSelectAll(cb) {
         var vis = paytmRows.filter(
@@ -5117,7 +5874,7 @@
           sheet_id: currentSheetId,
           name: r.desc.slice(0, 120),
           phone: null,
-          remark: null,
+          remark: r.remark || null,
           amount: r.amount,
           date: r.date,
         }));
@@ -5202,7 +5959,8 @@
               for (var c = 0; c < rows[r].length; c++) {
                 var cell = (rows[r][c] + "").toLowerCase().trim();
                 if (cell.includes("name") || cell.includes("vendor")) nC = c;
-                if (cell === "phone" || cell === "mobile") pC = c;
+                if (cell === "phone" || cell === "mobile" || cell === "contact")
+                  pC = c;
                 if (cell === "remark" || cell === "remarks") rmC = c;
                 if (cell.includes("amount")) aC = c;
                 if (cell.includes("date")) dC = c;
@@ -5337,35 +6095,20 @@
           .catch(() => showToast("⚠ Clipboard unavailable."));
       }
 
-      /* EXPORT (standard: All Entries + Summary) */
-      function openExportModal() {
-        var src = getVisible();
-        if (!src.length) {
-          showToast("No entries.");
-          return;
-        }
-        exportRunning = false;
-        document.getElementById("downloadBtn").disabled = false;
-        document.getElementById("downloadBtn").textContent = "⬇ Download Excel";
-        document.getElementById("cancelExportBtn").disabled = false;
-        document.getElementById("exportModal").classList.remove("hidden");
+      /* EXPORT */
+      function sanitizeName(raw) {
+        return (
+          (raw + "")
+            .replace(/[\\\/\?\*\[\]:'"]/g, "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .slice(0, 31) || "Vendor"
+        );
       }
-      function closeExportModal() {
-        if (exportRunning) return;
-        document.getElementById("exportModal").classList.add("hidden");
-      }
-      document.getElementById("exportModal").addEventListener("click", (e) => {
-        if (e.target === e.currentTarget) closeExportModal();
-      });
       function makeNameReg() {
         var u = {};
         return function (r) {
-          var b =
-            (r + "")
-              .replace(/[\\\/\?\*\[\]:'"]/g, "")
-              .replace(/\s+/g, " ")
-              .trim()
-              .slice(0, 31) || "Sheet";
+          var b = sanitizeName(r);
           if (!u[b]) {
             u[b] = 1;
             return b;
@@ -5375,6 +6118,231 @@
           return b.slice(0, 31 - ss.length) + ss;
         };
       }
+      function yieldUI(ms) {
+        return new Promise(function (r) {
+          setTimeout(r, ms || 8);
+        });
+      }
+      function setProgress(pct, main, sub) {
+        document.getElementById("progFill").style.width = pct + "%";
+        document.getElementById("progMainLabel").textContent = main;
+        document.getElementById("progSub").textContent = sub || "";
+      }
+      function doneProgress(label) {
+        document.getElementById("progFill").style.width = "100%";
+        document.getElementById("progMainLabel").textContent =
+          label || "✅ Ready!";
+        document.getElementById("progSub").textContent = "";
+        document.getElementById("progSpinner").classList.add("done");
+      }
+      function setSplit(n) {
+        splitSize = n;
+        ["split50", "split100", "split200", "splitAll"].forEach((id) =>
+          document.getElementById(id).classList.remove("active"),
+        );
+        var map = {
+          50: "split50",
+          100: "split100",
+          200: "split200",
+          9999: "splitAll",
+        };
+        if (map[n]) document.getElementById(map[n]).classList.add("active");
+        updateExpPreview();
+      }
+      function openExportModal() {
+        var src = getVisible();
+        if (!src.length) {
+          showToast("No entries.");
+          return;
+        }
+        exportRunning = false;
+        document.getElementById("progWrap").classList.remove("show");
+        document.getElementById("exportOptsArea").classList.remove("locked");
+        document.getElementById("downloadBtn").disabled = false;
+        document.getElementById("cancelExportBtn").disabled = false;
+        document.getElementById("progFill").style.width = "0%";
+        document.getElementById("progSpinner").classList.remove("done");
+        selExpOpt(exportOpt);
+        document.getElementById("exportModal").classList.remove("hidden");
+      }
+      function closeExportModal() {
+        if (exportRunning) return;
+        document.getElementById("exportModal").classList.add("hidden");
+      }
+      document.getElementById("exportModal").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeExportModal();
+      });
+      function selExpOpt(n) {
+        if (exportRunning) return;
+        exportOpt = n;
+        [1, 2, 3].forEach((i) =>
+          document
+            .getElementById("opt" + i)
+            .classList.toggle("selected", i === n),
+        );
+        document.getElementById("splitSizeRow").style.display =
+          n === 2 || n === 3 ? "block" : "none";
+        updateExpPreview();
+      }
+      function updateExpPreview() {
+        var src = getVisible(),
+          groups = getGroups(src),
+          vc = groups.length;
+        var pt = document.getElementById("exportPreviewText"),
+          pl = document.getElementById("exportSheetsList"),
+          chips = "";
+        if (exportOpt === 1) {
+          pt.textContent = "2 sheets, 1 file";
+          chips =
+            '<span class="exp-sheet-chip green">All Entries</span><span class="exp-sheet-chip">Summary</span>';
+          document.getElementById("splitFilesNote").textContent = "";
+        } else {
+          var nf = splitSize >= 9999 ? 1 : Math.ceil(vc / splitSize);
+          pt.textContent =
+            vc + " vendor sheets, " + nf + " file" + (nf === 1 ? "" : "s");
+          document.getElementById("splitFilesNote").textContent =
+            nf > 1 ? "→ " + nf + " files" : "→ 1 file";
+          if (exportOpt === 2)
+            chips =
+              '<span class="exp-sheet-chip green">All Entries</span><span class="exp-sheet-chip">Summary</span>';
+          groups
+            .slice(0, 4)
+            .forEach(
+              (g) =>
+                (chips +=
+                  '<span class="exp-sheet-chip">' +
+                  sanitizeName(g.name) +
+                  "</span>"),
+            );
+          if (vc > 4)
+            chips +=
+              '<span class="exp-sheet-chip">+' + (vc - 4) + " more…</span>";
+        }
+        pl.innerHTML = chips;
+      }
+      function makeAllSheet(data, title, suffix) {
+        var rows = [
+          [title + suffix],
+          ["Generated: " + new Date().toLocaleDateString("en-IN")],
+          [],
+          ["#", "Name/Vendor", "Phone", "Remark", "Amount (INR)", "Date"],
+        ];
+        data.forEach((e, i) =>
+          rows.push([
+            i + 1,
+            e.name,
+            e.phone || "",
+            e.remark || "",
+            e.amount,
+            isoDisp(e.date),
+          ]),
+        );
+        rows.push(
+          [],
+          [
+            "",
+            "Grand Total",
+            "",
+            "",
+            data.reduce((s, e) => s + e.amount, 0),
+            "",
+          ],
+        );
+        var ws = XLSX.utils.aoa_to_sheet(rows);
+        ws["!cols"] = [
+          { wch: 5 },
+          { wch: 28 },
+          { wch: 14 },
+          { wch: 16 },
+          { wch: 16 },
+          { wch: 12 },
+        ];
+        ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
+        return ws;
+      }
+      function makeSumSheet(data, title, suffix, groups, lookup) {
+        var rows = [
+          [title + " — Summary" + suffix],
+          [],
+          ["Vendor", "Phone", "Payments", "Total (INR)"],
+        ];
+        var lr = [];
+        groups.forEach((g, gi) => {
+          var phone = g.items.reduce(
+            (p, it) => p || (it.phone ? it.phone : ""),
+            "",
+          );
+          rows.push([g.name, phone, g.items.length, g.total]);
+          lr.push({ row: 3 + gi, name: g.name });
+        });
+        rows.push(
+          [],
+          [
+            "Grand Total",
+            "",
+            data.length,
+            data.reduce((s, e) => s + e.amount, 0),
+          ],
+        );
+        var ws = XLSX.utils.aoa_to_sheet(rows);
+        ws["!cols"] = [{ wch: 28 }, { wch: 14 }, { wch: 12 }, { wch: 20 }];
+        ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
+        lr.forEach((l) => {
+          var ca = XLSX.utils.encode_cell({ r: l.row, c: 0 });
+          var sn = lookup(l.name);
+          if (!ws[ca]) return;
+          ws[ca].l = { Target: "#'" + sn + "'!A1" };
+          ws[ca].s = { font: { color: { rgb: "0563C1" }, underline: true } };
+        });
+        return ws;
+      }
+      function makeVendorSheet(vname, items, sumSN) {
+        var total = items.reduce((s, e) => s + e.amount, 0);
+        var rows = [
+          [vname, "", "", "", "", ""],
+          [
+            "Total: " + items.length + " — ₹" + total.toLocaleString("en-IN"),
+            "",
+            "",
+            "",
+            "",
+            "",
+          ],
+          ["", "", "", "", "", "← Back"],
+          [],
+          ["#", "Name", "Phone", "Remark", "Amount", "Date"],
+        ];
+        items.forEach((e, i) =>
+          rows.push([
+            i + 1,
+            e.name,
+            e.phone || "",
+            e.remark || "",
+            e.amount,
+            isoDisp(e.date),
+          ]),
+        );
+        rows.push([], ["", "", "", "Total", total, ""]);
+        var ws = XLSX.utils.aoa_to_sheet(rows);
+        ws["!cols"] = [
+          { wch: 5 },
+          { wch: 24 },
+          { wch: 14 },
+          { wch: 14 },
+          { wch: 16 },
+          { wch: 12 },
+        ];
+        ws["!merges"] = [
+          { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+          { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
+        ];
+        var bc = XLSX.utils.encode_cell({ r: 2, c: 5 });
+        if (ws[bc]) {
+          ws[bc].l = { Target: "#'" + sumSN + "'!A1" };
+          ws[bc].s = { font: { color: { rgb: "0563C1" }, underline: true } };
+        }
+        return ws;
+      }
       async function doExport() {
         if (exportRunning) return;
         var src = getVisible();
@@ -5383,96 +6351,136 @@
           return;
         }
         exportRunning = true;
-        var btn = document.getElementById("downloadBtn");
-        btn.disabled = true;
-        btn.textContent = "⏳ Building…";
+        document.getElementById("downloadBtn").disabled = true;
         document.getElementById("cancelExportBtn").disabled = true;
+        document.getElementById("exportOptsArea").classList.add("locked");
+        document.getElementById("progWrap").classList.add("show");
+        setProgress(0, "Starting…", "");
+        await yieldUI(30);
         try {
           var title =
             document.getElementById("sheetTitle").value.trim() ||
             "Payment Tracker";
-          var groups = getGroups(src);
-          var wb = XLSX.utils.book_new();
-          var un = makeNameReg();
-          var allRows = [
-            [title],
-            ["Generated: " + new Date().toLocaleDateString("en-IN")],
-            [],
-            ["#", "Name/Vendor", "Phone", "Remark", "Amount (INR)", "Date"],
-          ];
-          src.forEach((e, i) =>
-            allRows.push([
-              i + 1,
-              e.name,
-              e.phone || "",
-              e.remark || "",
-              e.amount,
-              isoDisp(e.date),
-            ]),
-          );
-          allRows.push(
-            [],
-            [
-              "",
-              "Grand Total",
-              "",
-              "",
-              src.reduce((s, e) => s + e.amount, 0),
-              "",
-            ],
-          );
-          var ws1 = XLSX.utils.aoa_to_sheet(allRows);
-          ws1["!cols"] = [
-            { wch: 5 },
-            { wch: 28 },
-            { wch: 14 },
-            { wch: 16 },
-            { wch: 16 },
-            { wch: 12 },
-          ];
-          ws1["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }];
-          XLSX.utils.book_append_sheet(wb, ws1, un("All Entries"));
-          var sumRows = [
-            [title + " — Summary"],
-            [],
-            ["Vendor", "Phone", "Payments", "Total (INR)"],
-          ];
-          groups.forEach((g) => {
-            var phone = g.items.reduce(
-              (p, it) => p || (it.phone ? it.phone : ""),
-              "",
+          var suffix = "";
+          if (searchQ) suffix += " [" + searchQ + "]";
+          if (dateFrom || dateTo)
+            suffix += " (" + isoDisp(dateFrom) + " → " + isoDisp(dateTo) + ")";
+          var groups = getGroups(src),
+            SN = "Summary by Vendor";
+          if (exportOpt === 1) {
+            var wb = XLSX.utils.book_new();
+            var un = makeNameReg();
+            setProgress(20, "Building All Entries…", "");
+            await yieldUI();
+            XLSX.utils.book_append_sheet(
+              wb,
+              makeAllSheet(src, title, suffix),
+              un("All Entries"),
             );
-            sumRows.push([g.name, phone, g.items.length, g.total]);
-          });
-          sumRows.push(
-            [],
-            [
-              "Grand Total",
-              "",
-              src.length,
-              src.reduce((s, e) => s + e.amount, 0),
-            ],
-          );
-          var ws2 = XLSX.utils.aoa_to_sheet(sumRows);
-          ws2["!cols"] = [{ wch: 28 }, { wch: 14 }, { wch: 12 }, { wch: 20 }];
-          ws2["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }];
-          XLSX.utils.book_append_sheet(wb, ws2, un("Summary by Vendor"));
-          XLSX.writeFile(
-            wb,
-            title.replace(/\s+/g, "_") + "_" + todayISO() + ".xlsx",
-          );
-          showToast("📊 Exported " + src.length + " entries");
+            setProgress(60, "Building Summary…", "");
+            await yieldUI();
+            XLSX.utils.book_append_sheet(
+              wb,
+              makeSumSheet(src, title, suffix, groups, function () {
+                return "";
+              }),
+              un(SN),
+            );
+            setProgress(90, "Writing…", "");
+            await yieldUI();
+            doneProgress("✅ Ready!");
+            await yieldUI(1200);
+            XLSX.writeFile(
+              wb,
+              title.replace(/\s+/g, "_") + "_" + todayISO() + ".xlsx",
+            );
+            await yieldUI(400);
+          } else {
+            var eff = splitSize >= 9999 ? groups.length : splitSize;
+            var batches = [];
+            for (var b = 0; b < groups.length; b += eff)
+              batches.push(groups.slice(b, b + eff));
+            var tB = batches.length,
+              tG = groups.length,
+              dG = 0;
+            for (var bi = 0; bi < tB; bi++) {
+              var batch = batches[bi];
+              var wb2 = XLSX.utils.book_new();
+              var un2 = makeNameReg();
+              var fl = tB > 1 ? " (Part " + (bi + 1) + "/" + tB + ")" : "";
+              var sn = un2(SN);
+              var vsn = {};
+              batch.forEach((g) => {
+                vsn[g.name] = un2(g.name);
+              });
+              var lv = (function (vsn2) {
+                return function (n) {
+                  return vsn2[n] || sanitizeName(n);
+                };
+              })(vsn);
+              if (exportOpt === 2) {
+                setProgress(Math.round((dG / tG) * 80), "Building…", "");
+                await yieldUI();
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeAllSheet(src, title + fl, suffix),
+                  un2("All Entries"),
+                );
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeSumSheet(src, title + fl, suffix, batch, lv),
+                  sn,
+                );
+              }
+              for (var gi = 0; gi < batch.length; gi++) {
+                XLSX.utils.book_append_sheet(
+                  wb2,
+                  makeVendorSheet(batch[gi].name, batch[gi].items, sn),
+                  vsn[batch[gi].name],
+                );
+                dG++;
+                if ((gi + 1) % 5 === 0) {
+                  setProgress(
+                    Math.round((dG / tG) * 85),
+                    "Building…",
+                    "Sheet " + (gi + 1) + "/" + batch.length,
+                  );
+                  await yieldUI();
+                }
+              }
+              setProgress(85 + Math.round(((bi + 1) / tB) * 10), "Saving…", "");
+              await yieldUI();
+              doneProgress(
+                tB > 1 ? "✅ File " + (bi + 1) + "/" + tB : "✅ Ready!",
+              );
+              await yieldUI(1200);
+              XLSX.writeFile(
+                wb2,
+                title.replace(/\s+/g, "_") +
+                  (tB > 1 ? "_part" + (bi + 1) : "") +
+                  ".xlsx",
+              );
+              await yieldUI(600);
+              if (bi < tB - 1) {
+                document.getElementById("progSpinner").classList.remove("done");
+                document.getElementById("progMainLabel").textContent =
+                  "Preparing next…";
+              }
+            }
+          }
+          exportRunning = false;
+          document.getElementById("exportModal").classList.add("hidden");
           flashBar();
-          closeExportModal();
+          showToast("📊 Exported " + src.length + " entries");
         } catch (err) {
+          exportRunning = false;
+          document.getElementById("progWrap").classList.remove("show");
+          document.getElementById("exportOptsArea").classList.remove("locked");
+          document.getElementById("downloadBtn").disabled = false;
+          document.getElementById("cancelExportBtn").disabled = false;
           document.getElementById("errMsg").textContent =
             "Export failed: " + err.message;
           document.getElementById("errMsg").style.display = "block";
-        } finally {
-          exportRunning = false;
-          btn.disabled = false;
-          btn.textContent = "⬇ Download Excel";
-          document.getElementById("cancelExportBtn").disabled = false;
         }
       }
     </script>
